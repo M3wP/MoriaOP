@@ -1,0 +1,204 @@
+{ Throw a magic spell }
+//[psect(misc2$code)]
+procedure extra_cast;
+	var
+	i1, i2, item_val, dir: integer;
+	choice, chance:        integer;
+	dumy, y_dumy, x_dumy:  integer;
+	redraw:                boolean;
+	t: TMoriaInvenType;
+
+	begin
+	reset_flag:= true;
+	if (py.flags.blind > 0) then
+		msg_print('You Can''t See to Read Your Spell Book!')
+	else if (no_light) then
+		msg_print('You Have No Light to Read By.')
+	else if (py.flags.confused > 0) then
+		msg_print('You Are Too Confused...')
+	else if (class_[py.misc.pclass].espell) then
+//		if (inven_ctr > 0) then
+			begin
+//			if (find_range([92], i1, i2)) then
+//				begin
+//				redraw:= false;
+//				if (get_item(item_val, 'Use Which Spell Book?', redraw, i1, i2)) then
+				if  GetItemFromInv(t, item_val, 'Use Which Spell Book?',
+						'But You Are Not Carrying any Spell Books!', redraw, [92]) then
+					begin
+					if (cast_spell('Cast Which Spell?', item_val, choice,
+							chance, redraw)) then
+						with extra_spell[py.misc.pclass, choice] do
+							begin
+							reset_flag:= false;
+							if (randint(100) < chance) then
+								msg_print('You Failed to Get the Spell Off!')
+							else
+								begin
+								y_dumy:= char_row;
+								x_dumy:= char_col;
+{ Spells. }
+								case choice of
+									1:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											fire_bolt(0, dir, char_row,
+												char_col, damroll('2d6') + 1,
+												'Magic Missle');
+									2:
+										detect_monsters;
+									3:
+										teleport(10);
+									4:
+										light_area(char_row, char_col);
+									5:
+										hp_player(damroll('4d4'),
+											'a magic spell.');
+									6:
+										begin
+										detect_sdoor;
+										detect_trap;
+										end;
+									7:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											fire_ball(2, dir, char_row,
+												char_col, 9, 'Stinking Cloud');
+									8:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											confuse_monster(dir, char_row,
+												char_col);
+									9:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											fire_bolt(1, dir, char_row,
+												char_col, damroll('3d8') + 1,
+												'Lightning Bolt');
+									10:
+										td_destroy;
+									11:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											sleep_monster(dir, char_row,
+												char_col);
+									12:
+										cure_poison;
+									13:
+										teleport(py.misc.lev * 5);
+									14:
+										for i1:= Ord(Low(TMoriaInvenWear)) to Ord(High(TMoriaInvenWear)) do
+											with newInventory[mitWornWielding, i1] do
+												flags:= (flags and $7FFFFFFF);
+									15:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											fire_bolt(4, dir, char_row,
+												char_col, damroll('4d8') + 1,
+												'Frost Bolt');
+									16:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											wall_to_mud(dir, char_row,
+												char_col);
+									17:
+										ident_spell;
+									18:
+										recharge(20);
+									19:
+										sleep_monsters2_3(char_row,
+											char_col, 1);
+									20:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											poly_monster(dir, char_row,
+												char_col);
+									21:
+										create_food;
+									22:
+										sleep_monsters2_3(char_row,
+											char_col, 20);
+									23:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											fire_bolt(5, dir, char_row,
+												char_col, damroll('6d8') + 1,
+												'Fire Bolt');
+									24:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											speed_monster(dir, char_row,
+												char_col, -1);
+									25:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											fire_ball(4, dir, char_row,
+												char_col, 33, 'Frost Ball');
+									26:
+										recharge(50);
+									27:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											teleport_monster(dir, char_row,
+												char_col);
+									28:
+										with py.flags do
+											fast:= fast + randint(20) +
+													py.misc.lev;
+									29:
+										if (get_dir('Which Direction?', dir,
+												dumy, y_dumy, x_dumy)) then
+											fire_ball(5, dir, char_row,
+												char_col, 49, 'Fire Ball');
+									30:
+										destroy_area(char_row, char_col);
+									31:
+										genocide;
+									else
+										;
+									end;
+ { END of spells. }
+								if (not(reset_flag)) then
+									with py.misc do
+										begin
+										exp:= exp + sexp;
+										prt_experience;
+										sexp:= 0;
+										end
+								end;
+							with py.misc do
+								if (not(reset_flag)) then
+									begin
+									if (smana > cmana) then
+										begin
+										msg_print('You Faint From the Effort!');
+										py.flags.paralysis:=
+												randint(5 *
+													trunc(smana - cmana));
+										cmana:= 0;
+										if (randint(3) = 1) then
+											begin
+											msg_print(
+												'You Have Damaged Your Health!');
+											py.stat.ccon:=
+													de_statp(py.stat.ccon);
+											prt_constitution;
+											end;
+										end
+									else
+										cmana:= cmana - smana;
+									prt_mana;
+									end
+							end
+					end
+				else if (redraw) then
+					draw_cave;
+//				end
+//			else
+//				msg_print('But You Are Not Carrying any Spell Books!');
+			end
+//		else
+//			msg_print('But You Are Not Carrying Any Spell Books!')
+	else
+		msg_print('You Can''t Cast Spells!');
+	end;

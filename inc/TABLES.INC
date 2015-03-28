@@ -1,0 +1,1321 @@
+const
+	{ Bit testing array }
+{ For the testing of bits }
+	bit_array : {[psect(player$data)]} array [1..32] of unsigned = (
+{ Bit #1 }     $00000001,
+{ Bit #2 }     $00000002,
+{ Bit #3 }     $00000004,
+{ Bit #4 }     $00000008,
+{ Bit #5 }     $00000010,
+{ Bit #6 }     $00000020,
+{ Bit #7 }     $00000040,
+{ Bit #8 }     $00000080,
+{ Bit #9 }     $00000100,
+{ Bit #10 }    $00000200,
+{ Bit #11 }    $00000400,
+{ Bit #12 }    $00000800,
+{ Bit #13 }    $00001000,
+{ Bit #14 }    $00002000,
+{ Bit #15 }    $00004000,
+{ Bit #16 }    $00008000,
+{ Bit #17 }    $00010000,
+{ Bit #18 }    $00020000,
+{ Bit #19 }    $00040000,
+{ Bit #20 }    $00080000,
+{ Bit #21 }    $00100000,
+{ Bit #22 }    $00200000,
+{ Bit #23 }    $00400000,
+{ Bit #24 }    $00800000,
+{ Bit #25 }    $01000000,
+{ Bit #26 }    $02000000,
+{ Bit #27 }    $04000000,
+{ Bit #28 }    $08000000,
+{ Bit #29 }    $10000000,
+{ Bit #30 }    $20000000,
+{ Bit #31 }    $40000000,
+{ Bit #32 }    $80000000);
+
+	{ External file names; are all located in directory with image  }
+//	MORIA_HOU : {[psect(setup$data)]} vtype;
+	MORIA_MOR : {[psect(setup$data)]} vtype = STR_TOK_IMGPTH + 'MORIA.DAT';
+	MORIA_MAS : {[psect(setup$data)]} vtype = STR_TOK_IMGPTH + 'MORIACHR.DAT';
+	MORIA_TOP : {[psect(setup$data)]} vtype = STR_TOK_IMGPTH + 'MORIATOP.DAT';
+//	MORIA_HLP : {[psect(setup$data)]} vtype = STR_TOK_IMGPTH + 'MORIAHLP.HLB';
+	MORIA_MON : {[psect(setup$data)]} vtype = STR_TOK_IMGPTH + 'MONSTERIN.DAT';
+//	MORIA_LOS : {[psect(setup$data)]} vtype;
+//	MORIA_WIZ : {[psect(setup$data)]} vtype;
+
+	bare_hands : {[psect(player$data)]} dtype = '1d2';
+
+		{ VALUES FOR FLOOR TYPES }
+	blank_floor : {[psect(generate$data)]} cave_type = (
+			cptr: 0;  tptr: 0; fval: 0; fopen: False; fm:False; pl:False; tl: False);
+
+//	Normal floor
+	dopen_floor : {[psect(generate$data)]} floor_type = (
+			ftval: 1; ftopen: True);
+//	Lit floor
+	lopen_floor : {[psect(generate$data)]} floor_type = (
+			ftval: 2; ftopen: True);
+	corr_floor1 : {[psect(generate$data)]} floor_type = (
+			ftval: 4; ftopen: True);
+	corr_floor2 : {[psect(generate$data)]} floor_type = (
+			ftval: 5; ftopen: True);
+
+//	Doorway?
+	corr_floor3 : {[psect(generate$data)]} floor_type = (
+			ftval: 6; ftopen: True);
+//	Rubble?
+	corr_floor4 : {[psect(generate$data)]} floor_type = (
+			ftval: 7; ftopen: False);
+
+{	FLOOR VALUES 8 AND 9 ARE USED IN GENERATE }
+
+//	Granite wall
+	rock_wall1 : {[psect(generate$data)]} floor_type = (
+			ftval: 10; ftopen: False);
+//	Quartz wall
+	rock_wall2 : {[psect(generate$data)]} floor_type = (
+			ftval: 11; ftopen: False);
+//	Magma wall
+	rock_wall3 : {[psect(generate$data)]} floor_type = (
+			ftval: 12; ftopen: False);
+
+//	13, 14?
+
+//	Undiggable wall?
+	boundry_wall : {[psect(generate$data)]} floor_type = (
+			ftval: 15; ftopen: False);
+
+	blank_monster : {[psect(generate$data)]} monster_type = ( { Blank monster values  }
+			hp: 0; csleep: 0; cdis: 0; mptr: 0; nptr: 0; cspeed: 0; fy: 0; fx: 0;
+			stuned: 0; ml: False; confused: False; elite: False; stoleau: 0);
+
+	{  Following are set definitions    }
+
+{ Sets for easy testing }
+	floor_set : {[psect(moria$data)]} obj_set = [1, 2, 4, 5, 6, 7];
+	wall_set : {[psect(moria$data)]} obj_set = [10, 11, 12];
+	pwall_set : {[psect(moria$data)]} obj_set = [10, 11, 12, 15];
+	corr_set : {[psect(moria$data)]} obj_set = [4, 5];
+	trap_set : {[psect(moria$data)]} obj_set = [101, 102, 109, 110, 111];
+	light_set : {[psect(moria$data)]} obj_set = [102, 103, 104, 105, 107, 108, 109, 110, 111];
+
+{ Class titles for different levels }
+	player_title : {[psect(player$data)]}array [1..MAX_CLASS] of array [1..MAX_PLAYER_LEVEL] of btype = (
+{ WARRIOR }
+			('Novice','Veteran','Veteran','Veteran','Warrior','Warrior','Warrior',
+			'Swordsman','Swordsman','Swordsman','Hero','Swashbuckler','Myrmidon',
+			'Champion','Champion','Champion','Superhero','Knight','Superior Knt',
+			'Gallant Knt','Knt Errent','Keeper','Protector','Defender','Warder',
+			'Guardian Knt','Chevalier','Justiciar','Lord','Lord','Lord','Lord','Lord',
+			'Lord','Lord','Lord','Lord','Lord Gallant','Lord Keeper','Lord Noble',
+			'Lord Noble','Lord Noble','Lord Noble','Lord Noble','Lord Noble','Lord Noble'),
+{ MAGE }
+			('Novice','Apprentice','Trickster','Trickster','Trickster','Cabalist',
+			'Cabalist','Cabalist','Visionist','Phantasmist','Shadowist','Spellbinder',
+			'Illusionist','Evoker','Evoker','Evoker','Evoker','Conjurer','Theurgist',
+			'Thaumaturer','Magician','Enchanter','Warlock','Sorcerer','Necromancer',
+			'Mage','Mage','Mage','Mage','Mage','Wizard','Wizard','Wizard','Wizard',
+			'Wizard','Wizard','Wizard','Wizard','Wizard','Wizard Lord','Wizard Lord',
+			'Wizard Lord','Wizard Lord','Wizard Lord','Wizard Lord','Wizard Lord'),
+{ PRIESTS }
+			('Believer','Acolyte','Acolyte','Acolyte','Adept','Adept','Adept','Priest',
+			'Priest','Priest','Priest','Priest','Priest','Priest','Priest',
+			'Priest','Curate','Curate','Curate','Curate','Curate','Curate','Curate',
+			'Curate','Curate','Canon','Canon','Canon','Canon','Canon',
+			'Low Lama','Lama','Lama','Lama','High Lama','Great Lama','Patriarch',
+			'High Priest','Great Priest','Noble Priest','Noble Priest','Noble Priest',
+			'Noble Priest','Noble Priest','Noble Priest','Noble Priest'),
+{ ROGUES }
+			('Apprentice','Footpad','Cutpurse','Robber','Burglar','Filcher','Sharper',
+			'Magsman','Common Rogue','Rogue','Rogue','Rogue','Rogue','Rogue','Rogue',
+			'Rogue','Rogue','Rogue','Master Rogue','Expert Rogue','Senior Rogue',
+			'Chief Rogue','Prime Rogue','Low Thief','Thief','Thief','Thief',
+			'Thief','Thief','Thief','Thief','Thief','Thief','High Thief','Master Thief',
+			'Executioner','Low Assassin','Assassin','HighAssassin','Guildsmaster',
+			'Guildsmaster','Guildsmaster','Guildsmaster','Guildsmaster','Guildsmaster',
+			'Guildsmaster'),
+{ RANGERS }
+			('Runner','Runner','Runner','Strider','Strider','Strider','Scout','Scout',
+			'Scout','Scout','Scout','Courser','Courser','Courser','Courser',
+			'Courser','Tracker','Tracker','Tracker','Tracker','Tracker','Tracker',
+			'Tracker','Tracker','Tracker','Guide','Guide','Guide','Guide','Guide','Guide',
+			'Guide','Guide','Guide','Pathfinder','Pathfinder','Pathfinder','Ranger',
+			'High Ranger','Ranger Lord','Ranger Lord','Ranger Lord','Ranger Lord',
+			'Ranger Lord','Ranger Lord','Ranger Lord'),
+{ PALADINS }
+			('Gallant','Keeper','Keeper','Keeper','Keeper','Keeper','Keeper','Keeper',
+			'Keeper','Keeper','Protector','Protector','Protector','Protector','Protector',
+			'Protector','Protector','Protector','Defender','Defender','Defender',
+			'Defender','Defender','Defender','Defender','Defender','Warder','Warder',
+			'Warder','Warder','Warder','Warder','Warder','Warder','Warder','Gauardian',
+			'Chevalier','Justiciar','Paladin','High Lord','High Lord','High Lord',
+			'High Lord','High Lord','High Lord','High Lord'),
+{TEST}
+			('Novice','Veteran','Veteran','Veteran','Warrior','Warrior','Warrior',
+			'Swordsman','Swordsman','Swordsman','Hero','Swashbuckler','Myrmidon',
+			'Champion','Champion','Champion','Superhero','Knight','Superior Knt',
+			'Gallant Knt','Knt Errent','Keeper','Protector','Defender','Warder',
+			'Guardian Knt','Chevalier','Justiciar','Lord','Lord','Lord','Lord','Lord',
+			'Lord','Lord','Lord','Lord','Lord Gallant','Lord Keeper','Lord Noble',
+			'Lord Noble','Lord Noble','Lord Noble','Lord Noble','Lord Noble','Lord Noble'),
+
+			('Novice','Veteran','Veteran','Veteran','Warrior','Warrior','Warrior',
+			'Swordsman','Swordsman','Swordsman','Hero','Swashbuckler','Myrmidon',
+			'Champion','Champion','Champion','Superhero','Knight','Superior Knt',
+			'Gallant Knt','Knt Errent','Keeper','Protector','Defender','Warder',
+			'Guardian Knt','Chevalier','Justiciar','Lord','Lord','Lord','Lord','Lord',
+			'Lord','Lord','Lord','Lord','Lord Gallant','Lord Keeper','Lord Noble',
+			'Lord Noble','Lord Noble','Lord Noble','Lord Noble','Lord Noble','Lord Noble'));
+
+{Base experience levels, may be adjusted up for race and/or class}
+	player_exp : {[psect(player$data)]} array [1..MAX_PLAYER_LEVEL] of integer = (
+				 10,
+				 25,
+				 45,
+				 70,
+				100,
+				150,
+				220,
+				310,
+				410,
+				520,
+				650,
+				900,
+			   1200,
+			   1600,
+			   2000,
+			   2600,
+			   3300,
+			   4100,
+			   5000,
+			   6500,
+			   8000,
+			  10500,
+			  14000,
+			  19000,
+			  25000,
+			  33000,
+			  43000,
+			  58000,
+			  78000,
+			 110000,
+			 175000,
+			 260000,
+			 360000,
+			 510000,
+			 750000,
+			1100000,
+			1300000,
+			1600000,
+			2000000,
+			2500000,
+			3000000,
+			3500000,
+			4000000,
+			4500000,
+			5000000,
+			9999999 );
+
+{ Initialize player generation variables }
+	sex_type : {[psect(player$data)]} vtype = 'FemaleMale  ';
+
+{Race   STR,INT,WIS,DEX,CON,CHR,
+		Ages, heights, and weights,
+		Racial Bases for: dis,srh,stl,fos,bth,bthb,bsav,hitdie,
+		infra, choice-classes }
+
+{ Class choice bit string goes (from MSB to LSB): Consultant2, Consultant,
+  Paladin, Rogue, Priest, Mage, Rogue, Fighter }
+//dengland I'm changing infravision to be double what it was.
+	race : {[psect(create$data)]} array [1..MAX_RACES] of race_type = (
+			(trace: 'Human';
+			 str_adj: 0;
+			 int_adj: 0;
+			 wis_adj: 0;
+			 dex_adj: 0;
+			 con_adj: 0;
+			 chr_adj: 0;
+			 b_age: 14;
+			 m_age: 6;
+			 m_b_ht: 72;
+			 m_m_ht: 6;
+			 m_b_wt: 180;
+			 m_m_wt: 25;
+			 f_b_ht: 66;
+			 f_m_ht: 4;
+			 f_b_wt: 120;
+			 f_m_wt: 20;
+			 b_exp: 1.00;
+			 b_dis: 0;
+			 srh: 0;
+			 stl: 0;
+			 fos: 0;
+			 bth: 0;
+			 bthb: 0;
+			 bsav: 0;
+			 bhitdie: 10;
+			 infra: 0;
+			 tclass: $3F {00111111}),
+			(trace: 'Half-Elf';
+			 str_adj: -1;
+			 int_adj: 1;
+			 wis_adj: 0;
+			 dex_adj: 1;
+			 con_adj: -1;
+			 chr_adj: 1;
+			 b_age: 24;
+			 m_age: 16;
+			 m_b_ht: 66;
+			 m_m_ht: 6;
+			 m_b_wt: 130;
+			 m_m_wt: 15;
+			 f_b_ht: 62;
+			 f_m_ht: 6;
+			 f_b_wt: 100;
+			 f_m_wt: 10;
+			 b_exp: 1.10;
+			 b_dis: 2;
+			 srh: 6;
+			 stl: 1;
+			 fos: -1;
+			 bth: 0;
+			 bthb: 5;
+			 bsav: 3;
+			 bhitdie: 9;
+//			 infra: 3;
+			 infra: 6;
+			 tclass: $3F {00111111}),
+			(trace: 'Elf';
+			 str_adj: -1;
+			 int_adj: 2;
+			 wis_adj: 1;
+			 dex_adj: 1;
+			 con_adj: -2;
+			 chr_adj: 1;
+			 b_age: 75;
+			 m_age: 75;
+			 m_b_ht: 60;
+			 m_m_ht: 4;
+			 m_b_wt: 100;
+			 m_m_wt: 6;
+			 f_b_ht: 54;
+			 f_m_ht: 4;
+			 f_b_wt: 80;
+			 f_m_wt: 6;
+			 b_exp: 1.20;
+			 b_dis: 5;
+			 srh: 8;
+			 stl: 1;
+			 fos: -2;
+			 bth: -5;
+			 bthb: 15;
+			 bsav: 6;
+			 bhitdie: 8;
+//			 infra: 4;
+			 infra: 8;
+			 tclass: $1F {00011111}),
+			(trace: 'Halfling';
+			 str_adj: -2;
+			 int_adj: 2;
+			 wis_adj: 1;
+			 dex_adj: 3;
+			 con_adj: 1;
+			 chr_adj: 1;
+			 b_age: 21;
+			 m_age: 12;
+			 m_b_ht: 36;
+			 m_m_ht: 3;
+			 m_b_wt: 60;
+			 m_m_wt: 2;
+			 f_b_ht: 33;
+			 f_m_ht: 3;
+			 f_b_wt: 50;
+			 f_m_wt: 3;
+			 b_exp: 1.10;
+			 b_dis: 15;
+			 srh: 12;
+			 stl: 4;
+			 fos: -5;
+			 bth: -10;
+			 bthb: 20;
+			 bsav: 18;
+			 bhitdie: 6;
+//			 infra: 4;
+			 infra: 8;
+			 tclass: $0B {00001011}),
+			(trace: 'Gnome';
+			 str_adj: -1;
+			 int_adj: 2;
+			 wis_adj: 0;
+			 dex_adj: 2;
+			 con_adj: 1;
+			 chr_adj: -2;
+			 b_age: 50;
+			 m_age: 40;
+			 m_b_ht: 42;
+			 m_m_ht: 3;
+			 m_b_wt: 90;
+			 m_m_wt: 6;
+			 f_b_ht: 39;
+			 f_m_ht: 3;
+			 f_b_wt: 75;
+			 f_m_wt: 3;
+			 b_exp: 1.25;
+			 b_dis: 10;
+			 srh: 6;
+			 stl: 3;
+			 fos: -3;
+			 bth: -8;
+			 bthb: 12;
+			 bsav: 12;
+			 bhitdie: 7;
+//			 infra: 3;
+			 infra: 6;
+			 tclass: $0F {00001111}),
+			(trace: 'Dwarf';
+			 str_adj: 2;
+			 int_adj: -3;
+			 wis_adj: 1;
+			 dex_adj: -2;
+			 con_adj: 2;
+			 chr_adj: -3;
+			 b_age: 35;
+			 m_age: 15;
+			 m_b_ht: 48;
+			 m_m_ht: 3;
+			 m_b_wt: 150;
+			 m_m_wt: 10;
+			 f_b_ht: 46;
+			 f_m_ht: 3;
+			 f_b_wt: 120;
+			 f_m_wt: 10;
+			 b_exp: 1.20;
+			 b_dis: 2;
+			 srh: 7;
+			 stl: 0;
+			 fos: 0;
+			 bth: 15;
+			 bthb: 0;
+			 bsav: 9;
+			 bhitdie: 9;
+//			 infra: 5;
+			 infra: 10;
+			 tclass: $05 {00000101}),
+			(trace: 'Half-Orc';
+			 str_adj: 2;
+			 int_adj: -1;
+			 wis_adj: 0;
+			 dex_adj: 0;
+			 con_adj: 1;
+			 chr_adj: -4;
+			 b_age: 11;
+			 m_age: 4;
+			 m_b_ht: 66;
+			 m_m_ht: 1;
+			 m_b_wt: 150;
+			 m_m_wt: 5;
+			 f_b_ht: 62;
+			 f_m_ht: 1;
+			 f_b_wt: 120;
+			 f_m_wt: 5;
+			 b_exp: 1.10;
+			 b_dis: -3;
+			 srh: 0;
+			 stl: -1;
+			 fos: 3;
+			 bth: 12;
+			 bthb: -5;
+			 bsav: -3;
+			 bhitdie: 10;
+//			 infra: 3;
+			 infra: 6;
+			 tclass: $0D {00001101}),
+			(trace: 'Half-Troll';
+			 str_adj: 4;
+			 int_adj: -4;
+			 wis_adj: -2;
+			 dex_adj: -4;
+			 con_adj: 3;
+			 chr_adj: -6;
+			 b_age: 20;
+			 m_age: 10;
+			 m_b_ht: 96;
+			 m_m_ht: 10;
+			 m_b_wt: 300;
+			 m_m_wt: 50;
+			 f_b_ht: 84;
+			 f_m_ht: 8;
+			 f_b_wt: 260;
+			 f_m_wt: 40;
+			 b_exp: 1.20;
+			 b_dis: -5;
+			 srh: -1;
+			 stl: -2;
+			 fos: 5;
+			 bth: 20;
+			 bthb: -10;
+			 bsav: -8;
+			 bhitdie: 12;
+//			 infra: 3;
+			 infra: 6;
+			 tclass: $05 {00000101}));
+
+{ Background information }
+	background : {[psect(create$data)]} array [1..MAX_BACKGROUND] of background_type = (
+			(info: 'You are the illegitimate and unacknowledged child '; roll: 10; chart: 1; next: 2; bonus: -25),
+			(info: 'You are the illegitimate but acknowledged child '; roll: 20; chart: 1; next: 2; bonus: -15),
+			(info: 'You are one of several children '; roll: 95; chart: 1; next: 2; bonus: -5),
+			(info: 'You are the 1st born child '; roll: 100; chart: 1; next: 2; bonus: 0),
+			(info: 'of a Serf.  '; roll: 40; chart: 2; next: 3; bonus: 15),
+			(info: 'of a Yeoman.  '; roll: 65; chart: 2; next: 3; bonus: 30),
+			(info: 'of a Townsman.  '; roll: 80; chart: 2; next: 3; bonus: 40),
+			(info: 'of a Guildsman.  '; roll: 90; chart: 2; next: 3; bonus: 55),
+			(info: 'of a Landed Knight.  '; roll: 96; chart: 2; next: 3; bonus: 70),
+			(info: 'of a Titled Noble.  '; roll: 99; chart: 2; next: 3; bonus: 80),
+			(info: 'of a Royal Blood Line.  '; roll: 100; chart: 2; next: 3; bonus: 90),
+			(info: 'You are the black sheep of the family.  '; roll: 20; chart: 3; next: 50; bonus:-30),
+			(info: 'You are a credit to the family.  '; roll: 80; chart: 3; next: 50; bonus: 5),
+			(info: 'You are a well liked child.  '; roll: 100; chart: 3; next: 50; bonus: 10),
+			(info: 'Your mother was a Woods-Elf.  '; roll: 40; chart: 4; next: 1; bonus: 0),
+			(info: 'Your father was a Woods-Elf.  '; roll: 75; chart: 4; next: 1; bonus: 5),
+			(info: 'Your mother was a Grey-Elf.  '; roll: 90; chart: 4; next: 1; bonus: 5),
+			(info: 'Your father was a Grey-Elf.  '; roll: 95; chart: 4; next: 1; bonus: 10),
+			(info: 'Your mother was a High-Elf.  '; roll: 98; chart: 4; next: 1; bonus: 15),
+			(info: 'Your father was a High-Elf.  '; roll: 100; chart: 4; next: 1; bonus: 20),
+			(info: 'You are one of several children '; roll: 60; chart: 7; next: 8; bonus: 0),
+			(info: 'You are the only child '; roll: 100; chart: 7; next: 8; bonus: 5),
+			(info: 'of a Woods-Elf '; roll: 75; chart: 8; next: 9; bonus: 0),
+			(info: 'of a Grey-Elf '; roll: 95; chart: 8; next: 9; bonus: 5),
+			(info: 'of a High-Elf '; roll: 100; chart: 8; next: 9; bonus: 10),
+			(info: 'Ranger.  '; roll: 40; chart: 9; next: 54; bonus: 30),
+			(info: 'Archer.  '; roll: 70; chart: 9; next: 54; bonus: 40),
+			(info: 'Warrior.  '; roll: 87; chart: 9; next: 54; bonus: 60),
+			(info: 'Mage.  '; roll: 95; chart: 9; next: 54; bonus: 75),
+			(info: 'Prince.  '; roll: 99; chart: 9; next: 54; bonus: 90),
+			(info: 'King.  '; roll: 100; chart: 9; next: 54; bonus: 95),
+			(info: 'You are one of several children of a Halfling '; roll: 85; chart: 10; next: 11; bonus: -5),
+			(info: 'You are the only child of a Halfling '; roll: 100; chart: 10; next: 11; bonus: 5),
+			(info: 'Gardener.  '; roll: 20; chart: 11; next: 3; bonus: 5),
+			(info: 'Tavern Owner.  '; roll: 30; chart: 11; next: 3; bonus: 30),
+			(info: 'Miller.  '; roll: 40; chart: 11; next: 3; bonus: 40),
+			(info: 'Home Owner.  '; roll: 50; chart: 11; next: 3; bonus: 50),
+			(info: 'Burglar.  '; roll: 80; chart: 11; next: 3; bonus: 60),
+			(info: 'Warrior.  '; roll: 95; chart: 11; next: 3; bonus: 65),
+			(info: 'Mage.  '; roll: 100; chart: 11; next: 3; bonus: 75),
+			(info: 'Clan Elder.  '; roll: 100; chart: 11; next: 3; bonus: 90),
+			(info: 'You are one of several children of a Gnome '; roll: 85; chart: 13; next: 14; bonus: -5),
+			(info: 'You are the only child of a Gnome '; roll: 100; chart: 13; next: 14; bonus: 5),
+			(info: 'Beggar.  '; roll: 20; chart: 14; next: 3; bonus: 5),
+			(info: 'Bragart.  '; roll: 50; chart: 14; next: 3; bonus: 20),
+			(info: 'Prankster.  '; roll: 75; chart: 14; next: 3; bonus: 35),
+			(info: 'Warrior.  '; roll: 95; chart: 14; next: 3; bonus: 50),
+			(info: 'Mage.  '; roll: 100; chart: 14; next: 3; bonus: 75),
+			(info: 'You are one of two children of a Dwarven '; roll: 25; chart: 16; next: 17; bonus: -10),
+			(info: 'You are the only child of a Dwarven '; roll: 100; chart: 16; next: 17; bonus: 0),
+			(info: 'Thief.  '; roll: 10; chart: 17; next: 18; bonus: 10),
+			(info: 'Prison Guard.  '; roll: 25; chart: 17; next: 18; bonus: 25),
+			(info: 'Miner.  '; roll: 75; chart: 17; next: 18; bonus: 40),
+			(info: 'Warrior.  '; roll: 90; chart: 17; next: 18; bonus: 60),
+			(info: 'Priest.  '; roll: 99; chart: 17; next: 18; bonus: 80),
+			(info: 'King.  '; roll: 100; chart: 17; next: 18; bonus: 100),
+			(info: 'You are the black sheep of the family.  '; roll: 15; chart: 18; next: 57; bonus: -40),
+			(info: 'You are a credit to the family.  '; roll: 85; chart: 18; next: 57; bonus: 0),
+			(info: 'You are a well liked child.  '; roll: 100; chart: 18; next: 57; bonus: 5),
+			(info: 'Your mother was an Orc, but it is unacknowledged. '; roll: 25; chart: 19; next: 20; bonus: -25),
+			(info: 'Your father was an Orc, but it is unacknowledged. '; roll: 100; chart: 19; next: 20; bonus: -25),
+			(info: 'You are the adopted child '; roll: 100; chart: 20; next: 2; bonus: 0),
+			(info: 'Your mother was a Cave-Troll '; roll: 30; chart: 22; next: 23; bonus: -30),
+			(info: 'Your father was a Cave-Troll '; roll: 60; chart: 22; next: 23; bonus: -25),
+			(info: 'Your mother was a Hill-Troll '; roll: 75; chart: 22; next: 23; bonus: -20),
+			(info: 'Your father was a Hill-Troll '; roll: 90; chart: 22; next: 23; bonus: -15),
+			(info: 'Your mother was a Water-Troll '; roll: 95; chart: 22; next: 23; bonus: -10),
+			(info: 'Your father was a Water-Troll '; roll: 100; chart: 22; next: 23; bonus: -5),
+			(info: 'Cook.  '; roll: 5; chart: 23; next: 62; bonus: 10),
+			(info: 'Warrior.  '; roll: 95; chart: 23; next: 62; bonus: 5),
+			(info: 'Shaman.  '; roll: 99; chart: 23; next: 62; bonus: 15),
+			(info: 'Clan Chief.  '; roll: 100; chart: 23; next: 62; bonus: 30),
+			(info: 'You have dark brown eyes, '; roll: 20; chart: 50; next: 51; bonus: 0),
+			(info: 'You have brown eyes, '; roll: 60; chart: 50; next: 51; bonus: 0),
+			(info: 'You have hazel eyes, '; roll: 70; chart: 50; next: 51; bonus: 0),
+			(info: 'You have green eyes, '; roll: 80; chart: 50; next: 51; bonus: 0),
+			(info: 'You have blue eyes, '; roll: 90; chart: 50; next: 51; bonus: 0),
+			(info: 'You have blue-gray eyes, '; roll: 100; chart: 50; next: 51; bonus: 0),
+			(info: 'straight '; roll: 70; chart: 51; next: 52; bonus: 0),
+			(info: 'wavey '; roll: 90; chart: 51; next: 52; bonus: 0),
+			(info: 'curly '; roll: 100; chart: 51; next: 52; bonus: 0),
+			(info: 'black hair, '; roll: 30; chart: 52; next: 53; bonus: 0),
+			(info: 'brown hair, '; roll: 70; chart: 52; next: 53; bonus: 0),
+			(info: 'auburn hair, '; roll: 80; chart: 52; next: 53; bonus: 0),
+			(info: 'red hair, '; roll: 90; chart: 52; next: 53; bonus: 0),
+			(info: 'blonde hair, '; roll: 100; chart: 52; next: 53; bonus: 0),
+			(info: 'and a very dark complexion.'; roll: 10; chart: 53; next: -1; bonus: 0),
+			(info: 'and a dark complexion.'; roll: 30; chart: 53; next: -1; bonus: 0),
+			(info: 'and an average complexion.'; roll: 80; chart: 53; next: -1; bonus: 0),
+			(info: 'and a fair complexion.'; roll: 90; chart: 53; next: -1; bonus: 0),
+			(info: 'and a very fair complexion.'; roll: 100; chart: 53; next: -1; bonus: 0),
+			(info: 'You have light grey eyes, '; roll: 85; chart: 54; next: 55; bonus: 0),
+			(info: 'You have light blue eyes, '; roll: 95; chart: 54; next: 55; bonus: 0),
+			(info: 'You have light green eyes, '; roll: 100; chart: 54; next: 55; bonus: 0),
+			(info: 'straight '; roll: 75; chart: 55; next: 56; bonus: 0),
+			(info: 'wavey '; roll: 100; chart: 55; next: 56; bonus: 0),
+			(info: 'black hair, and a fair complexion.'; roll: 75; chart: 56; next: -1; bonus: 0),
+			(info: 'brown hair, and a fair complexion.'; roll: 85; chart: 56; next: -1; bonus: 0),
+			(info: 'blonde hair, and a fair complexion.'; roll: 95; chart: 56; next: -1; bonus: 0),
+			(info: 'silver hair, and a fair complexion.'; roll: 100; chart: 56; next: -1; bonus: 0),
+			(info: 'You have dark brown eyes, '; roll: 99; chart: 57; next: 58; bonus: 0),
+			(info: 'You have glowing red eyes, '; roll: 100; chart: 57; next: 58; bonus: 10),
+			(info: 'straight '; roll: 90; chart: 58; next: 59; bonus: 0),
+			(info: 'wavey '; roll: 100; chart: 58; next: 59; bonus: 0),
+			(info: 'black hair, '; roll: 75; chart: 59; next: 60; bonus: 0),
+			(info: 'brown hair, '; roll: 100; chart: 59; next: 60; bonus: 0),
+			(info: 'a one foot beard, '; roll: 25; chart: 60; next: 61; bonus: 0),
+			(info: 'a two foot beard, '; roll: 60; chart: 60; next: 61; bonus: 1),
+			(info: 'a three foot beard, '; roll: 90; chart: 60; next: 61; bonus: 3),
+			(info: 'a four foot beard, '; roll: 100; chart: 60; next: 61; bonus: 5),
+			(info: 'and a dark complexion.'; roll: 100; chart: 61; next: -1; bonus: 0),
+			(info: 'You have slime green eyes, '; roll: 60; chart: 62; next: 63; bonus: 0),
+			(info: 'You have puke yellow eyes, '; roll: 85; chart: 62; next: 63; bonus: 0),
+			(info: 'You have blue-bloodshot eyes, '; roll: 99; chart: 62; next: 63; bonus: 0),
+			(info: 'You have glowing red eyes, '; roll: 100; chart: 62; next: 63; bonus: 5),
+			(info: 'dirty '; roll: 33; chart: 63; next: 64; bonus: 0),
+			(info: 'mangy '; roll: 66; chart: 63; next: 64; bonus: 0),
+			(info: 'oily '; roll: 100; chart: 63; next: 64; bonus: 0),
+			(info: 'sea-weed green hair, '; roll: 33; chart: 64; next: 65; bonus: 0),
+			(info: 'bright red hair, '; roll: 66; chart: 64; next: 65; bonus: 0),
+			(info: 'dark purple hair, '; roll: 100; chart: 64; next: 65; bonus: 0),
+			(info: 'and green '; roll: 25; chart: 65; next: 66; bonus: 0),
+			(info: 'and blue '; roll: 50; chart: 65; next: 66; bonus: 0),
+			(info: 'and white '; roll: 75; chart: 65; next: 66; bonus: 0),
+			(info: 'and black '; roll: 100; chart: 65; next: 66; bonus: 0),
+			(info: 'ulcerous skin.'; roll: 33; chart: 66; next: -1; bonus: 0),
+			(info: 'scabby skin.'; roll: 66; chart: 66; next: -1; bonus: 0),
+			(info: 'leprous skin.'; roll: 100; chart: 66; next: -1; bonus: 0));
+
+{ Buying and selling adjustments for character race VS store owner race }
+	rgold_adj : {[psect(store$data)]} array [1..MAX_RACES] of array [1..MAX_RACES] of real = (
+{Human      }  ( 0.00, 0.05, 0.05, 0.10, 0.13, 0.15, 0.20, 0.25),
+{Half-Elf   }  ( 0.10, 0.00, 0.00, 0.05, 0.10, 0.20, 0.25, 0.30),
+{Elf        }  ( 0.10, 0.05, 0.00, 0.05, 0.10, 0.20, 0.25, 0.30),
+{Halfling   }  ( 0.15, 0.10, 0.05,-0.05, 0.05, 0.10, 0.15, 0.30),
+{Gnome      }  ( 0.15, 0.15, 0.10, 0.05,-0.05, 0.10, 0.15, 0.30),
+{Dwarf      }  ( 0.15, 0.20, 0.20, 0.10, 0.10,-0.05, 0.25, 0.35),
+{Half-Orc   }  ( 0.15, 0.20, 0.25, 0.15, 0.15, 0.30, 0.10, 0.15),
+{Half-Troll }  ( 0.10, 0.15, 0.15, 0.10, 0.10, 0.30, 0.10, 0.10));
+
+//	Classes
+	class_ : {[psect(create$data)]} array [1..MAX_CLASS] of class_type = (
+			(title: 'Warrior';
+			 m_exp: 0.00;
+			 adj_hd: 18;
+			 mdis: 20;
+			 msrh: 12;
+			 mstl: 1;
+			 mfos: 40;
+			 mbth: 65;
+			 mbthb: 50;
+			 msav: 20;
+			 madj_str: 4;
+			 madj_int: -1;
+			 madj_wis: -1;
+			 madj_dex: 1;
+			 madj_con: 2;
+			 madj_chr: -1;
+			 pspell: False;
+			 mspell: False;
+			 espell: False;
+			 espell_type: 0;
+			 espell_book: 0),
+			(title: 'Mage';
+			 m_exp: 0.30;
+			 adj_hd: 2;
+			 mdis: 30;
+			 msrh: 15;
+			 mstl: 2;
+			 mfos: 35;
+			 mbth: 35;
+			 mbthb: 25;
+			 msav: 30;
+			 madj_str: -4;
+			 madj_int: 2;
+			 madj_wis: 0;
+			 madj_dex: 1;
+			 madj_con: -2;
+			 madj_chr: 0;
+			 pspell: False;
+			 mspell: True;
+			 espell: False;
+			 espell_type: 0;
+			 espell_book: 0),
+			(title: 'Priest';
+			 m_exp: 0.10;
+			 adj_hd: 4;
+			 mdis: 25;
+			 msrh: 15;
+			 mstl: 2;
+			 mfos: 35;
+			 mbth: 50;
+			 mbthb: 40;
+			 msav: 30;
+			 madj_str: 0;
+			 madj_int: -1;
+			 madj_wis: 2;
+			 madj_dex: -1;
+			 madj_con: 1;
+			 madj_chr: 1;
+			 pspell: True;
+			 mspell: False;
+			 espell: False;
+			 espell_type: 0;
+			 espell_book: 0),
+			(title: 'Rogue';
+			 m_exp: 0.00;
+			 adj_hd: 6;
+			 mdis: 45;
+			 msrh: 30;
+			 mstl: 4;
+			 mfos: 18;
+			 mbth: 60;
+			 mbthb: 65;
+			 msav: 25;
+			 madj_str: 2;
+			 madj_int: 1;
+			 madj_wis: -1;
+			 madj_dex: 3;
+			 madj_con: 1;
+			 madj_chr: -1;
+			 pspell: False;
+			 mspell: False;
+			 espell: False;
+			 espell_type: 0;
+			 espell_book: 0),
+			(title: 'Ranger';
+			 m_exp: 0.40;
+			 adj_hd: 4;
+			 mdis: 30;
+			 msrh: 20;
+			 mstl: 3;
+			 mfos: 25;
+			 mbth: 55;
+			 mbthb: 70;
+			 msav: 25;
+			 madj_str: 1;
+			 madj_int: 1;
+			 madj_wis: 0;
+			 madj_dex: 1;
+			 madj_con: 1;
+			 madj_chr: 1;
+			 pspell: False;
+			 mspell: True;
+			 espell: False;
+			 espell_type: 0;
+			 espell_book: 0),
+			(title: 'Paladin';
+			 m_exp: 0.35;
+			 adj_hd: 6;
+			 mdis: 15;
+			 msrh: 12;
+			 mstl: 1;
+			 mfos: 40;
+			 mbth: 65;
+			 mbthb: 45;
+			 msav: 20;
+			 madj_str: 2;
+			 madj_int: -1;
+			 madj_wis: 1;
+			 madj_dex: 0;
+			 madj_con: 1;
+			 madj_chr: 2;
+			 pspell: True;
+			 mspell: False;
+			 espell: False;
+			 espell_type: 0;
+			 espell_book: 0),
+			(title: 'Consultant';
+			 m_exp: 0.00;
+			 adj_hd: 8;
+			 mdis: 20;
+			 msrh: 12;
+			 mstl: 1;
+			 mfos: 40;
+			 mbth: 65;
+			 mbthb: 50;
+			 msav: 20;
+			 madj_str: 4;
+			 madj_int: -1;
+			 madj_wis: -1;
+			 madj_dex: 1;
+			 madj_con: 2;
+			 madj_chr: -1;
+			 pspell: False;
+			 mspell: False;
+			 espell: True;
+			 espell_type: 1;
+			 espell_book: 92),
+			(title: 'Consultant2';
+			 m_exp: 0.00;
+			 adj_hd: 8;
+			 mdis: 20;
+			 msrh: 12;
+			 mstl: 1;
+			 mfos: 40;
+			 mbth: 65;
+			 mbthb: 50;
+			 msav: 20;
+			 madj_str: 4;
+			 madj_int: -1;
+			 madj_wis: -1;
+			 madj_dex: 1;
+			 madj_con: 2;
+			 madj_chr: -1;
+			 pspell: False;
+			 mspell: False;
+			 espell: True;
+			 espell_type: 2;
+			 espell_book: 93));
+
+{ For Create Food spell use... }
+	mush : {[psect(setup$data)]} treasure_type = (
+			name: '& Pint~ of Fine Grade Mush';
+			tval: 80;
+			tchar: ',';
+			flags: $00000000;
+//dengland	Change this from 1500
+			p1: 3000;
+			cost: 0;
+			subval: 308;
+			weight: 1;
+			number: 1;
+			tohit: 0;
+			todam: 0;
+			ac: 0;
+			toac: 0;
+			damage: '1d1';
+			level: 1);
+
+{ Each type of character starts out with a few provisions...
+  NOTE: the the entries refer to array elements of INVENTORY_INIT array}
+
+	player_init : {[psect(create$data)]} array [1..MAX_CLASS] of array [1..9] of byteint = (
+//dengland	Greatly modified
+			(1,104, 42,10,79,98, 38, 44,58),{ Warrior }
+			(1,104, 42, 7,79,98, 67,101,58),{ Mage    }
+			(1,104, 42,14,79,98, 38, 71,58),{ Priest  }
+			(1,104,101,10,79,98, 34, 43,58),{ Rogue   }
+			(1,104, 34,20,79,98, 67, 23,58),{ Ranger  }
+			(1,104, 38, 9,79,98, 71, 43,58),{ Paladin }
+			(1,104, 42, 7,79,98,106, 43,58),{ Consultant }
+			(1,104, 42, 7,79,98,106, 43,58));{ Consultant }
+
+	{ Following are store definitions   }
+
+{ Store owners have different characteristics for pricing and haggling
+  Note: Store owners should be added in groups,one for each store }
+	owners : {[psect(store$data)]} array [1..MAX_OWNERS] of owner_type = (
+			(owner_name: 'Erick the Honest       (Human)      General Store';
+					max_cost: 250; max_inflate: 0.75; min_inflate: 0.08;
+					haggle_per: 0.04; owner_race:  1; insult_max: 12),
+			(owner_name: 'Mauglin the Grumpy     (Dwarf)      Armory';
+					max_cost: 32000; max_inflate: 1; min_inflate: 0.12;
+					haggle_per: 0.04; owner_race:  6; insult_max: 5),
+			(owner_name: 'Arndal Beast-Slayer    (Half-Elf)   Weaponsmith';
+					max_cost: 10000; max_inflate: 0.85; min_inflate: 0.1;
+					haggle_per: 0.05; owner_race:  2; insult_max: 8),
+			(owner_name: 'Hardblow the Humble    (Human)      Temple';
+					max_cost: 3500; max_inflate: 0.75; min_inflate: 0.09;
+					haggle_per: 0.06; owner_race:  1; insult_max: 15),
+			(owner_name: 'Ga-nat the Greedy      (Gnome)      Alchemist';
+					max_cost: 12000; max_inflate: 1.2; min_inflate: 0.15;
+					haggle_per: 0.04; owner_race:  5; insult_max: 9),
+			(owner_name: 'Valeria Starshine      (Elf)        Magic Shop';
+					max_cost: 32000; max_inflate: 0.75; min_inflate: 0.1;
+					haggle_per: 0.05; owner_race:  3; insult_max: 11),
+			(owner_name: 'Ugluk the Ugly         (Orc)        Black Market';
+					max_cost: 10000000; max_inflate: 2.5; min_inflate: 1.5;
+					haggle_per: 0.01; owner_race:  7; insult_max: 6),
+			(owner_name: 'Andy the Friendly      (Halfling)   General Store';
+					max_cost: 200; max_inflate: 0.7; min_inflate: 0.08;
+					haggle_per: 0.05; owner_race:  4; insult_max: 15),
+			(owner_name: 'Darg-Low the Grim      (Human)      Armory';
+					max_cost: 10000; max_inflate: 0.9; min_inflate: 0.11;
+					haggle_per: 0.04; owner_race:  1; insult_max: 9),
+			(owner_name: 'Oglign Dragon-Slayer   (Dwarf)      Weaponsmith';
+					max_cost: 32000; max_inflate: 0.95; min_inflate: 0.12;
+					haggle_per: 0.04; owner_race:  6; insult_max: 8),
+			(owner_name: 'Gunnar the Paladin     (Human)      Temple';
+					max_cost: 5000; max_inflate: 0.85; min_inflate: 0.1;
+					haggle_per: 0.05; owner_race:  1; insult_max: 23),
+			(owner_name: 'Mauser the Chemist     (Half-Elf)   Alchemist';
+					max_cost: 10000; max_inflate: 0.9; min_inflate: 0.11;
+					haggle_per: 0.05; owner_race:  2; insult_max: 8),
+			(owner_name: 'Gopher the Great!      (Gnome)      Magic Shop';
+					max_cost: 20000; max_inflate: 1.15; min_inflate: 0.13;
+					haggle_per: 0.06; owner_race:  5; insult_max: 10),
+			(owner_name: 'Gloin the Fierce       (Dwarf)      Black Market';
+					max_cost: 20000000; max_inflate: 2.5; min_inflate: 1.5;
+					haggle_per: 0.01; owner_race:  6; insult_max: 4),
+			(owner_name: 'Lyar-el the Comely     (Elf)        General Store';
+					max_cost: 300; max_inflate: 0.65; min_inflate: 0.07;
+					haggle_per: 0.06; owner_race:  3; insult_max: 18),
+			(owner_name: 'Mauglim the Horrible   (Half-Orc)   Armory';
+					max_cost: 3000; max_inflate: 1; min_inflate: 0.13;
+					haggle_per: 0.05; owner_race:  7; insult_max: 9),
+			(owner_name: 'Ithyl-Mak the Beastly  (Half-Troll) Weaponsmith';
+					max_cost: 3000; max_inflate: 1.1; min_inflate: 0.15;
+					haggle_per: 0.06; owner_race:  8; insult_max: 8),
+			(owner_name: 'Delihla the Pure       (Half-Elf)   Temple';
+					max_cost: 25000; max_inflate: 0.8; min_inflate: 0.07;
+					haggle_per: 0.06; owner_race:  2; insult_max: 20),
+			(owner_name: 'Wizzle the Chaotic     (Halfling)   Alchemist';
+					max_cost: 10000; max_inflate: 0.9; min_inflate: 0.1;
+					haggle_per: 0.06; owner_race:  4; insult_max: 8),
+			(owner_name: 'Inglorian the Mage     (Human?)     Magic Shop';
+					max_cost: 32000; max_inflate: 1; min_inflate: 0.1;
+					haggle_per: 0.07; owner_race:  1; insult_max: 10),
+			(owner_name: 'Grima Wormtongue       (Human?)     Black Market';
+					max_cost: 15000000; max_inflate: 2.5; min_inflate: 1.5;
+					haggle_per: 0.01; owner_race:  1; insult_max: 5));
+
+	store_door : {[psect(generate$data)]} array [1..MAX_STORES] of treasure_type = (
+			(name: 'The entrance to the General Store';
+					tval: 110; tchar: 'G'; flags: $00000000; p1: 0; cost: 0;
+					subval: 101; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0),
+			(name: 'The entrance to the Armory';
+					tval: 110; tchar: 'A'; flags: $00000000; p1: 0; cost: 0;
+					subval: 102; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0),
+			(name: 'The entrance to the Weapon Smiths';
+					tval: 110; tchar: 'W'; flags: $00000000; p1: 0; cost: 0;
+					subval: 103; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0),
+			(name: 'The entrance to the Temple';
+					tval: 110; tchar: 'T'; flags: $00000000; p1: 0; cost: 0;
+					subval: 104; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0),
+			(name: 'The entrance to the Alchemy Shop';
+					tval: 110; tchar: 'P'; flags: $00000000; p1: 0; cost: 0;
+					subval: 105; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0),
+			(name: 'The entrance to the Magic Shop';
+					tval: 110; tchar: 'M'; flags: $00000000; p1: 0; cost: 0;
+					subval: 106; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0),
+			(name: 'The entrance to the Black Market';
+					tval: 110; tchar: 'K'; flags: $00000000; p1: 0; cost: 0;
+					subval: 107; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 1));
+//fixme Add this once the bank is ready
+//			(name: 'The entrance to the Bank';
+//					tval: 110; tchar: 'B'; flags: $00000000; p1: 0; cost: 0;
+//					subval: 108; weight: 0; number: 0; tohit: 0; todam: 0;
+//					ac: 0; toac: 0; damage: '0d0'; level: 1));
+
+	store_choice : {[psect(store$data)]} array [1..MAX_STORES] of array[1..STORE_CHOICES] of integer = (
+			{ General Store }
+			(105,104,103,102,102,104,42,105,104,27,26,5,4,3,3,2,2,2,1,1,1,1,1,1,1,1),
+			{ Armory }
+			(30,31,32,33,34,35,36,37,38,39,40,41,43,44,45,46,47,30,33,34,43,44,28,29,30,31),
+			{ Weaponsmith }
+			( 6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,6,7,23,25,23,25),
+			{ Temple }
+			(71,72,73,74,59,59,77,79,80,81,84,85,13,14,15,96,97,98,100,79,79,80,80,81,72,98),
+			{ Alchemy shop }
+			(55,56,57,58,58,60,61,62,63,64,65,66,75,76,78,82,83,60,61,62,63,64,98,99,98,98),
+			{ Magic-User store}
+			(67,49,50,51,52,53,54,48,68,
+			69,69,70,86,87,88,89,90,91,92,93,94,95,86,101,68,88),
+			{Black Market}
+			(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1));
+
+{ Each store will buy only certain items,based on TVAL }
+	store_buy : {[psect(store$data)]} array [1..MAX_STORES] of obj_set = (
+			[25,30,32,80,77,15,13],
+			[30,31,33,34,35,36],
+			[10,11,12,20,21,22,23],
+			[21,70,71,75,76,91],
+			[70,71,75,76],
+			[40,45,55,65,70,71,75,76,90],
+			[11,12,20,21,22,23,30,31,32,33,34,35,40,45,55,60,65,70,71,75,76,90,91,92]);
+
+{ Gold list (All types of gold and gems are defined here) }
+	gold_list : {[psect(moria$data)]} array [1..MAX_GOLD] of treasure_type = (
+			(name: 'copper';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 3;
+					subval: 1; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'copper';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 4;
+					subval: 2; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'copper';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 5;
+					subval: 3; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'silver';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 6;
+					subval: 4; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'silver';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 8;
+					subval: 5; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'silver';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 10;
+					subval: 6; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'garnets';
+					tval: 100; tchar: '*'; flags: $00000000; p1: 0; cost: 11;
+					subval: 7; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'garnets';
+					tval: 100; tchar: '*'; flags: $00000000; p1: 0; cost: 12;
+					subval: 8; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'gold';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 14;
+					subval: 9; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'gold';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 16;
+					subval: 0; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'gold';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 18;
+					subval: 1; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'opals';
+					tval: 100; tchar: '*'; flags: $00000000; p1: 0; cost: 20;
+					subval: 2; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'saphires';
+					tval: 100; tchar: '*'; flags: $00000000; p1: 0; cost: 24;
+					subval: 3; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'gold';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 28;
+					subval: 4; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'rubies';
+					tval: 100; tchar: '*'; flags: $00000000; p1: 0; cost: 35;
+					subval: 5; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'diamonds';
+					tval: 100; tchar: '*'; flags: $00000000; p1: 0; cost: 40;
+					subval: 6; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'emeralds';
+					tval: 100; tchar: '*'; flags: $00000000; p1: 0; cost: 70;
+					subval: 7; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1),
+			(name: 'mithril';
+					tval: 100; tchar: '$'; flags: $00000000; p1: 0; cost: 140;
+					subval: 8; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 1));
+
+	blank_treasure : {[psect(moria$data)]} treasure_type = (
+			name: ' ';
+					tval: 0; tchar: ' '; flags: 0; p1: 0; cost: 0;
+					subval: 0; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: ' '; level: 0);
+
+	{ Following are feature objects defined for dungeon }
+
+{ Traps are just Nasty treasures... }
+	trap_lista : {[psect(generate$data)]} array [1..MAX_TRAPA] of treasure_type = (
+			(name: 'an open pit';
+					tval: 102; tchar: ' '; flags: $00000000; p1: 0; cost: 0;
+					subval: 1; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d6'; level: -50),
+			(name: 'an arrow trap';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 2; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d8'; level: 0),
+			(name: 'a covered pit';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 3; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d6'; level: 0),
+			(name: 'a trap door';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 4; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d8'; level: 0),
+			(name: 'a gas trap ';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 5; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d4'; level: 0),
+			(name: 'a loose rock ';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 6; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0),
+			(name: 'a dart trap';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 7; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d4'; level: 0),
+			(name: 'a strange rune';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 8; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0),
+			(name: 'some loose rock ';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 9; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d6'; level: 0),
+			(name: 'a gas trap ';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 10; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d4'; level: 0),
+			(name: 'a strange rune';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 11; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0),
+			(name: 'a blackened spot';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 12; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '4d6'; level: 0),
+			(name: 'some corroded rock';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 13; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '4d6'; level: 0),
+			(name: 'a gas trap';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 0; cost: 0;
+					subval: 14; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d6'; level: 0),
+			(name: 'a gas trap';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 5; cost: 0;
+					subval: 15; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d4'; level: 10),
+			(name: 'a bomb';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 5; cost: 0;
+					subval: 16; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '10d6'; level: 5),
+			(name: 'a dart trap';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 5; cost: 0;
+					subval: 17; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d8'; level: 10),
+			(name: 'a dart trap';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 5; cost: 0;
+					subval: 18; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d8'; level: 10),
+			(name: 'a teleport trap';
+					tval: 101; tchar: '.'; flags: $00000000; p1: 5; cost: 0;
+					subval: 20; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 10));
+
+{ Traps: Level represents the difficulty of disarming;
+		 and P1 represents the experienced gained when disarmed}
+	trap_listb : {[psect(generate$data)]} array [1..MAX_TRAPB] of treasure_type = (
+			(name: 'an open pit';
+					tval: 102; tchar: ' '; flags: $00000000; p1: 1; cost: 0;
+					subval: 1; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d6'; level: -50),
+			(name: 'an arrow trap';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 3; cost: 0;
+					subval: 2; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d8'; level: -10),
+			(name: 'a covered pit';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 2; cost: 0;
+					subval: 3; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d6'; level: -40),
+			(name: 'a trap door';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 5; cost: 0;
+					subval: 4; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d8'; level: -25),
+			(name: 'a gas trap ';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 3; cost: 0;
+					subval: 5; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d4'; level: 5),
+			(name: 'a loose rock ';
+					tval: 102; tchar: ';'; flags: $00000000; p1: 0; cost: 0;
+					subval: 6; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: -90),
+			(name: 'a dart trap';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 5; cost: 0;
+					subval: 7; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d4'; level: 10),
+			(name: 'a strange rune';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 5; cost: 0;
+					subval: 8; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: -10),
+			(name: 'some loose rock ';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 5; cost: 0;
+					subval: 9; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d6'; level: -10),
+			(name: 'a gas trap';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 10; cost: 0;
+					subval: 10; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d4'; level: 5),
+			(name: 'a strange rune ';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 5; cost: 0;
+					subval: 11; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: -10),
+			(name: 'a blackened spot';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 10; cost: 0;
+					subval: 12; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '4d6'; level: 10),
+			(name: 'some shattered rock';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 10; cost: 0;
+					subval: 13; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '4d6'; level: 10),
+			(name: 'a gas trap';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 5; cost: 0;
+					subval: 14; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '2d6'; level: 5),
+			(name: 'a gas trap';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 5; cost: 0;
+					subval: 15; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d4'; level: 10),
+			(name: 'a bomb';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 25; cost: 0;
+					subval: 16; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '10d6'; level: 25),
+			(name: 'a dart trap';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 5; cost: 0;
+					subval: 17; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d8'; level: 10),
+			(name: 'a dart trap';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 5; cost: 0;
+					subval: 18; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d8'; level: 10),
+{ SPECIAL CASE,see DOOR_LIST below (SUBVALS MUST AGREE) }
+			(name: 'a closed door';
+					tval: 105; tchar: '+'; flags: $00000000; p1: 0; cost: 0;
+					subval: 19; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d1'; level: 0),
+			(name: 'a teleport trap';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 0; cost: 0;
+					subval: 20; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 50));
+
+	blk_mkt_trap : {[psect(generate$data)]} treasure_type = ( {Black Market trap}
+			name: 'a Black Market Store';
+					tval: 111; tchar: 'B'; flags: $00000000; p1: 5; cost: 0;
+					subval: 107; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d1'; level: 100);
+
+	scare_monster : {[psect(generate$data)]} treasure_type = ( {Special trap}
+			name: 'a strange rune';
+					tval: 102; tchar: '^'; flags: $00000000; p1: 0; cost: 0;
+					subval: 99; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: -90);
+
+	rubble : {[psect(generate$data)]} treasure_type = (
+			name: 'some rubble';
+					tval: 103; tchar: ':'; flags: $00000000; p1: 0; cost: 0;
+					subval: 1; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '0d0'; level: 0);
+
+{ Secret door must have same subval as closed door in TRAP_LISTB.
+  See CHANGE_TRAP}
+	door_list : {[psect(generate$data)]} array [1..3] of treasure_type = (
+			(name: 'an open door';
+					tval: 104; tchar: ''''; flags: $00000000; p1: 0; cost: 0;
+					subval: 1; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d1'; level: 0),
+			(name: 'a closed door';
+					tval: 105; tchar: '+'; flags: $00000000; p1: 0; cost: 0;
+					subval: 19; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d1'; level: 0),
+			(name: 'a secret door';
+					tval: 109; tchar: '#'; flags: $00000000; p1: 0; cost: 0;
+					subval: 19; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d1'; level: 0));
+
+	up_stair : {[psect(generate$data)]} treasure_type = (
+			name: 'an up staircase ';
+					tval: 107; tchar: '<'; flags: $00000000; p1: 0; cost: 0;
+					subval: 1; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d1'; level: 0);
+
+	down_stair : {[psect(generate$data)]} treasure_type = (
+			name: 'a down staircase';
+					tval: 108; tchar: '>'; flags: $00000000; p1: 0; cost: 0;
+					subval: 1; weight: 0; number: 0; tohit: 0; todam: 0;
+					ac: 0; toac: 0; damage: '1d1'; level: 0);
+
+{ Used in DESC.INC for replacing the & in descriptions }
+	vowel_set : {[psect(moria$data)]} char_set =
+			['a','e','i','o','u','A','E','I','O','U'];
+
+	syllables : {[psect(setup$data)]} array [1..MAX_SYLLABLES] of dtype = (
+			'a','ab','ag','aks','ala','an','ankh','app','arg','arze',
+			'ash','aus','ban','bar','bat','bek','bie','bin','bit',
+			'bjor','blu','bot','bu','byt','comp','con','cos','cre',
+			'dalf','dan','den','doe','dok','eep','el','eng','er',
+			'ere','erk','esh','evs','fa','fid','for','fri','fu','gan',
+			'gar','glen','gop','gre','ha','he','hyd','i','ing','ion',
+			'ip','ish','it','ite','iv','jo','kho','kli','klis','la',
+			'lech','man','mar','me','mi','mic','mik','mon','mung',
+			'mur','nej','nelg','nep','ner','nes','nis','nih','nin',
+			'o','od','ood','org','orn','ox','oxy','pay','pet','ple',
+			'plu','po','pot','prok','re','rea','rhov','ri','ro','rog',
+			'rok','rol','sa','san','sat','see','sef','seh','shu',
+			'ski','sna','sne','snik','sno','so','sol','sri','sta',
+			'sun','ta','tab','tem','ther','ti','tox','trol','tue',
+			'turs','u','ulk','um','un','uni','ur','val','viv','vly',
+			'vom','wah','wed','werg','wex','whon','wun','x','yerg',
+			'yp','zun' );
+
+	ARR_FLG_INVENTVALS: array[TMoriaInvenType] of set of ByteInt = (
+//			Weapons
+			([20, 21, 22, 23, 25]),
+//			Armour
+			([30, 31, 32, 33, 34, 35, 36]),
+//			Accessories
+			([40, 45]),
+//			Ammunition
+			([10, 11, 12]),
+//			Devices
+			([55, 65]),
+//			Consumables
+			([70, 71, 75, 76, 80]),
+//			General
+			([]),
+//			Books
+			([90, 91]),
+//			Equiped
+			([]));
+
+	ARR_STR_INVENTYPE: array[TMoriaInvenType] of AnsiString = (
+			'1. Weapons    ', '2. Armour     ', '3. Accessories',
+			'4. Ammuntition', '5. Devices    ', '6. Consumables',
+			'7. General    ', '8. Books      ', 'Equipped      ');
+
+	ARR_FLG_INVENWEAR: array[TMoriaInvenWear] of set of ByteInt = (
+			[10, 11, 12, 20, 21, 22, 23, 25],
+			[33],
+			[40],
+			[35, 36],
+			[34],
+			[31],
+			[45],
+			[45],
+			[30],
+			[32],
+			[15],
+			[]);
+
+	ARR_STR_INVENWEAR: array[TMoriaInvenWear] of AnsiString = (
+			' You are wielding   : ',
+			' Worn on head       : ',
+			' Worn around neck   : ',
+			' Worn on body       : ',
+			' Worn on arm        : ',
+			' Worn on hands      : ',
+			' Worn on right hand : ',
+			' Worn on left hand  : ',
+			' Worn on feet       : ',
+			' Worn about body    : ',
+			' Light source       : ',
+			' Secondary weapon   : ');
+
+	ARR_FLG_INVTYPES: array[TMoriaInvenFunc] of TMoriaInvenTypes = (
+		[mitWeapons..mitBooks],
+		[mitWornWielding],
+		[mitWornWielding],
+		[mitWeapons..mitAmmunition, mitGeneral],
+		[mitWornWielding],
+		[mitWeapons..mitBooks]);
+
+	ARR_CLR_STATGRD: array[TMoriaStatGrade] of AnsiChar = (
+			COLR_BADSTA, COLR_NORMAL, COLR_PLSSTA);
+

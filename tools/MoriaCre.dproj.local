@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2012/10/11 18:25:30.000.288,=C:\Users\A1dministrator\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2012/10/11 18:26:17.000.807,C:\Coding\Projects\Moria\Moria5\tools\MoriaCreMainForm.pas=C:\Users\A1dministrator\Documents\RAD Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2012/10/11 18:26:17.000.807,C:\Coding\Projects\Moria\Moria5\tools\MoriaCreMainForm.dfm=C:\Users\A1dministrator\Documents\RAD Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2012/10/11 18:26:26.000.978,C:\Coding\Projects\Moria\Moria5\tools\MoriaCre.dproj=C:\Users\A1dministrator\Documents\RAD Studio\Projects\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

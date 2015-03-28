@@ -1,0 +1,195 @@
+﻿----------------------------------------------------------------------------
+                          M O R I A   5 . 0 2
+
+                  COPYRIGHT (c) Robert Alan Koeneke
+            Ported to Delphi/Free Pascal by Daniel England
+----------------------------------------------------------------------------
+
+Known Issues
+------------
+
+    - The lighting in lit rooms sometimes doesn't work correctly, producing a
+      banding like effect.  I'm investigating this issue.
+
+    - If the range on your light only partially intersects a lit room (from
+      outside), the room doesn't light completely when you enter it.
+
+    - There may be problems with displaying the map or placing the player on a
+      level due to incorrect max_panel_rows calculation.
+
+      *Update*  This issue should now be resolved.  If it does occur, the
+      code should be able to trap it, correct it and report the condition in
+      the error log.  This problem may have existed in the 5.01 original.
+
+
+Change Log
+----------
+
+29 MAR 2015 - 5.02.00.0099
+    - Uploading to Git.  As a note, I have attempted to contact Robert Koeneke
+      about publishing to GitHub but it seems he is either extraordinarily
+      difficult to reach or simply unreachable.  He was involved with an
+      Angband group but the address for him there seems to no longer work and
+      the group itself seems to have gone dormant.
+
+06 JAN 2014 - 5.02.00.0099
+    - This is not a release version.  Bug testing is still underway.  This
+      version is reported due to the complexity of the changes made.
+    - Created a class (TScrListView) to handle the display of lists/tables.
+    - Used the new list class to display the Top 20 list.
+    - Used the new list class to display the store lists.
+    - Changed the black market store entry marker from 'B' to 'K'.
+    - Coming to a town near you, a new "store".  Stay tuned.  This store is
+      shown on the town level but cannot be entered as yet.
+    - The game will sometimes generate a "tougher" version of a monster on a
+      level.  These "elite" monsters are now highlighted.
+    - "Innocent" creatures are now displayed with a cyan background instead of
+      a green background.
+    - Slight changes to the save file format.  Previous versions should
+      import with no issues.
+    - Rebuilt the inventory system (whew that was a big job).  The inventory
+      is now broken into nine (9) "sections" (what the code calls inventory
+      types) such as "Weapons", "Armour", "Ammuntion", "General" etc.  The
+      item count limit has been removed and you are now able to carry up to
+      your weight limit in items, reguardless of how many that is (up to
+      MAX_INT or end of memory).  Moved most of the inventory handling code into
+      a new file INVENTORY.INC.
+    - Used the new list class to display the inventory.
+    - Equipping items is no longer a free action.  Swapping between main and
+      secondary weapons is now a free action.
+    - Fixed a bug in the monster info command which would cause the game to
+      "hang" and prevent any monster info from being displayed.
+    - The death and win "graphics" are now in colour.  Woo.
+    - Fixed not updating maximum carry weight where strength changes.
+    - Don't pick up chests.
+    - Simplified door bashing messages (pressing space as well as a capital 'B'
+      for bashing was hard on the hands).  Its in line with tunnelling now.
+    - Removed superfluous DCC string handling IFDEFs and comments (the casts
+      seem to go through FPC fine and there is no need to flag them all the
+      time).
+    - Fixed quite a few range violation bugs.
+    - Fixed some strange problems when the terminal window was more than 80
+      characters wide or more than 25 characters high.
+    - Gold stolen by a creature is now dropped when they are killed (along with
+      any other gold or items they are meant to randomly generate).
+    - Thanks to Francesco Tortorici the messages are no longer in mixed capitals
+      (except for proper names and prefixes which will be fixed soon).
+    - The store "remembers" the last inventory tab you were on and returns you
+      there in certain situations.
+    - There are now shortcut keys for browsing the inventory tabs.
+    - You are now given a warning if you are on a terminal detected as having
+      problems when in sixteen colour mode.  The message is given once only if
+      you "skip" it.
+    - Added a user configuration screen where the screen colour mode can be
+      changed and tested.
+
+12 NOV 2012 - 5.01.01.0066
+    - Instead of Halt, raise an EAbort descendant and trap in main routine
+      (this allows clean-up).
+    - Space allows you to browse the shop contents, as well as b.
+    - Ensure certain item availability in some shops.
+
+11 NOV 2012 - 5.01.01.0063
+    - Add errorlog.log file and logging in certain routines.
+    - Add DEBUG section and ErrorLog flag to configuration file.
+    - Another attempt to resolve the max_panel_rows bug.
+    - Now critically hit sleeping creatures (and then they wake up if 
+      alive).
+    - Now show increased stats in cyan.
+
+09 NOV 2012 - 5.01.01.0054
+    - Include Michał's latest vision.inc (to fix light bleeding out of lit
+      rooms).
+
+08 NOV 2012 - 5.01.01.0053
+    - Fix crash dump save.
+
+07 NOV 2012 - 5.01.01.0052
+    - "Ball" effects include a delay while being shown so that they can be
+      seen (new terminals update too quickly otherwise).
+    - Began killing old code that was kept in comments.
+    - Now only use COLR_CREA_NORESP when creature is magically asleep, 
+      stunned or confused (instead of also when "idle").
+    - In update_mon local routine of the creature routine, creatures are 
+      always updated when the attack flag is False and they can be seen.
+    - Monsters now have a magically sleeping flag (csleep $8000) such that 
+      there is differentiation between an "idle" monster and a sleeping one.
+    - A number of updates to status messages (a lot of them and even some
+      typo fixes and colour corrections).
+    - Pressing an unknown key will no longer waste a turn.
+    - Make potions, scrolls and food stuffs identified (no longer say 
+      {unknown}) after consumption, when they don't actually do anything.
+    - Re-factoring in MISC.INC to move out some routines.
+    - Conjured food now has double the "refreshment" value.
+    - Fixed bug in Longsword's damage in inventory_init table?
+    - Gold should now be far more common in the dungeon.
+    - Magical weapons now must have at least +1 to damage (instead of +0 to 
+      hit and +0 to damage).
+
+06 NOV 2012 - 5.01.01.0040
+    - The characters now start with a much better range of equipment.
+    - Items now are marked {magic} for magical items and {unknown} for 
+      potions and the like that aren't identified.  This unfortunately 
+      seems to mean all items that aren't identified.
+    - Further work to resolve display bugs.  max_panel_rows and 
+      max_panel_cols are being set with the wrong values.  char_row and
+      char_col are also being set incorrectly.
+    - Implement a work-around and potential fix for the off-the-screen 
+      display bug.
+    - Create a new routine to handle crash dump for neatness.
+    - Move Intro routine into MAIN.INC.
+    - No longer use DateUtils unit (commented out unused routines).
+
+05 NOV 2012 - 5.01.01.0023
+    - Show top twenty after introduction.
+    - Tidy top twenty at death.
+    - Re-included the panel moving modification.
+    - Include Michał's updated FOV mod to allow seeing into lit rooms.
+
+02 NOV 2012 - 5.01.01.0019
+    - Now attempts to write player crash dump when an exception is raised.
+    - Source better organised into src folder.
+
+01 NOV 2012 - 5.01.01.0014
+    - Version screen now shows revision and build numbers as well as date.
+    - Now include revision and build numbers and build date.
+    - Character creation now shows all bonuses from race and class while 
+      rolling the stats and is done as a separate step.
+    - Character creation now allows going back to the previous step from
+      each step in the creation.
+
+30 OCT 2012 - 5.01.01.0001
+    - Backed out the panel moving modification for now.
+    - Added config setting for large cursor.
+    - Added config setting for screen mode.
+    - Added configuration file config.ini. 
+    - Re-factored the "main block" in Moria.dpr; added MAIN.INC.
+    - Added screen mode for B&W, 8 colour or 16 colour for compatibility.
+    - Added screen update control in several key routines.
+    - Standardised colours by using a modified CRT unit for 
+      Unix/Linux/Mac OSX (allow the use of AIX extensions).  Thank you to
+      Michał for showing me the ANSI escape codes.
+    - Changed the speed of the Duck creature so its not so deadly (the
+      humour has suffered a little but it was over the top and it appears 
+      very often).
+    - Standard rations make you full and elvish waybread very full.  This
+      will be worked on for the next release (for difficulty settings).
+    - Fixed a mana display bug causing the Ranger class to fail creation.
+
+    - There was a release here but it was retracted due to the next bug
+      (Ranger creation fail).
+    - Implement a screen wrapping class and crt descendant class.
+    - Fixed object naming and added better identification information
+    - All infravision has been doubled.
+    - Added Michał Bieliński's FOV and panel move modification.
+    - Moved initialised constant data from VARIABLES to new file
+      TABLES.INC.
+    - Redisplay creatures and player after updates.
+    - Added colour.
+    - Fixed racial search skill bonus not being copied to player.
+    - Removed time of day limitations.
+    - Removed user preventions.
+    - Removed save file encryption for now since the routines are 
+      bugged on modern platforms.  This may be reintroduced over the next 
+      few versions.
+    - Ported to Delphi and Free Pascal.

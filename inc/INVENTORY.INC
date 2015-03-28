@@ -1,0 +1,1912 @@
+//function find_range(item_val: obj_set; var i2, i3: integer): boolean;
+//	var
+//	i1:   integer;
+//	flag: boolean;
+//
+//	begin
+//	i1  := 0;
+//	i2  := 0;
+//	i3  := 0;
+//	flag:= false;
+//	while (i1 < inven_ctr) do
+//		begin
+//		i1:= i1 + 1;
+//		if ((inventory[i1].tval in item_val) and (not(flag))) then
+//			begin
+//			flag:= true;
+//			i2  := i1;
+//			end;
+//		if ((not(inventory[i1].tval in item_val)) and (flag) and (i3 = 0)) then
+//			i3:= i1 - 1;
+//		end;
+//	if ((flag) and (i3 = 0)) then
+//		i3    := inven_ctr;
+//	find_range:= flag;
+//	end;
+
+//function get_item(var com_val: integer; pmt: vtype; var redraw: boolean;
+//		i1, i2: integer): boolean;
+//	var
+//	command:   AnsiChar;
+//	out_val:   vtype;
+//	test_flag: boolean;
+//
+//	begin
+//	get_item:= false;
+//	com_val := 0;
+//	if (inven_ctr > 0) then
+//		begin
+//		out_val:= ShortString('(Items ' + AnsiChar(i1 + 96) + '-' +
+//				string(AnsiChar(i2 + 96)) +
+//				', * for Inventory List, ^Z to Exit) ' + string(pmt));
+//
+//		test_flag:= false;
+//		prt(out_val, STR_CLR_NMHHLT, 1, 1);
+//		repeat
+//			inkey(command);
+//			com_val:= ord(command);
+//			case com_val of
+//				0, 3, 25, 26, 27:
+//					begin
+//					test_flag := true;
+//					reset_flag:= true;
+//					end;
+//				42:
+//					begin
+//					clear(2, 1);
+//					inven_command('?', i1, i2);
+//					redraw:= true;
+//					end;
+//				else
+//					begin
+//					com_val:= com_val - 96;
+//					if ((com_val >= i1) and (com_val <= i2)) then
+//						begin
+//						test_flag:= true;
+//						get_item := true;
+//						end;
+//					end;
+//				end;
+//			until (test_flag);
+//		erase_line(msg_line, msg_line);
+//		end
+//	else
+//		msg_print('You Are Not Carrying Anything.');
+//	end;
+
+ { Comprehensive function block to handle all inventory
+  and equipment routines.  Five kinds of calls can take place.
+  Note that '?' is a special call for other routines to display
+  only a portion of the inventory, and take no other action. }
+//todo change command into an enumerated type
+//function inven_command(command: AnsiChar; r1, r2: integer): boolean;
+//	var
+//	com_val, scr_state:   integer;
+//	exit_flag, test_flag: boolean;
+//
+//{ Displays inventory items from r1 to r2 }
+//	procedure show_inven(r1, r2: integer);
+//		var
+//		i1:integer;
+//		tmp_val,
+//		out_val: vtype;
+//		cs: AnsiString;
+//
+//		begin
+//		cs:= COLR_NMHHLT + COLR_NMDLMT + COLR_NORMAL;
+//		if (r1 > 0) then { R1 = 0 dummy call }
+//			begin
+//			for i1:= r1 to r2 do { Print the items }
+//				begin
+//				objdes(tmp_val, i1, true);
+////					writev(out_val, chr(i1 + 96), cur_char1(i1),
+////						' ', tmp_val);
+//				out_val:= AnsiChar(i1 + 96) + cur_char1(i1) + ' ' + tmp_val;
+//				prt(out_val, cs, i1 + 1, 1);
+//				end;
+//			if (r2 < 22) then
+//				prt('', r2 + 2, 1); { Clear line after }
+//			scr_state:= 1;          { Set state to 1 }
+//			end;
+//		end;
+//
+//{ Displays equipment items from r1 to end }
+//	procedure show_equip(r1: integer);
+//		var
+//		i1, i2:              integer;
+//		prt1, prt2, out_val: vtype;
+//		cs: AnsiString;
+//
+//		begin
+//		cs:= COLR_NMHHLT + COLR_NMDLMT + StringOfChar(COLR_NMHHLT, 21) +
+//				COLR_NORMAL;
+//		if (r1 > equip_ctr) then { Last item gone }
+//			prt('', equip_ctr + 3, 1)
+//		else if (r1 > 0) then { R1 = 0 dummy call }
+//			begin
+//			i2    := 0;
+//			for i1:= 23 to inven_max - 1 do { Range of equipment }
+//				begin
+//				with inventory[i1] do
+//					if (tval > 0) then
+//						begin
+//						i2:= i2 + 1;
+//						if (i2 >= r1) then { Display only given range }
+//							begin
+//							case i1 of { Get position }
+//								23:
+//									prt1:= ' You are wielding   : ';
+//								24:
+//									prt1:= ' Worn on head       : ';
+//								25:
+//									prt1:= ' Worn around neck   : ';
+//								26:
+//									prt1:= ' Worn on body       : ';
+//								27:
+//									prt1:= ' Worn on arm        : ';
+//								28:
+//									prt1:= ' Worn on hands      : ';
+//								29:
+//									prt1:= ' Worn on right hand : ';
+//								30:
+//									prt1:= ' Worn on left hand  : ';
+//								31:
+//									prt1:= ' Worn on feet       : ';
+//								32:
+//									prt1:= ' Worn about body    : ';
+//								33:
+//									prt1:= ' Light source       : ';
+//								34:
+//									prt1:= ' Secondary weapon   : ';
+//								else
+//									prt1:= ' Unknown value: ';
+//								end;
+//							objdes(prt2, i1, true);
+////								writev(out_val, chr(i2 + 96),
+////									cur_char2(i1), prt1, prt2);
+//							out_val:= AnsiChar(i2 + 96) + cur_char2(i1) +
+//									prt1 + prt2;
+//							prt(out_val, cs, i2 + 2, 1);
+//							end;
+//						end;
+//				end;
+//			prt('', i2 + 3, 1); { Clear last line }
+//			scr_state:= 2;      { Set state of screen }
+//			end;
+//		end;
+//
+//{ Remove item from equipment list }
+//	function remove(item_val: integer): integer;
+//		var
+//		i1, i2, typ:         integer;
+//		out_val, prt1, prt2: vtype;
+//		flag:                boolean;
+//
+//		begin
+//		i1  := 0;
+//		flag:= false;
+//		typ := inventory[item_val].tval;
+//		repeat
+//			i1:= i1 + 1;
+//			with inventory[i1] do
+//				if (typ > tval) then
+//					begin
+//					for i2:= inven_ctr downto i1 do
+//						inventory[i2 + 1]:= inventory[i2];
+//					inventory[i1]:= inventory[item_val];
+//					inven_ctr:= inven_ctr + 1;
+//					equip_ctr:= equip_ctr - 1;
+//					flag:= true;
+//					end;
+//			until (flag);
+//		case typ of
+//			10, 11, 12, 20, 21, 22, 23, 25:
+//				prt1:= 'Was wielding ';
+//			15:
+//				prt1:= 'Light source was ';
+//			else
+//				prt1:= 'Was wearing ';
+//			end;
+//		objdes(prt2, i1, true);
+//		out_val:= prt1 + prt2 + ' (' + AnsiChar(i1 + 96) + ')';
+//		msg_print(out_val);
+//		inventory[item_val]:= blank_treasure;
+//		if (item_val <> inven_max - 1) then { For secondary weapon }
+//			py_bonuses(inventory[i1], -1);
+//		remove:= i1;
+//		end;
+//
+//{ Unwear routine, remove a piece of equipment }
+//	procedure unwear;
+//		var
+//		i1, i2, com_val:      integer;
+//		exit_flag, test_flag: boolean;
+//		command:              AnsiChar;
+//		out_val:              vtype;
+//
+//		begin
+//		if (scr_state = 1) then
+//			begin
+//			clear(1, 1);
+//			show_equip(1);
+//			end;
+//
+//		exit_flag:= false;
+//		repeat
+//			out_val:= ShortString('(a-' + AnsiChar(equip_ctr + 96) +
+//					', * for equipment list,' + ' ^Z to exit) ' +
+//					'Take off which one ?');
+//			test_flag:= false;
+//			msg_print(out_val);
+//			repeat
+//				inkey(command);
+//				com_val:= ord(command);
+//				case com_val of
+//					0, 3, 25, 26, 27:
+//						begin
+//						test_flag:= true;
+//						exit_flag:= true;
+//						end;
+//					42:
+//						begin
+//						clear(2, 1);
+//						show_equip(1);
+//						end;
+//					else
+//						begin
+//						com_val:= com_val - 96;
+//						if ((com_val >= 1) and
+//									(com_val <= equip_ctr)) then
+//							test_flag:= true;
+//						end;
+//					end;
+//				until (test_flag);
+//
+//			if (not(exit_flag)) then
+//				begin
+//				reset_flag:= false; { Player turn }
+//				i1        := 0;
+//				i2        := 22;
+//				repeat
+//					i2:= i2 + 1;
+//					if (inventory[i2].tval > 0) then
+//						i1:= i1 + 1;
+//					until (i1 = com_val);
+//				if (($80000000 and inventory[i2].flags) <> 0) then
+//					begin
+//					msg_print('Hmmm, it seems to be cursed...');
+//					com_val:= 0;
+//					end
+//				else
+//					remove(i2);
+//				end;
+//			if (scr_state = 0) then
+//				exit_flag:= true
+//			else if (equip_ctr = 0) then
+//				exit_flag:= true
+//			else if (inven_ctr > 21) then
+//				exit_flag:= true
+//			else if (not(exit_flag)) then
+//				show_equip(com_val);
+//			until (exit_flag);
+//
+//		if (scr_state <> 0) then
+//			if (equip_ctr = 0) then
+//				clear(1, 1)
+//			else
+//				prt('You are currently using -', STR_CLR_NMHHLT, 1, 1);
+//		end;
+//
+//{ Wear routine, wear or wield an item }
+//	procedure wear;
+//		var
+//		com_val, i1, i2, i3, tmp: integer;
+//		out_val, prt1, prt2:      vtype;
+//		unwear_obj:               treasure_type;
+//		exit_flag, test_flag:     boolean;
+//
+//		begin
+//		i1:= 0;
+//		if (scr_state = 2) then
+//			begin
+//			clear(1, 1);
+//			show_inven(1, inven_ctr);
+//			end;
+//		exit_flag:= false;
+//		repeat
+//			out_val:= ShortString('(a-' + AnsiChar(inven_ctr + 96) +
+//				', * for equipment list,' + ' ^Z to exit) ' +
+//				'wear/wield which one ?');
+//			test_flag:= false;
+//			msg_print(out_val);
+//			repeat
+//				inkey(command);
+//				com_val:= ord(command);
+//				case com_val of
+//					0, 3, 25, 26, 27:
+//						begin
+//						test_flag:= true;
+//						exit_flag:= true;
+//						end;
+//					42:
+//						begin
+//						clear(2, 1);
+//						show_inven(1, inven_ctr);
+//						end;
+//					else
+//						begin
+//						com_val:= com_val - 96;
+//						if  ((com_val >= 1)
+//						and  (com_val <= inven_ctr)) then
+//							test_flag:= true;
+//						end;
+//					end;
+//				until (test_flag);
+//
+//			if (not(exit_flag)) then { Main logic for wearing }
+//				begin
+//				reset_flag:= false; { Player turn }
+//				test_flag := true;
+//				case inventory[com_val].tval of { Slot for equipment }
+//					10:
+//						i1:= 23;
+//					11:
+//						i1:= 23;
+//					12:
+//						i1:= 23;
+//					15:
+//						i1:= 33;
+//					20:
+//						i1:= 23;
+//					21:
+//						i1:= 23;
+//					22:
+//						i1:= 23;
+//					23:
+//						i1:= 23;
+//					25:
+//						i1:= 23;
+//					30:
+//						i1:= 31;
+//					31:
+//						i1:= 28;
+//					32:
+//						i1:= 32;
+//					33:
+//						i1:= 24;
+//					34:
+//						i1:= 27;
+//					35:
+//						i1:= 26;
+//					36:
+//						i1:= 26;
+//					40:
+//						i1:= 25;
+//					45:
+//						if (inventory[29].tval = 0) then { Rings }
+//							i1:= 29
+//						else
+//							i1:= 30;
+//					else
+//						begin
+//						msg_print('I don''t see how you can use that.');
+//						test_flag:= false;
+//						com_val  := 0;
+//						end;
+//					end;
+//
+//				if (test_flag) then
+//					if (inventory[i1].tval > 0) then
+//						begin
+//						if (($80000000 and inventory[i1].flags) <> 0) then
+//							begin
+//							objdes(out_val, i1, false);
+//							out_val:= 'The ' + out_val + ' you are ';
+//							case i1 of
+//								23:
+//									out_val:= out_val + 'wielding ';
+//								else
+//									out_val:= out_val + 'wearing ';
+//								end;
+//							msg_print(out_val + 'appears to be cursed.');
+//							test_flag:= false;
+//							com_val  := 0;
+//							end
+//						else if (inven_ctr > 21) then
+//							if (inventory[com_val].number > 1) then
+//								if (inventory[com_val].subval < 512) then
+//									begin
+//									msg_print('You will have to drop something first.');
+//									test_flag:= false;
+//									com_val  := 0;
+//									end;
+//						end;
+//				if (test_flag) then
+//					begin
+//					unwear_obj   := inventory[i1];
+//					inventory[i1]:= inventory[com_val];
+//					with inventory[i1] do
+//{ Fix for torches }			begin
+//						if ((subval > 255) and (subval < 512)) then
+//							begin
+//							number:= 1;
+//							subval:= subval - 255;
+//							end;
+//{ Fix for weight }			inven_weight:= inven_weight + weight * number;
+//			{ prt_cur_weight; }
+//						end;
+//					inven_destroy(com_val); { Subtracts weight }
+//					equip_ctr:= equip_ctr + 1;
+//					py_bonuses(inventory[i1], 1);
+//					if (unwear_obj.tval > 0) then
+//						begin
+//						inventory[inven_max]:= unwear_obj;
+//						tmp                 := remove(inven_max);
+//						if (tmp < com_val) then
+//							com_val:= tmp;
+//						end;
+//					case i1 of
+//						23:
+//							prt1:= 'You are wielding ';
+//						33:
+//							prt1:= 'Your light source is ';
+//						else
+//							prt1:= 'You are wearing ';
+//						end;
+//					objdes(prt2, i1, true);
+//					i2:= 0;
+//					i3:= 22;
+//					repeat { Get the right letter of equipment }
+//						i3:= i3 + 1;
+//						if (inventory[i3].tval > 0) then
+//							i2:= i2 + 1;
+//						until (i3 = i1);
+//					out_val:= prt1 + prt2 + ' (' + AnsiChar(i2 + 96) +
+//							cur_char2(i1);
+//					msg_print(out_val);
+//					end;
+//				end;
+//			if (scr_state = 0) then
+//				exit_flag:= true
+//			else if (inven_ctr = 0) then
+//				exit_flag:= true
+//			else if (not(exit_flag)) then
+//				show_inven(com_val, inven_ctr);
+//			until (exit_flag);
+//
+//		if (scr_state <> 0) then
+//			prt('You are currently carrying -', STR_CLR_NMHHLT, 1, 1);
+//		end;
+//
+//{ Switch primary and secondary weapons }
+//	procedure switch_weapon;
+//		var
+//		prt1, prt2: vtype;
+//		tmp_obj:    treasure_type;
+//
+//		begin
+//		if (($80000000 and inventory[23].flags) <> 0) then
+//			begin
+//			objdes(prt1, 23, false);
+//			msg_print('The ' + prt1 +
+//						' You are wielding appears to be cursed.');
+//			end
+//		else
+//			begin { Switch weapons }
+//			reset_flag   := false;
+//			tmp_obj      := inventory[34];
+//			inventory[34]:= inventory[23];
+//			inventory[23]:= tmp_obj;
+//			py_bonuses(inventory[34], -1); { Subtract bonuses }
+//			py_bonuses(inventory[23], 1);  { Add bonuses }
+//			if (inventory[23].tval > 0) then
+//				begin
+//				prt1:= 'Primary weapon: ';
+//				objdes(prt2, 23, true);
+//				msg_print(prt1 + prt2);
+//				end;
+//			if (inventory[34].tval > 0) then
+//				begin
+//				prt1:= 'Secondary weapon : ';
+//				objdes(prt2, 34, true);
+//				msg_print(prt1 + prt2);
+//				end;
+//			end;
+//		if (scr_state <> 0) then
+//			begin
+//			msg_print('');
+//			clear(1, 1);
+//			prt('You are currently using -', 1, 1);
+//			show_equip(1);
+//			end;
+//		end;
+//
+//{ Main logic for INVEN_COMMAND }
+//	begin
+//	inven_command:= False;
+//	exit_flag    := False;
+//	scr_state    := 0;
+//	repeat
+//		case command of
+//			'i':
+//				begin { Inventory }
+//				if (inven_ctr = 0) then
+//					msg_print('You are not carrying anything.')
+//				else if (scr_state <> 1) then
+//					begin { Sets scr_state to 1 }
+//					clear(1, 1);
+//					prt('You are currently carrying -', STR_CLR_NMHHLT, 1, 1);
+//					show_inven(1, inven_ctr);
+//					end;
+//				end;
+//			'e':
+//				begin { Equipment }
+//				if (equip_ctr = 0) then
+//					msg_print('You are not using any equipment.')
+//				else if (scr_state <> 2) then
+//					begin { Sets scr_state to 2 }
+//					clear(1, 1);
+//					prt('You are currently using -', STR_CLR_NMHHLT, 1, 1);
+//					show_equip(1);
+//					end;
+//				end;
+//			't':
+//				begin { Take off }
+//				if (equip_ctr = 0) then
+//					msg_print('You are not using any equipment.')
+//				else if (inven_ctr > 21) then
+//					msg_print('You will have to drop something first.')
+//				else
+//					unwear; { May set scr_state to 2 }
+//				end;
+//			'w':
+//				begin { Wear/wield }
+//				if (inven_ctr = 0) then
+//					msg_print('You are not carrying anything.')
+//				else
+//					wear; { May set scr_state to 1 }
+//				end;
+//			'x':
+//				begin
+//				if (inventory[23].tval <> 0) then
+//					switch_weapon
+//				else if (inventory[34].tval <> 0) then
+//					switch_weapon
+//				else
+//					msg_print('But you are wielding no weapons.');
+//				end;
+//{ Special function for other routines }
+//			'?':
+//				begin { Displays part inven, returns }
+//				show_inven(r1, r2);
+//				scr_state:= 0; { Clear screen state }
+//				end;
+//{ Nonsense command }
+//			else
+//				;
+//			end;
+//
+//		if (scr_state > 0) then
+//			begin
+//			prt('<e>quip, <i>nven, <t>ake-off, <w>ear/wield, e<x>change, ^Z to Exit.',
+//				STR_CLR_NMHHLT, 24, 2);
+//			test_flag:= false;
+//			repeat
+//				inkey(command);
+//				com_val:= ord(command);
+//				case com_val of
+//					0, 3, 25, 26, 27, 32:
+//						begin { Exit from module }
+//						exit_flag:= true;
+//						test_flag:= true;
+//						end;
+//					else
+//						case command of { Module commands }
+//							'e':
+//								test_flag:= true;
+//							'i':
+//								test_flag:= true;
+//							't':
+//								test_flag:= true;
+//							'w':
+//								test_flag:= true;
+//							'x':
+//								test_flag:= true;
+//							'?':
+//								; { Trap special feature }
+//							else
+//								; { Nonsense command }
+//							end;
+//					end;
+//				until (test_flag);
+//			prt('', 24, 1);
+//			end
+//		else
+//			exit_flag:= true;
+//		until (exit_flag);
+//
+//	if (scr_state > 0) then { If true, must redraw screen }
+//		inven_command:= true;
+//	end;
+
+procedure ApplyBonuses(tobj: PTreasure_Type; factor: Integer);
+	var
+	item_flags: Unsigned;
+	i1,
+	old_dis_ac: Integer;
+	w: TMoriaInvenWear;
+
+	procedure change_stat(var stat: byteint; amount, factor: integer);
+		var
+		i1, i2, i3: integer;
+
+		begin
+		i2    := amount * factor;
+		i3    := abs(amount);
+		for i1:= 1 to i3 do
+			if (i2 < 0) then
+				stat:= de_statt(stat)
+			else
+				stat:= in_statt(stat);
+		end;
+
+	procedure change_speed(num: integer);
+		var
+		i1: integer;
+
+		begin
+		py.flags.speed:= py.flags.speed + num;
+		i1            := muptr;
+		while (i1 <> 0) do
+			begin
+			m_list[i1].cspeed:= m_list[i1].cspeed + num;
+			i1               := m_list[i1].nptr;
+			end;
+		end;
+
+	begin
+	with py.flags do
+		begin
+		if (slow_digest) then
+			food_digested:= food_digested + 1;
+		if (regenerate) then
+			food_digested:= food_digested - 3;
+		see_inv          := False;
+		teleport         := False;
+		free_act         := False;
+		slow_digest      := False;
+		aggravate        := False;
+		sustain_str      := False;
+		sustain_int      := False;
+		sustain_wis      := False;
+		sustain_con      := False;
+		sustain_dex      := False;
+		sustain_chr      := False;
+		fire_resist      := False;
+		acid_resist      := False;
+		cold_resist      := False;
+		regenerate       := False;
+		lght_resist      := False;
+		ffall            := False;
+		end;
+
+	if (($00000001 and tobj^.flags) <> 0) then
+		begin
+		change_stat(py.stat.cstr, tobj^.p1, factor);
+		change_stat(py.stat.str, tobj^.p1, factor);
+		change_stat(py.stat.astr, tobj^.p1, factor);
+		print_stat:= ($0001 or print_stat);
+		end;
+	if (($00000002 and tobj^.flags) <> 0) then
+		begin
+		change_stat(py.stat.cdex, tobj^.p1, factor);
+		change_stat(py.stat.dex, tobj^.p1, factor);
+		change_stat(py.stat.adex, tobj^.p1, factor);
+		print_stat:= ($0002 or print_stat);
+		end;
+	if (($00000004 and tobj^.flags) <> 0) then
+		begin
+		change_stat(py.stat.ccon, tobj^.p1, factor);
+		change_stat(py.stat.con, tobj^.p1, factor);
+		change_stat(py.stat.acon, tobj^.p1, factor);
+		print_stat:= ($0004 or print_stat);
+		end;
+	if (($00000008 and tobj^.flags) <> 0) then
+		begin
+		change_stat(py.stat.cint, tobj^.p1, factor);
+		change_stat(py.stat.int, tobj^.p1, factor);
+		change_stat(py.stat.aint, tobj^.p1, factor);
+		print_stat:= ($0008 or print_stat);
+		end;
+	if (($00000010 and tobj^.flags) <> 0) then
+		begin
+		change_stat(py.stat.cwis, tobj^.p1, factor);
+		change_stat(py.stat.wis, tobj^.p1, factor);
+		change_stat(py.stat.awis, tobj^.p1, factor);
+		print_stat:= ($0010 or print_stat);
+		end;
+	if (($00000020 and tobj^.flags) <> 0) then
+		begin
+		change_stat(py.stat.cchr, tobj^.p1, factor);
+		change_stat(py.stat.chr, tobj^.p1, factor);
+		change_stat(py.stat.achr, tobj^.p1, factor);
+		print_stat:= ($0020 or print_stat);
+		end;
+	if (($00000040 and tobj^.flags) <> 0) then
+		begin
+		py.misc.srh:= py.misc.srh + (tobj^.p1 * factor);
+		py.misc.fos:= py.misc.fos - (tobj^.p1 * factor);
+		end;
+	if (($00000100 and tobj^.flags) <> 0) then
+		py.misc.stl:= py.misc.stl + 2 * factor;
+	if (($00001000 and tobj^.flags) <> 0) then
+		begin
+		i1:= tobj^.p1 * factor;
+		change_speed( -i1);
+		end;
+	if (($08000000 and tobj^.flags) <> 0) then
+		if (factor > 0) then
+			py.flags.blind:= py.flags.blind + 1000;
+	if (($10000000 and tobj^.flags) <> 0) then
+		if (factor > 0) then
+			py.flags.afraid:= py.flags.afraid + 50;
+	if (($40000000 and tobj^.flags) <> 0) then
+		py.flags.see_infra:= py.flags.see_infra + (tobj^.p1 * factor);
+
+	with py.misc do
+		begin
+		old_dis_ac:= dis_ac;
+		ptohit    := tohit_adj; { Real To Hit }
+		ptodam    := todam_adj; { Real To Dam }
+		ptoac     := toac_adj;  { Real To AC }
+		pac       := 0;         { Real AC }
+		dis_th    := ptohit;    { Display To Hit }
+		dis_td    := ptodam;    { Display To Dam }
+		dis_ac    := 0;         { Display To AC }
+		dis_tac   := ptoac;     { Display AC }
+
+		for w:= Low(TMoriaInvenWear) to Pred(High(TMoriaInvenWear)) do
+			with newInventory[mitWornWielding, Ord(w)] do
+				if (tval > 0) then
+					begin
+					if (($80000000 and flags) = 0) then
+						begin
+						pac   := pac + ac;
+						dis_ac:= dis_ac + ac;
+						end;
+					ptohit:= ptohit + tohit;
+					ptodam:= ptodam + todam;
+					ptoac := ptoac + toac;
+					if (index(name, '^') = 0) then
+						begin
+						dis_th := dis_th + tohit;
+						dis_td := dis_td + todam;
+						dis_tac:= dis_tac + toac;
+						end;
+					end;
+		dis_ac:= dis_ac + dis_tac;
+
+{ Add in temporary spell increases }
+		with py.flags do
+			begin
+			if (invuln > 0) then
+				begin
+				pac   := pac + 100;
+				dis_ac:= dis_ac + 100;
+				end;
+			if (blessed > 0) then
+				begin
+				pac   := pac + 2;
+				dis_ac:= dis_ac + 2;
+				end;
+			if (detect_inv > 0) then
+				see_inv:= true;
+			end;
+
+		if (old_dis_ac <> dis_ac) then
+			print_stat:= ($0040 or print_stat);
+
+		item_flags:= 0;
+		for w:= Low(TMoriaInvenWear) to Pred(High(TMoriaInvenWear)) do
+			with newInventory[mitWornWielding, Ord(w)] do
+				item_flags:= (item_flags or flags);
+		if (($00000080 and item_flags) <> 0) then
+			py.flags.slow_digest:= true;
+		if (($00000200 and item_flags) <> 0) then
+			py.flags.aggravate:= true;
+		if (($00000400 and item_flags) <> 0) then
+			py.flags.teleport:= true;
+		if (($00000800 and item_flags) <> 0) then
+			py.flags.regenerate:= true;
+		if (($00080000 and item_flags) <> 0) then
+			py.flags.fire_resist:= true;
+		if (($00100000 and item_flags) <> 0) then
+			py.flags.acid_resist:= true;
+		if (($00200000 and item_flags) <> 0) then
+			py.flags.cold_resist:= true;
+		if (($00800000 and item_flags) <> 0) then
+			py.flags.free_act:= true;
+		if (($01000000 and item_flags) <> 0) then
+			py.flags.see_inv:= true;
+		if (($02000000 and item_flags) <> 0) then
+			py.flags.lght_resist:= true;
+		if (($04000000 and item_flags) <> 0) then
+			py.flags.ffall:= true;
+
+		for w:= Low(TMoriaInvenWear) to Pred(High(TMoriaInvenWear)) do
+			with newInventory[mitWornWielding, Ord(w)] do
+				if (($00400000 and flags) <> 0) then
+					case p1 of
+						1:
+							py.flags.sustain_str:= true;
+						2:
+							py.flags.sustain_int:= true;
+						3:
+							py.flags.sustain_wis:= true;
+						4:
+							py.flags.sustain_con:= true;
+						5:
+							py.flags.sustain_dex:= true;
+						6:
+							py.flags.sustain_chr:= true;
+						else
+							;
+					end;
+
+		with py.flags do
+			begin
+			if (slow_digest) then
+				food_digested:= food_digested - 1;
+			if (regenerate) then
+				food_digested:= food_digested + 3;
+			end;
+		end;
+	end;
+
+ { Returns a '*' for cursed items, a ')' for normal ones
+  NOTE: '*' returned only if item has been identified. }
+function cur_char1(t: TMoriaInvenType; item_val: integer): AnsiChar;
+	begin
+	with newInventory[t, item_val] do
+		if (($80000000 and flags) = 0) then
+			cur_char1:= ' ' //')'{ Not cursed. }
+		else if (index(name, '^') > 0) then
+			cur_char1:= ' ' //')'{ Cursed, but not identified }
+		else
+			cur_char1:= '*'; { Cursed and identified. }
+	end;
+
+ { Returns a '*' for cursed items, a ')' for normal ones }
+function cur_char2(t: PTreasure_Type): AnsiChar; overload;
+	begin
+	with t^ do
+		if (($80000000 and flags) = 0) then
+			cur_char2:= ' '//')'{ Not cursed. }
+		else
+			cur_char2:= '*'; { Cursed. }
+	end;
+
+function cur_char2(t: TMoriaInvenType; item_val: integer): AnsiChar; overload;
+	begin
+	Result:= cur_char2(@(newInventory[t, item_val]));
+	end;
+
+procedure DescCharges(t: TMoriaInvenType; item_val: Integer);
+	var
+	rem_num: integer;
+	out_val: vtype;
+
+	begin
+	if (index(newInventory[t, item_val].name, '^') = 0) then
+		begin
+		rem_num:= newInventory[t, item_val].p1;
+//			writev(out_val, 'You have ', rem_num: 1, ' charges remaining.');
+		out_val:= Format(
+				AnsiString('You have %d charges remaining.'), [rem_num]);
+		msg_print(out_val)
+		end
+	end;
+
+
+procedure DescRemain(AType: TMoriaInvenType; AItem: Integer);
+	var
+	t: Treasure_Type;
+	out_val: AnsiString;
+
+	begin
+//	inventory[inven_max]:= inventory[item_val];
+	t:= newInventory[AType, AItem];
+	with t do
+		number:= number - 1;
+	objdes(out_val, @t, True, True);
+	out_val:= 'You have ' + Copy(out_val, 1, (Length(out_val) - 1)) + '. ';
+	msg_print(out_val);
+	end;
+
+//Finds first item matching subvals in inventory list
+function FindFirstItem(ASubvals: Obj_Set; var AType: TMoriaInvenType;
+		var AItem: Integer): Boolean;
+	var
+	t: TMoriaInvenType;
+	i: Integer;
+
+	begin
+	AType:= mitGeneral;
+	AItem:= -1;
+	Result:= False;
+
+	for t:= Low(TMoriaInvenType) to Pred(High(TMoriaInvenType)) do
+		for i:= 0 to Length(newInventory[t]) - 1 do
+			if  newInventory[t, i].subval in ASubvals then
+				begin
+				AType:= t;
+				AItem:= i;
+				Result:= True;
+				Exit;
+				end;
+	end;
+
+procedure InvenDestroy(AType: TMoriaInvenType; AItem: Integer);
+	var
+	t: PTreasure_Type;
+	l,
+	i2: Integer;
+
+	begin
+	t:= @(newInventory[AType, AItem]);
+	with t^ do
+		begin
+		if  (number > 1)
+		and (subval < 512) then
+			begin
+			number := number - 1;
+			inven_weight:= inven_weight - weight;
+//			inventory[inven_max].number := 1;
+			end
+		else
+			begin
+			l:= Length(newInventory[AType]) - 1;
+			inven_weight:= inven_weight - weight*number;
+
+			for i2:= AItem to l - 1 do
+				newInventory[AType, i2]:= newInventory[AType, i2 + 1];
+
+//			inventory[inven_ctr] := blank_treasure;
+			inven_ctr:= inven_ctr - 1;
+			SetLength(newInventory[AType], l);
+			end;
+		end;
+	end;
+
+procedure InvenDrop(t: TMoriaInvenType; item_val, y, x: Integer);
+	var
+	i1: Integer;
+	w: Treasure_Type;
+
+	begin
+	with cave[y, x] do
+		begin
+		if (tptr > 0) then
+			pusht(tptr);
+		w:= newInventory[t, item_val];
+		InvenDestroy(t, item_val);
+		popt(i1);
+		t_list[i1]:= w;
+		tptr := i1;
+		end;
+	end;
+
+function InvenDamage(typ: Obj_Set; perc: Integer): Integer;
+	var
+	t: TMoriaInvenType;
+	i1: Integer;
+
+	begin
+//dengland The whole of the inventory of typ set is checked and potentially
+//		destroyed.  I don't like this.  Should be the first or a random one.
+	Result:= 0;
+	for t:= Low(TMoriaInvenType) to Pred(High(TMoriaInvenType)) do
+		for i1:= 0 to Length(newInventory[t]) - 1 do
+			with newInventory[t, i1] do
+				if (tval in typ) then
+					if (randint(100) < perc) then
+						begin
+						InvenDestroy(t, i1);
+						Inc(Result);
+						end;
+
+//	inven_damage := i2;
+	end;
+
+function InvenCheckWeight(t: PTreasure_Type): Boolean;
+	var
+	item_wgt : Integer;
+
+	begin
+	Result:= False;
+	max_weight:= weight_limit;
+	with t^ do
+		item_wgt := number * weight;
+{ Now, check to see if player can carry object  }
+	if ((inven_weight + item_wgt) <= max_weight) then
+		Result:= True;   { Can carry weight  }
+	end;
+
+procedure InvenAbsIdxToTypeIdx(const AIdx: Integer; var AType: TMoriaInvenType;
+		var AItem: Integer);
+	var
+	t: TMoriaInvenType;
+	l,
+	d,
+	c: Integer;
+
+	begin
+	c:= 1;
+	AType:= mitGeneral;
+	AItem:= -1;
+
+	for t:= Low(TMoriaInvenType) to High(TMoriaInvenType) do
+		begin
+		l:= Length(newInventory[t]);
+		d:= AIdx - c;
+		if  l > 0 then
+			if d < l then
+				begin
+				AType:= t;
+				AItem:= d;
+				Break;
+				end
+			else
+				Inc(c, l);
+		end;
+	end;
+
+procedure InvenThrow(t: TMoriaInvenType; item_val: integer);
+	begin
+	invenTemp:= newInventory[t, item_val];
+	invenTemp.number:= 1;
+	with newInventory[t, item_val] do
+		begin
+		if ((number > 1) and (subval > 511)) then
+			begin
+			number:= number - 1;
+			inven_weight:= inven_weight - weight;
+			end
+		else
+			InvenDestroy(t, item_val);
+		prt_cur_weight;
+		end;
+	end;
+
+procedure InvenAdd(AItem: PTreasure_Type; var AType: TMoriaInvenType;
+		var APos: Integer);
+	var
+	item_num,
+//	wgt,
+	typ,
+	subt: Integer;
+	flag: Boolean;
+	i: TMoriaInvenType;
+	p: Integer;
+
+	procedure insertNew(AType: TMoriaInvenType; APos: Integer);
+		var
+		i,
+		l: Integer;
+
+		begin
+		l:= Length(newInventory[AType]);
+		SetLength(newInventory[AType], l + 1);
+
+		if APos < l then
+			for i:= l downto APos + 1 do
+				newInventory[AType, i]:= newInventory[AType, i - 1];
+
+		newInventory[AType, APos]:= AItem^;
+		Inc(inven_ctr);
+		end;
+	begin
+{ Now, check to see if player can carry object  }
+	with AItem^ do
+		begin
+		item_num := number;
+		typ  := tval;
+		subt := subval;
+//		wgt  := number*weight;
+		end;
+
+//	Find the group to put it in
+
+//	Default
+	AType:= mitGeneral;
+	APos:= 0;
+
+//	Check for books first
+	if  typ in ARR_FLG_INVENTVALS[mitBooks] then
+		AType:= mitBooks
+	else
+//		Check from mitWeapons..mitConsumables
+		for i:= mitWeapons to mitConsumables do
+			if  typ in ARR_FLG_INVENTVALS[i] then
+				begin
+				AType:= i;
+				Break;
+				end;
+
+//	Find the place to put it or stack
+	flag:= False;
+	for p:= 0 to High(newInventory[AType]) do
+		begin
+		with newInventory[AType, p] do
+			if (typ = tval) then
+				begin
+				if (subt = subval) then { Adds to other item }
+					if (subt > 255) then
+						begin
+						number:= number + item_num;
+//						Inc(inven_weight, wgt);
+						flag:= True;
+						Break;
+						end;
+				end
+			else if (typ > tval) then
+				begin     { Insert into list  }
+				insertNew(AType, p{, wgt});
+				APos:= p;
+				flag:= True;
+				Break;
+				end;
+		end;
+
+	if  not flag then     { Becomes last item in list }
+		begin
+		APos:= Length(newInventory[AType]);
+		insertNew(AType, APos{, wgt});
+		end;
+	end;
+
+//todo Consolidate InvenAdd and InvenCarry.  Need to flag accumulating weight
+//		and carry.
+procedure InvenCarry(itm: PTreasure_Type; var t: TMoriaInvenType;
+		var item_val: Integer);
+	var
+	item_num,
+	wgt,
+	typ,
+	subt: Integer;
+	flag: Boolean;
+	i,
+	itype: TMoriaInvenType;
+	p: Integer;
+
+	procedure insertNew(AType: TMoriaInvenType; APos, AWgt: Integer);
+		var
+		i,
+		l: Integer;
+
+		begin
+		l:= Length(newInventory[AType]);
+		SetLength(newInventory[AType], l + 1);
+
+		if APos < l then
+			for i:= l downto APos + 1 do
+				newInventory[AType, i]:= newInventory[AType, i - 1];
+
+		newInventory[AType, APos]:= itm^;
+
+		Inc(inven_ctr);
+		Inc(inven_weight, AWgt);
+		end;
+
+{ INVEN_CARRY routine }
+	begin
+{ Now, check to see if player can carry object  }
+	item_val := 0;
+//	flag := False;
+	with itm^ do
+		begin
+		item_num := number;
+		typ  := tval;
+		subt := subval;
+		wgt  := number * weight;
+		end;
+
+//	Find the group to put it in
+
+//	Default
+	itype:= mitGeneral;
+
+//	Check for books first
+	if  typ in ARR_FLG_INVENTVALS[mitBooks] then
+		itype:= mitBooks
+	else
+//		Check from mitWeapons..mitConsumables
+		for i:= mitWeapons to mitConsumables do
+			if  typ in ARR_FLG_INVENTVALS[i] then
+				begin
+				itype:= i;
+				Break;
+				end;
+
+//	Find the place to put it or stack
+	flag:= False;
+	for p:= 0 to High(newInventory[itype]) do
+		with newInventory[itype, p] do
+			if (typ = tval) then
+				begin
+				if (subt = subval) then { Adds to other item }
+					if (subt > 255) then
+						begin
+						number:= number + item_num;
+						Inc(inven_weight, wgt);
+						flag:= True;
+
+						t:= iType;
+						item_val:= p;
+
+						Break;
+						end;
+				end
+			else if (typ > tval) then
+				begin     { Insert into list  }
+				insertNew(itype, p, wgt);
+				flag:= True;
+
+				t:= iType;
+				item_val:= p;
+
+				Break;
+				end;
+
+	if  not flag then     { Becomes last item in list }
+		begin
+		t:= itype;
+		item_val:= Length(newInventory[itype]);
+		insertNew(itype, item_val, wgt);
+		end;
+	end;
+
+//Remove item from equipment list
+procedure InvenRemove(AItem: PTreasure_Type; AUnapplyBonuses: Boolean;
+		AReinsert: Boolean);
+	var
+//	i1, i2,
+	t: TMoriaInvenType;
+	p,
+	typ: Integer;
+	out_val,
+	prt1,
+	prt2: AnsiString;
+//	flag:                boolean;
+//
+	begin
+	if  AReinsert then
+		InvenAdd(AItem, t, p);
+
+	typ:= AItem^.tval;
+	case typ of
+		10, 11, 12, 20, 21, 22, 23, 25:
+			prt1:= 'Was wielding ';
+		15:
+			prt1:= 'Light source was ';
+		else
+			prt1:= 'Was wearing ';
+		end;
+	objdes(prt2, AItem, True);
+	out_val:= prt1 + prt2; // + ' (' + AnsiChar(i1 + 96) + ')';
+	msg_print(out_val);
+
+//	inventory[item_val]:= blank_treasure;
+	if  AUnapplyBonuses then { For secondary weapon }
+		ApplyBonuses(AItem, -1);
+	end;
+
+procedure InvenWear(AType: TMoriaInvenType; AItem: Integer);
+	var
+	found: Boolean;
+	p,
+	i: TMoriaInvenWear;
+	t: PTreasure_Type;
+	w: Treasure_Type;
+	out_val,
+	prt1,
+	prt2: AnsiString;
+
+	begin
+	t:= @(newInventory[AType, AItem]);
+	p:= miwMainWeapon;
+	found:= False;
+	for i:= Low(TMoriaInvenWear) to High(TMoriaInvenWear) do
+		if  t^.tval in ARR_FLG_INVENWEAR[i] then
+			begin
+			found:= True;
+			p:= i;
+			Break;
+			end;
+
+	if  not found then
+		msg_print('I don''t see how you can use that.')
+	else
+		begin
+		if  (p = miwLeftRing)
+		and (newInventory[mitWornWielding, Ord(miwLeftRing)].tval > 0) then
+			p:= miwRightRing;
+
+		w:= newInventory[mitWornWielding, Ord(p)];
+		if  w.tval > 0 then
+			if  ($80000000 and w.flags) <> 0 then
+				begin
+				objdes(out_val, @w, False);
+				out_val:= 'The ' + out_val + ' you are ';
+				if  p = miwMainWeapon then
+					out_val:= out_val + ' wielding '
+				else
+					out_val:= out_val + ' wearing ';
+
+				msg_print(out_val + 'appears to be cursed.');
+				Exit;
+				end;
+
+//dengland I don't think that equipping an item should be a free action but this
+//		shouldn't be done if in the store
+//fixme Don't change reset flag if in a store
+		reset_flag:= False;
+
+		newInventory[mitWornWielding, Ord(p)]:= newInventory[AType, AItem];
+		t:= @(newInventory[mitWornWielding, Ord(p)]);
+
+//		Fix for torches
+		if  (t^.subval > 255)
+		and (t^.subval < 512) then
+			begin
+			t^.number:= 1;
+			t^.subval:= t^.subval - 255;
+			end;
+
+//		Fix for weight
+		inven_weight:= inven_weight + t^.weight * t^.number;
+
+		InvenDestroy(AType, AItem); { Subtracts weight }
+//		equip_ctr:= equip_ctr + 1;
+		ApplyBonuses(t, 1);
+		if (w.tval > 0) then
+			InvenRemove(@w, p <> miwSecondaryWeapon, True);
+//			begin
+//			inventory[inven_max]:= unwear_obj;
+//			tmp                 := remove(inven_max);
+//			if (tmp < com_val) then
+//				com_val:= tmp;
+//			end;
+
+		case p of
+			miwMainWeapon:
+				prt1:= 'You are wielding ';
+			miwLight:
+				prt1:= 'Your light source is ';
+			else
+				prt1:= 'You are wearing ';
+			end;
+		objdes(prt2, t, True);
+		out_val:= prt1 + prt2 + ' ' {(' + AnsiChar(i2 + 96) }+ cur_char2(t);
+		msg_print(out_val);
+		end;
+	end;
+
+procedure InvenUnwear(AType: TMoriaInvenType; AItem: Integer);
+	var
+	t: PTreasure_Type;
+	w: TMoriaInvenWear;
+
+	begin
+	t:= @(newInventory[AType, AItem]);
+	w:= TMoriaInvenWear(AItem);
+
+//dengland I don't think that unequipping an item should be a free action but
+//		this shouldn't be done if in the store
+//fixme Don't change reset flag if in a store
+	reset_flag:= False; { Player turn }
+
+	if (($80000000 and t^.flags) <> 0) then
+		msg_print('Hmmm, it seems to be cursed...')
+	else
+		begin
+		InvenRemove(t, w <> miwSecondaryWeapon, True);
+		newInventory[AType, AItem]:= blank_treasure;
+		end;
+	end;
+
+procedure InvenSwitchWeapon;
+	var
+	prt1,
+	prt2: AnsiString;
+	p,
+	s: PTreasure_Type;
+	tmp_obj: Treasure_Type;
+
+	begin
+	p:= @(newInventory[mitWornWielding, Ord(miwMainWeapon)]);
+	s:= @(newInventory[mitWornWielding, Ord(miwSecondaryWeapon)]);
+
+	if (($80000000 and p^.flags) <> 0) then
+		begin
+		objdes(prt1, p, False);
+		msg_print('The ' + prt1 +
+				' you are wielding appears to be cursed.');
+		end
+	else
+		begin { Switch weapons }
+//dengland I don't like this really.  The secondary weapon change should be a
+//			free action whereas equipping an item shouldn't be.
+//		reset_flag:= False;
+
+		tmp_obj:= s^;
+		newInventory[mitWornWielding, Ord(miwSecondaryWeapon)]:= p^;
+		newInventory[mitWornWielding, Ord(miwMainWeapon)]:= tmp_obj;
+
+//		The p and s pointers should now point to the new items, too
+		ApplyBonuses(s, -1); { Subtract bonuses }
+		ApplyBonuses(p, 1);  { Add bonuses }
+
+		if (p^.tval > 0) then
+			begin
+			prt1:= 'Primary weapon: ';
+			objdes(prt2, p, True);
+			msg_print(prt1 + prt2);
+			end;
+
+		if (s^.tval > 0) then
+			begin
+			prt1:= 'Secondary weapon: ';
+			objdes(prt2, s, True);
+			msg_print(prt1 + prt2);
+			end;
+		end;
+	end;
+
+type
+	PMoriaInvDetail = ^TMoriaInvDetail;
+	TMoriaInvDetail = record
+		Tabs: array of TMoriaInvenType;
+		SubItems: array of Integer;
+		Title: AnsiString;
+		Heading: AnsiString;
+	end;
+
+procedure InvTabCallback(const AListView: TScrListView; const ATab: Integer;
+		const AData: Pointer; var ALabel: AnsiString);
+	var
+	det: PMoriaInvDetail;
+
+	begin
+	det:= PMoriaInvDetail(AData);
+
+	ALabel:= ARR_STR_INVENTYPE[det^.Tabs[ATab]];
+	end;
+
+procedure InvItemCallback(const AListView: TScrListView;
+		const AScreen: TCustomSimpleScreen; const APosition: TScreenPos;
+		const ATab: Integer; const APage: Integer; const AItem: Integer;
+		const AData: Pointer);
+	var
+	det: PMoriaInvDetail;
+	t: TMoriaInvenType;
+	i: Integer;
+	s1,
+	s2: AnsiString;
+	a1: AnsiString;
+
+	begin
+	det:= PMoriaInvDetail(AData);
+
+	t:= det^.Tabs[ATab];
+	if Length(det^.SubItems) > 0 then
+		i:= det^.SubItems[AItem]
+	else
+		i:= AItem;
+
+//	Get position/letter for item
+	if  t = mitWornWielding then
+		begin
+		s1:= AnsiChar(97 + AItem - (APage * AListView.PageSize)) +
+				AnsiString(' ' + ARR_STR_INVENWEAR[TMoriaInvenWear(AItem)]);
+		a1:= AnsiString(StringOfChar(COLR_NMHHLT, Length(s1) - 2) +
+				COLR_NMDLMT + COLR_NMHHLT);
+		end
+	else
+		begin
+		s1:= AnsiChar(97 + AItem - (APage * AListView.PageSize)) +
+				AnsiString(') ');
+		a1:= AnsiString(COLR_NMHHLT + COLR_NMDLMT + COLR_NMHHLT);
+		end;
+
+//	Get description for item
+	objdes(s2, @(newInventory[t, i]), True);
+	a1:= a1 + AnsiString(StringOfChar(COLR_NORMAL, Length(s2)));
+
+//	Display text
+	s1:= s1 + s2;
+	AScreen.Write(s1);
+	AScreen.PutAttribs(a1, APosition.X, APosition.Y);
+	end;
+
+function ShowInventory(AFunc: TMoriaInvenFunc;
+		const ATVals: Obj_Set; var ATValType: TMoriaInvenType;
+		var ATValItem: Integer; const AMsg: VType = '';
+		const AStart: TMoriaInvenType = mitWeapons): Boolean; overload;
+	var
+	lst: TScrListView;
+	det: TMoriaInvDetail;
+	f: TMoriaInvenFunc;
+	pos: TScreenPos;
+	command: AnsiChar;
+	com_val: Integer;
+	exit_flag,
+	test_flag,
+	dirty: Boolean;
+	t: TMoriaInvenType;
+	i,
+	itm: Integer;
+
+	procedure DoInitialiseTabs;
+		var
+		c,
+		t,
+		n: Integer;
+		i: TMoriaInvenType;
+
+
+		begin
+		if  (f <> mifDispPartial)
+		or  (ATVals = []) then
+			begin
+			c:= 0;
+			for i:= Low(TMoriaInvenType) to High(TMoriaInvenType) do
+				if  i in ARR_FLG_INVTYPES[f] then
+					Inc(c);
+			SetLength(det.Tabs, c);
+
+			c:= 0;
+			for i:= Low(TMoriaInvenType) to High(TMoriaInvenType) do
+				if  i in ARR_FLG_INVTYPES[f] then
+					begin
+					det.Tabs[c]:= i;
+					Inc(c);
+					end;
+			end
+		else
+			begin
+			SetLength(det.Tabs, 1);
+			det.Tabs[0]:= mitGeneral;
+
+			for i:= Low(TMoriaInvenType) to High(TMoriaInvenType) do
+				if  (ATVals * ARR_FLG_INVENTVALS[i]) <> [] then
+					det.Tabs[0]:= i;
+			end;
+
+		lst.TabCount:= Length(det.Tabs);
+
+		n:= 0;
+		for t:= Length(det.Tabs) - 1 downto 0 do
+			begin
+			n:= t;
+			if det.Tabs[t] = AStart then
+				Break;
+			end;
+
+		lst.CurrentTab:= n;
+		end;
+
+	procedure DoInitialiseItems;
+		var
+		c,
+		i: Integer;
+//		t: Integer;
+
+		begin
+		if  f = mifDispPartial then
+//			for t:= 0 to Length(det.Tabs) - 1 do
+				begin
+				c:= 0;
+				for i:= 0 to Length(newInventory[det.Tabs[lst.CurrentTab]]) - 1 do
+					if  (ATVals = [])
+					or  (newInventory[det.Tabs[lst.CurrentTab], i].tval in ATVals) then
+						Inc(c);
+
+				SetLength(det.SubItems, c);
+				if c > 0 then
+					begin
+					c:= 0;
+					for i:= 0 to Length(newInventory[det.Tabs[lst.CurrentTab]]) - 1 do
+						if  (ATVals = [])
+						or  (newInventory[det.Tabs[lst.CurrentTab], i].tval in ATVals) then
+							begin
+							det.SubItems[c]:= i;
+							Inc(c);
+							end;
+					end;
+				end
+		else
+			SetLength(det.SubItems, 0);
+		end;
+
+	procedure DoSetupListView;
+		begin
+		lst.ShowCurrent:= True;
+
+		if f = mifWear then
+			lst.Title:= ' Equipable'
+		else if f in [mifDispEquipped, mifTakeOff, mifSwitch] then
+			begin
+			lst.Title:= ' Worn/Wielded';
+			lst.ShowCurrent:= False;
+			end
+		else
+			lst.Title:= ' Inventory';
+
+		if f in [mifDispEquipped, mifTakeOff, mifSwitch] then
+			lst.Heading:= '#  Location             Item'
+		else
+			lst.Heading:= '#  Item';
+		end;
+
+	procedure DoDisplay;
+		var
+		l: Integer;
+
+		begin
+		if  Length(AMsg) > 0 then
+			prt(AMsg, STR_CLR_NMHHLT, 1, 1);
+
+		l:= Length(det.SubItems);
+		if  l = 0 then
+			lst.ItemCount:= Length(newInventory[det.Tabs[lst.CurrentTab]])
+		else
+			lst.ItemCount:= l;
+
+		if  (lst.ItemCount > 0)
+		or  (lst.TabCount > 0) then
+			begin
+			lst.Display;
+			dirty:= True;
+			end;
+		end;
+
+	procedure DoDisplayPrompt;
+		begin
+		if  f in [mifDispFull, mifDispEquipped] then
+			prt('<E>quip, <I>nven, <T>ake-off, <W>ear/wield, e<X>change, ^Z to Exit.',
+					STR_CLR_NMHHLT, 23, 2)
+		else if  f = mifWear then
+			prt('Use letter to select, ^Z to exit.  Wear/Wield which one?',
+					STR_CLR_NMHHLT, 23, 2)
+		else if  f = mifTakeOff then
+			prt('Use letter to select, ^Z to exit.  Take off which one?',
+					STR_CLR_NMHHLT, 23, 2);
+
+		if  not (f in [mifDispEquipped, mifTakeOff]) then
+			prt('</, ./> scroll page  <BkSpc> <Tab> scroll tab  ' +
+					'<1..8> select tab',
+					STR_CLR_NMHHLT, 24, 2);
+		end;
+
+	begin
+	ATValType:= mitGeneral;
+	ATValItem:= -1;
+
+	dirty:= False;
+	f:= AFunc;
+	pos.X:= 1;
+	pos.Y:= 2;
+
+	lst:= TScrListView.Create(screen, InvTabCallback, InvItemCallback, @det);
+	try
+		lst.Position:= pos;
+		lst.PageSize:= 20;
+
+		exit_flag:= False;
+		repeat
+//			Get list of tabs for func
+			DoInitialiseTabs;
+
+//			Get items for subval
+			DoInitialiseItems;
+
+//			Provide an exit condition for when there are no items in the
+//					mifDispPartial function (with a specific exit code for
+//					GetItemFromInv)
+			if  (f = mifDispPartial)
+			and ((Length(det.Tabs) < 2)
+			and  (Length(det.SubItems) = 0)) then
+				begin
+				ATValItem:= -2;
+				Break;
+				end;
+
+//			Setup the list view for state
+			DoSetupListView;
+
+//			Perform the switch function immmediately and revert to display
+//					equipment mode (which should be compatible with config thus
+//					far)
+			if  f = mifSwitch then
+				begin
+				InvenSwitchWeapon;
+				f:= mifDispEquipped;
+				end;
+
+//			Display data
+			DoDisplay;
+
+//			Display command list and prompt
+			test_flag:= False;
+			repeat
+				DoDisplayPrompt;
+
+				inkey(command);
+				com_val:= Ord(command);
+				case com_val of
+					0, 3, 10, 13, 25, 26, 27, 32:
+						begin { Exit from module }
+						if not (f in [mifWear, mifTakeOff, mifDispEquipped]) then
+							exit_flag:= True
+						else
+							f:= mifDispFull;
+
+						test_flag:= True;
+						end;
+					8:
+						begin
+						lst.CurrentTab:= lst.CurrentTab - 1;
+						DoInitialiseItems;
+						DoSetupListView;
+						DoDisplay;
+						end;
+					9:
+						begin
+						lst.CurrentTab:= lst.CurrentTab + 1;
+						DoInitialiseItems;
+						DoSetupListView;
+						DoDisplay;
+						end;
+					49..56:
+						begin
+						t:= TMoriaInvenType(com_val - 49);
+						for i:= 0 to Length(det.Tabs) - 1 do
+							if det.Tabs[i] = t then
+								begin
+								lst.CurrentTab:= i;
+								DoInitialiseItems;
+								DoSetupListView;
+								DoDisplay;
+								end;
+						end;
+					46, 62:
+						begin
+						lst.CurrentPage:= lst.CurrentPage + 1;
+						DoDisplay;
+						end;
+					44, 60:
+						begin
+						lst.CurrentPage:= lst.CurrentPage -- 1;
+						DoDisplay;
+						end
+					else
+						if  f = mifTakeOff then
+							begin
+							if  com_val in [97..122] then
+								begin
+								itm:= com_val - 97 +
+										(lst.CurrentPage * lst.PageSize);
+								if  itm < lst.ItemCount then
+									InvenUnwear(mitWornWielding, itm);
+								DoDisplay;
+								end;
+							end
+						else if f = mifWear then
+							begin
+							if  com_val in [97..122] then
+								begin
+								itm:= com_val - 97 +
+										(lst.CurrentPage * lst.PageSize);
+								if  itm < lst.ItemCount then
+									InvenWear(det.Tabs[lst.CurrentTab], itm);
+								DoDisplay;
+								end;
+							end
+						else if f = mifDispPartial then
+							begin
+							if  com_val in [97..122] then
+								begin
+								itm:= com_val - 97 +
+										(lst.CurrentPage * lst.PageSize);
+								if  itm < lst.ItemCount then
+									begin
+									ATValType:= det.Tabs[lst.CurrentTab];
+									ATValItem:= det.SubItems[itm];
+
+									test_flag:= True;
+									exit_flag:= True;
+									end;
+								end;
+							end
+						else if f <> mifDispPartial then
+							case command of { Module commands }
+								'e', 'E':
+									begin
+									test_flag:= True;
+									f:= mifDispEquipped;
+									end;
+								'i', 'I':
+									begin
+									test_flag:= True;
+									f:= mifDispFull;
+									end;
+								't', 'T':
+									begin
+									test_flag:= True;
+									f:= mifTakeOff;
+									end;
+								'w', 'W':
+									begin
+									test_flag:= True;
+									f:= mifWear;
+									end;
+								'x', 'X':
+									begin
+									test_flag:= True;
+									f:= mifSwitch;
+									end;
+								'?':
+									; { Trap special feature }
+								else
+									; { Nonsense command }
+								end;
+					end;
+				until test_flag;
+
+			prt('', 1, 1);
+			prt('', 23, 1);
+			prt('', 24, 1);
+			until exit_flag;
+
+		finally
+		lst.Free;
+
+		SetLength(det.Tabs, 0);
+		SetLength(det.SubItems, 0);
+		end;
+
+	Result:= dirty;
+	end;
+
+function ShowInventory(AFunc: TMoriaInvenFunc;
+		const AStart: TMoriaInvenType = mitWeapons): Boolean; overload;
+	var
+	t: TMoriaInvenType;
+	i: Integer;
+
+	begin
+	Result:= ShowInventory(AFunc, [], t, i, '', AStart);
+	end;
+
+function ShowInventory(AFunc: TMoriaInvenFunc; var AType: TMoriaInvenType;
+		const AStart: TMoriaInvenType = mitWeapons): Boolean; overload;
+	var
+	i: Integer;
+
+	begin
+	Result:= ShowInventory(AFunc, [], AType, i, '', AStart);
+	end;
+
+function GetItemFromInv(var AType: TMoriaInvenType; var AItem: Integer;
+		AMsg, ANoneMsg: VType; var ARedraw: Boolean; ATVals: Obj_Set;
+		const AStart: TMoriaInvenType = mitWeapons): Boolean;
+	begin
+	ARedraw:= ShowInventory(mifDispPartial, ATVals, AType, AItem, AMsg, AStart);
+
+	if  AItem = -2 then
+		prt(ANoneMsg, STR_CLR_NMHHLT, 1, 1);
+
+	Result:= AItem > -1;
+	end;
+

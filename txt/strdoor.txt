@@ -1,0 +1,7 @@
+'The entrance to the General Store',110,'1','$00000000',0,0,101,0,0,0,0,0,0,'0d0',0
+'The entrance to the Armory',110,'2','$00000000',0,0,102,0,0,0,0,0,0,'0d0',0
+'The entrance to the Weapon Smiths',110,'3','$00000000',0,0,103,0,0,0,0,0,0,'0d0',0
+'The entrance to the Temple',110,'4','$00000000',0,0,104,0,0,0,0,0,0,'0d0',0
+'The entrance to the Alchemy Shop',110,'5','$00000000',0,0,105,0,0,0,0,0,0,'0d0',0
+'The entrance to the Magic Shop',110,'6','$00000000',0,0,106,0,0,0,0,0,0,'0d0',0
+'The entrance to the Black Market',110,'7','$00000000',0,0,107,0,0,0,0,0,0,'0d0',1

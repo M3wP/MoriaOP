@@ -1,0 +1,21 @@
+'Erick the Honest       (Human)      General Store',250,0.75,0.08,0.04,1,12
+'Mauglin the Grumpy     (Dwarf)      Armory',32000,1.00,0.12,0.04,6,5
+'Arndal Beast-Slayer    (Half-Elf)   Weaponsmith',10000,0.85,0.10,0.05,2,8
+'Hardblow the Humble    (Human)      Temple',3500,0.75,0.09,0.06,1,15
+'Ga-nat the Greedy      (Gnome)      Alchemist',12000,1.20,0.15,0.04,5,9
+'Valeria Starshine      (Elf)        Magic Shop',32000,0.75,0.10,0.05,3,11
+'Ugluk the Ugly         (Orc)        Black Market',10000000,2.5,1.5,0.01,7,6
+'Andy the Friendly      (Halfling)   General Store',200,0.70,0.08,0.05,4,15
+'Darg-Low the Grim      (Human)      Armory',10000,0.90,0.11,0.04,1,9
+'Oglign Dragon-Slayer   (Dwarf)      Weaponsmith',32000,0.95,0.12,0.04,6,8
+'Gunnar the Paladin     (Human)      Temple',5000,0.85,0.10,0.05,1,23
+'Mauser the Chemist     (Half-Elf)   Alchemist',10000,0.90,0.11,0.05,2,8
+'Gopher the Great!      (Gnome)      Magic Shop',20000,1.15,0.13,0.06,5,10
+'Gloin the Fierce       (Dwarf)      Black Market',20000000,2.5,1.5,0.01,6,4
+'Lyar-el the Comely     (Elf)        General Store',300,0.65,0.07,0.06,3,18
+'Mauglim the Horrible   (Half-Orc)   Armory',3000,1.00,0.13,0.05,7,9
+'Ithyl-Mak the Beastly  (Half-Troll) Weaponsmith',3000,1.10,0.15,0.06,8,8
+'Delihla the Pure       (Half-Elf)   Temple',25000,0.80,0.07,0.06,2,20
+'Wizzle the Chaotic     (Halfling)   Alchemist',10000,0.90,0.10,0.06,4,8
+'Inglorian the Mage     (Human?)     Magic Shop',32000,1.00,0.10,0.07,1,10
+'Grima Wormtongue       (Human?)     Black Market',15000000,2.5,1.5,0.01,1,5

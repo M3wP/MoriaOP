@@ -1,0 +1,255 @@
+{ Warrior },'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+
+{ Mage },'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+
+{ Priest },'Detect Evil',    1,  1, 3,  15, False
+ ,'Cure Light Wounds',    1,  2, 4,  25, False
+ ,'Bless',      1,  2, 3,  25, False
+ ,'Remove Fear',          1,  2, 3,  25, False
+ ,'Call Light',    3,  2, 6,  25, False
+ ,'Find Traps',    3,  3, 8,  30, False
+ ,'Detect Doors/Stairs',  3,  3, 8,  30, False
+ ,'Slow Poison',    3,  3,  10,  27, False
+ ,'Blind Creature',    5,  4,  16,  27, False
+ ,'Portal',     5,  4,  20,  27, False
+ ,'Cure Medium Wounds',  5,  4,  20,  30, False
+ ,'Chant',     5,  5,  20,  30, False
+ ,'Sanctuary',      7,  5,  30,  30, False
+ ,'Create Food',    7,  5,  30,  40, False
+ ,'Remove Curse',    7,  6,  35,  40, False
+ ,'Resist Heat and Cold',  7,  7,  35,  40, False
+ ,'Neutralize Poison',    9,  6,  40,  35, False
+ ,'Orb of Draining',    9,  7,  40,  35, False
+ ,'Cure Serious Wounds',  9,  7,  40,  40, False
+ ,'Sense Invisible',  11,  8,  40,  40, False
+ ,'Protection from Evil', 11,  8,  50,  40, False
+ ,'Earthquake',  11,  9,  60,  50, False
+ ,'Sense Surroundings', 13, 10,  60,  45, False
+ ,'Cure Critical Wounds', 13, 11,  65,  45, False
+ ,'Turn Undead',  15, 12,  80,  45, False
+ ,'Prayer',    15, 14,  90,  45, False
+ ,'Dispell Undead',  17, 14, 125,  50, False
+ ,'Heal',    21, 16, 150,  55, False
+ ,'Dispell Evil',  25, 20, 300,  60, False
+ ,'Glyph of Warding',  33, 24, 500,  75, False
+ ,'Holy Word',   39, 32, 800,  95, False
+
+{ Rogue },'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+
+{ Ranger },'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ 
+{ Paladin },'Detect Evil', 1, 1,4, 30,False
+ ,'Cure Light Wounds', 2, 2,8, 35,False
+ ,'Bless', 3, 3, 12, 35,False
+ ,'Remove Fear', 5, 3, 20, 35,False
+ ,'Call Light', 5, 4, 20, 35,False
+ ,'Find Traps', 7, 5, 25, 40,False
+ ,'Detect Doors/Stairs', 7, 5, 25, 40,False
+ ,'Slow Poison', 9, 7, 30, 40,False
+ ,'Blind Creature', 9, 7, 30, 40,False
+ ,'Portal', 9, 8, 30, 40,False
+ ,'Cure Medium Wounds',11, 9, 40, 40,False
+ ,'Chant',11,10, 40, 45,False
+ ,'Sanctuary',11,10, 40, 45,False
+ ,'Create Food',13,10, 50, 45,False
+ ,'Remove Curse',13,11, 50, 45,False
+ ,'Resist Heat and Cold',15,13, 60, 45,False
+ ,'Neutralize Poison',15,15, 60, 50,False
+ ,'Orb of Draining',17,15, 70, 50,False
+ ,'Cure Serious Wounds',17,15, 70, 50,False
+ ,'Sense Invisible',19,15, 75, 50,False
+ ,'Protection from Evil',19,15, 75, 50,False
+ ,'Earthquake',21,17, 80, 50,False
+ ,'Sense Surroundings',23,17, 80, 50,False
+ ,'Cure Critical Wounds',25,20, 80, 50,False
+ ,'Turn Undead',27,21, 90, 50,False
+ ,'Prayer',29,22, 95, 50,False
+ ,'Dispell Undead',31,24,100, 60,False
+ ,'Heal',33,28,125, 60,False
+ ,'Dispell Evil',35,32,150, 70,False
+ ,'Glyph of Warding',37,36,200, 90,False
+ ,'Holy Word',39,38,500, 95,False
+
+{Consultant},'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+
+{Consultant},'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False

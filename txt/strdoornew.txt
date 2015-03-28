@@ -1,0 +1,7 @@
+(name: 'The entrance to the General Store'; tval: 110; tchar: '1'; flags: $00000000; p1: 0; cost: 0; subval: 101; weight: 0; number: 0; tohit: 0; todam: 0; ac: 0; toac: 0; damage: '0d0'; level: 0),
+(name: 'The entrance to the Armory'; tval: 110; tchar: '2'; flags: $00000000; p1: 0; cost: 0; subval: 102; weight: 0; number: 0; tohit: 0; todam: 0; ac: 0; toac: 0; damage: '0d0'; level: 0),
+(name: 'The entrance to the Weapon Smiths'; tval: 110; tchar: '3'; flags: $00000000; p1: 0; cost: 0; subval: 103; weight: 0; number: 0; tohit: 0; todam: 0; ac: 0; toac: 0; damage: '0d0'; level: 0),
+(name: 'The entrance to the Temple'; tval: 110; tchar: '4'; flags: $00000000; p1: 0; cost: 0; subval: 104; weight: 0; number: 0; tohit: 0; todam: 0; ac: 0; toac: 0; damage: '0d0'; level: 0),
+(name: 'The entrance to the Alchemy Shop'; tval: 110; tchar: '5'; flags: $00000000; p1: 0; cost: 0; subval: 105; weight: 0; number: 0; tohit: 0; todam: 0; ac: 0; toac: 0; damage: '0d0'; level: 0),
+(name: 'The entrance to the Magic Shop'; tval: 110; tchar: '6'; flags: $00000000; p1: 0; cost: 0; subval: 106; weight: 0; number: 0; tohit: 0; todam: 0; ac: 0; toac: 0; damage: '0d0'; level: 0),
+(name: 'The entrance to the Black Market'; tval: 110; tchar: '7'; flags: $00000000; p1: 0; cost: 0; subval: 107; weight: 0; number: 0; tohit: 0; todam: 0; ac: 0; toac: 0; damage: '0d0'; level: 1));

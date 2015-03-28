@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="9"/>
+    <BuildModes Active="Default"/>
+    <Units Count="39">
+      <Unit0>
+        <Filename Value="Moria.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="147"/>
+        <CursorPos X="1" Y="77"/>
+        <UsageCount Value="87"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="src\win\Console.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Console"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="39"/>
+        <CursorPos X="28" Y="50"/>
+        <UsageCount Value="87"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="src\SimpleScreen.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SimpleScreen"/>
+        <EditorIndex Value="32"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="14"/>
+        <CursorPos X="14" Y="20"/>
+        <UsageCount Value="87"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="src\CRTScreen.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UsageCount Value="87"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="src\ScrListView.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ScrListView"/>
+        <EditorIndex Value="28"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="184"/>
+        <CursorPos X="1" Y="197"/>
+        <UsageCount Value="87"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="inc\types.inc"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="371"/>
+        <CursorPos X="38" Y="393"/>
+        <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="inc\userid.inc"/>
+        <EditorIndex Value="31"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="10" Y="3"/>
+        <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1242"/>
+        <CursorPos X="35" Y="1257"/>
+        <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="inc\MORIA.INC"/>
+        <EditorIndex Value="12"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="299"/>
+        <CursorPos X="1" Y="302"/>
+        <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="inc\CONSTANTS.INC"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="15"/>
+        <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="inc\TABLES.INC"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1251"/>
+        <CursorPos X="5" Y="1258"/>
+        <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="inc\DESC.INC"/>
+        <EditorIndex Value="30"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="223"/>
+        <CursorPos X="1" Y="245"/>
+        <UsageCount Value="43"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="src\unix\crt.pas"/>
+        <UnitName Value="Crt"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="19"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="3"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\..\..\lazarus\fpc\2.6.2\source\rtl\win32\windows.pp"/>
+        <UnitName Value="windows"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="19"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="4"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\..\..\lazarus\fpc\2.6.2\source\rtl\win\wininc\struct.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1000"/>
+        <CursorPos X="16" Y="1015"/>
+        <UsageCount Value="4"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="src\win\textrec.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="3"/>
+        <CursorPos X="1" Y="1"/>
+        <UsageCount Value="4"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="inc\variables.inc"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="2859"/>
+        <CursorPos X="27" Y="2868"/>
+        <UsageCount Value="42"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="inc\MISC.INC"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4576"/>
+        <CursorPos X="1" Y="4606"/>
+        <UsageCount Value="39"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="inc\black_market.inc"/>
+        <EditorIndex Value="29"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="735"/>
+        <CursorPos X="20" Y="754"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="inc\MAIN.INC"/>
+        <EditorIndex Value="10"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="95"/>
+        <CursorPos X="1" Y="116"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="inc\SPELLS.INC"/>
+        <EditorIndex Value="26"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="221"/>
+        <CursorPos X="1" Y="348"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="inc\WIZARD.INC"/>
+        <EditorIndex Value="27"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="465"/>
+        <CursorPos X="18" Y="489"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="inc\CREATURE.INC"/>
+        <EditorIndex Value="9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="255"/>
+        <CursorPos X="3" Y="267"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="inc\SCROLLS.INC"/>
+        <EditorIndex Value="14"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="23"/>
+        <CursorPos X="1" Y="162"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="inc\EAT.INC"/>
+        <EditorIndex Value="17"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="3" Y="7"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="inc\EXTRA.INC"/>
+        <EditorIndex Value="18"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="31" Y="23"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="inc\IO.INC"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="277"/>
+        <CursorPos X="11" Y="290"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="inc\MAGIC.INC"/>
+        <EditorIndex Value="19"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="15" Y="3"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="inc\POTIONS.INC"/>
+        <EditorIndex Value="24"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="3" Y="7"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="inc\PRAYER.INC"/>
+        <EditorIndex Value="25"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="3" Y="6"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="inc\STAVES.INC"/>
+        <EditorIndex Value="15"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="1" Y="15"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="inc\WANDS.INC"/>
+        <EditorIndex Value="16"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="23"/>
+        <CursorPos X="62" Y="37"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="inc\STORE2.INC"/>
+        <EditorIndex Value="20"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1190"/>
+        <CursorPos X="61" Y="1217"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="inc\STORE1.INC"/>
+        <EditorIndex Value="21"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="439"/>
+        <CursorPos X="30" Y="440"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="inc\FILES.INC"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="759"/>
+        <CursorPos X="48" Y="772"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="inc\SAVE.INC"/>
+        <EditorIndex Value="22"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1005"/>
+        <CursorPos X="44" Y="1031"/>
+        <UsageCount Value="18"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="inc\CREATE.INC"/>
+        <EditorIndex Value="23"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="5"/>
+        <CursorPos X="1" Y="20"/>
+        <UsageCount Value="18"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="inc\HELP.INC"/>
+        <EditorIndex Value="13"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="805"/>
+        <CursorPos X="35" Y="939"/>
+        <UsageCount Value="16"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="inc\DEATH.INC"/>
+        <EditorIndex Value="11"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="456"/>
+        <CursorPos X="21" Y="472"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit38>
+    </Units>
+    <General>
+      <ActiveWindowIndexAtStart Value="0"/>
+    </General>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1376" Column="58" TopLine="1355"/>
+      </Position1>
+      <Position2>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1369" Column="31" TopLine="1355"/>
+      </Position2>
+      <Position3>
+        <Filename Value="inc\MORIA.INC"/>
+        <Caret Line="2564" Column="37" TopLine="2548"/>
+      </Position3>
+      <Position4>
+        <Filename Value="inc\MORIA.INC"/>
+        <Caret Line="2524" Column="8" TopLine="2511"/>
+      </Position4>
+      <Position5>
+        <Filename Value="inc\MORIA.INC"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position5>
+      <Position6>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1369" Column="60" TopLine="1347"/>
+      </Position6>
+      <Position7>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="895" Column="1" TopLine="870"/>
+      </Position7>
+      <Position8>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1392" Column="70" TopLine="1378"/>
+      </Position8>
+      <Position9>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="886" Column="10" TopLine="872"/>
+      </Position9>
+      <Position10>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1392" Column="68" TopLine="1372"/>
+      </Position10>
+      <Position11>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="886" Column="10" TopLine="872"/>
+      </Position11>
+      <Position12>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1392" Column="70" TopLine="1378"/>
+      </Position12>
+      <Position13>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="886" Column="54" TopLine="874"/>
+      </Position13>
+      <Position14>
+        <Filename Value="Moria.lpr"/>
+        <Caret Line="36" Column="80" TopLine="142"/>
+      </Position14>
+      <Position15>
+        <Filename Value="inc\MAIN.INC"/>
+        <Caret Line="193" Column="11" TopLine="377"/>
+      </Position15>
+      <Position16>
+        <Filename Value="Moria.lpr"/>
+        <Caret Line="36" Column="80" TopLine="142"/>
+      </Position16>
+      <Position17>
+        <Filename Value="inc\MAIN.INC"/>
+        <Caret Line="430" Column="11" TopLine="395"/>
+      </Position17>
+      <Position18>
+        <Filename Value="inc\MAIN.INC"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position18>
+      <Position19>
+        <Filename Value="inc\MAIN.INC"/>
+        <Caret Line="116" Column="20" TopLine="93"/>
+      </Position19>
+      <Position20>
+        <Filename Value="inc\DEATH.INC"/>
+        <Caret Line="461" Column="13" TopLine="437"/>
+      </Position20>
+      <Position21>
+        <Filename Value="inc\DEATH.INC"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position21>
+      <Position22>
+        <Filename Value="inc\DEATH.INC"/>
+        <Caret Line="405" Column="1" TopLine="381"/>
+      </Position22>
+      <Position23>
+        <Filename Value="inc\DEATH.INC"/>
+        <Caret Line="426" Column="1" TopLine="426"/>
+      </Position23>
+      <Position24>
+        <Filename Value="Moria.lpr"/>
+        <Caret Line="36" Column="80" TopLine="142"/>
+      </Position24>
+      <Position25>
+        <Filename Value="inc\MAIN.INC"/>
+        <Caret Line="193" Column="11" TopLine="248"/>
+      </Position25>
+      <Position26>
+        <Filename Value="inc\MAIN.INC"/>
+        <Caret Line="210" Column="24" TopLine="189"/>
+      </Position26>
+      <Position27>
+        <Filename Value="inc\DEATH.INC"/>
+        <Caret Line="407" Column="1" TopLine="389"/>
+      </Position27>
+      <Position28>
+        <Filename Value="inc\MISC.INC"/>
+        <Caret Line="3599" Column="1" TopLine="3579"/>
+      </Position28>
+      <Position29>
+        <Filename Value="inc\DEATH.INC"/>
+        <Caret Line="174" Column="1" TopLine="75"/>
+      </Position29>
+      <Position30>
+        <Filename Value="inc\DEATH.INC"/>
+        <Caret Line="53" Column="24" TopLine="39"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="2">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="inc\HELP.INC"/>
+        <Line Value="862"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="inc\STAVES.INC"/>
+        <Line Value="14"/>
+      </Item2>
+    </BreakPoints>
+  </Debugging>
+  <EditorMacros Count="0"/>
+</CONFIG>

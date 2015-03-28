@@ -1,0 +1,255 @@
+{ Warrior }, '', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ 
+{ Mage }, 'Magic Missle',    1,  1, 5,  22, False
+ ,'Detect Monsters',   1,  1, 5,  27, False 
+ ,'Phase Door',      1,  2, 4,  22, False 
+ ,'Light Area',   1,  2, 4,  25, False 
+ ,'Cure Light Wounds',   3,  3, 8,  25, False 
+ ,'Find Hidden Traps/Doors',  3,  3, 6,  45, False 
+ ,'Stinking Cloud',    3,  4, 8,  27, False 
+ ,'Confusion',    3,      4, 6,  32, False 
+ ,'Lightning Bolt',    5,  4,  25,  32, False 
+ ,'Trap/Door Destruction',  5,  5,  30,  37, False 
+ ,'Sleep I',     5,  5,  20,  32, False 
+ ,'Cure Poison',         5,  5,  25,  37, False 
+ ,'Teleport Self',   7,  6,  35,  37, False 
+ ,'Remove Curse',      7,  6,  40,  50, False 
+ ,'Frost Bolt',   7,  6,  50,  40, False 
+ ,'Turn Stone to Mud',   9,  7,  75,  44, False 
+ ,'Identify',            9,  7,  75,  95, False 
+ ,'Recharge Item I',    9,  7,  90,  70, False 
+ ,'Sleep II',      9,      7,  75,  45, False 
+ ,'Polymorph Other',    11,  7, 100,  45, False 
+ ,'Create Food',        11,  7,  75,  50, False 
+ ,'Sleep III',   13,  7,  90,  50, False 
+ ,'Fire Bolt',   15,      9, 100,  50, False 
+ ,'Slow Monster',      17,  9, 125,  50, False 
+ ,'Frost Ball',         19, 12, 150,  52, False 
+ ,'Recharge Item II',  21, 12, 175,  85, False 
+ ,'Teleport Other',  23, 12, 200,  60, False 
+ ,'Haste Self',  25, 12, 250,  60, False 
+ ,'Fire Ball',   29, 18, 350,  60, False 
+ ,'Word of Destruction', 33, 21, 500,  75, False 
+ ,'Genocide',   37, 25, 800,  95,  False  
+
+{ Priest }, '', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ 
+{ Rogue }, '', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ 
+{ Ranger }, 'Magic Missle',      3,  1, 6,  30, False
+ ,'Detect Monsters',   3,  2, 6,  35, False 
+ ,'Phase Door',   3,  2, 8,  35, False 
+ ,'Light Area',   5,  3, 8,  35, False 
+ ,'Cure Light Wounds',   5,  3, 8,  40, False 
+ ,'Find Hidden Traps/Doors',  5,  4,  10,  45, False 
+ ,'Stinking Cloud',   7,    6,  24,  40, False 
+ ,'Confusion',    7,  6,  20,  40, False 
+ ,'Lightning Bolt',   9,  7,  30,  40, False 
+ ,'Trap/Door Destruction',  9,  8,  30,  45, False 
+ ,'Sleep I',   11,  8,  40,  40, False 
+ ,'Cure Poison',  11,  9,  40,  45, False 
+ ,'Teleport Self',  13, 10,  50,  45, False 
+ ,'Remove Curse',  13, 11,  50,  55, False 
+ ,'Frost Bolt',  15, 12,  60,  50, False 
+ ,'Turn Stone to Mud',  15, 13,  60,  50, False 
+ ,'Identify',   17, 25,  80,  95, False 
+ ,'Recharge Item I',  17, 17,  70,  90, False 
+ ,'Sleep II',   21, 17,  70,  55, False 
+ ,'Polymorph Other',  21, 19,  70,  60, False 
+ ,'Create Food',  23, 17,  60,  55, False 
+ ,'Sleep III',   23, 20,  80,  60, False 
+ ,'Fire Bolt',   25, 20,  80,  60, False 
+ ,'Slow Monster',  25, 21,  80,  65, False 
+ ,'Frost Ball',  27, 21,  90,  65, False 
+ ,'Recharge Item II',  29, 23,  90,  95, False 
+ ,'Teleport Other',  31, 25, 100,  70, False 
+ ,'Haste Self',  33, 25, 150,  75, False 
+ ,'Fire Ball',         35, 25, 200,  80, False 
+ ,'Word of Destruction', 37, 30, 500,  95, False 
+ ,'',    99, 99,   0,   0, False 
+  
+{ Paladin }, '', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ 
+{Consultant}, '', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ 
+{Consultant}, '', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False
+ ,'', 99, 99,  0,  0, False 
+ ,'', 99, 99,  0,  0, False

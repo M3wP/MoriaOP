@@ -1,0 +1,659 @@
+{ Init players with some belongings }
+//[psect(setup$code)]
+procedure char_inven_init;
+	var
+	i1,
+	i2,
+	dummy: Integer;
+
+	begin
+	for i1 := 1 to 9 do
+		begin
+		i2 := player_init[py.misc.pclass,i1];
+		inventory[inven_max] := inventory_init[i2];
+		inven_carry(dummy);
+		end;
+	end;
+
+
+{ Gets a name for the character }
+//[psect(create$code)]
+procedure get_name;
+	begin
+	prt('Enter Your Player''s Name  [Press <RETURN> When Finished]',
+			STR_CLR_NMHHLT ,22,3);
+	get_string(py.misc.name,3,11,24);
+	clear(21,1);
+	end;
+
+
+{ Chances the name of the character }
+//[psect(create$code)]
+procedure change_name;
+	var
+	c: AnsiChar;
+	flag: Boolean;
+
+	begin
+	flag := False;
+	display_char;
+	repeat
+		prt('<C>hange Character Name.     <ESCAPE> to Continue.',
+				STR_CLR_NMHHLT, 22,3);
+		inkey(c);
+		case ord(c) of
+			99:
+				get_name;
+			0,3,25,26,27:
+				Flag := True;
+			else
+				;
+			end;
+		until (flag);
+	end;
+
+
+//[psect(create$code)]
+procedure create_character;
+	var
+	step: TMoriaCreateStep;
+
+{ Generates character's stats }
+	function get_stat : integer;
+		var
+		i: Integer;
+//		j : integer;
+
+		begin
+		i := randint(4) + randint(4) + randint(3) + 6;
+		get_stat := i
+		end;
+
+
+{ Changes stats by given amount }
+	function change_stat(cur_stat,amount : integer) : integer;
+		var
+		i : integer;
+
+		begin
+		if (amount < 0) then
+			for i := -1 downto amount do
+				cur_stat := de_statp(cur_stat)
+		else
+			for i := 1 to amount do
+				cur_stat := in_statp(cur_stat);
+		change_stat := cur_stat;
+		end;
+
+{Get stats - mwk}
+	function roll_stats(i2:integer):boolean;
+		begin
+		roll_stats:=true;
+
+//dengland Be more specific about these while I'm at it.
+//		with py do
+//			with race[i2] do
+				begin
+//				with stat do
+					begin
+					py.stat.str    := get_stat;
+					py.stat.int    := get_stat;
+					py.stat.wis    := get_stat;
+					py.stat.dex    := get_stat;
+					py.stat.con    := get_stat;
+					py.stat.chr    := get_stat;
+					py.stat.str    := change_stat(py.stat.str, race[i2].str_adj);
+					py.stat.int    := change_stat(py.stat.int, race[i2].int_adj);
+					py.stat.wis    := change_stat(py.stat.wis, race[i2].wis_adj);
+					py.stat.dex    := change_stat(py.stat.dex, race[i2].dex_adj);
+					py.stat.con    := change_stat(py.stat.con, race[i2].con_adj);
+					py.stat.chr    := change_stat(py.stat.chr, race[i2].chr_adj);
+					py.stat.cstr   := py.stat.str;
+					py.stat.cint   := py.stat.int;
+					py.stat.cwis   := py.stat.wis;
+					py.stat.cdex   := py.stat.dex;
+					py.stat.ccon   := py.stat.con;
+					py.stat.cchr   := py.stat.chr;
+					py.stat.astr   := 0;
+					py.stat.aint   := 0;
+					py.stat.awis   := 0;
+					py.stat.adex   := 0;
+					py.stat.acon   := 0;
+					py.stat.achr   := 0;
+//dengland I believe this was a bug.  Since it is actually in py.misc, it was
+//		assigning to the race srh.
+//					srh:= srh;
+					end;
+//				with misc do
+					begin
+//dengland I'm assuming this is what was supposed to be here instead of the above
+					py.misc.srh:= race[i2].srh;
+
+					py.misc.bth    := race[i2].bth;
+					py.misc.bthb   := race[i2].bthb;
+					py.misc.fos    := race[i2].fos;
+					py.misc.stl    := race[i2].stl;
+
+					py.misc.save   := race[i2].bsav;
+					py.misc.hitdie := race[i2].bhitdie;
+					py.misc.lev    := 1;
+					py.misc.ptodam := todam_adj;
+					py.misc.ptohit := tohit_adj;
+					py.misc.ptoac  := 0;
+					py.misc.pac    := toac_adj;
+					py.misc.expfact:= race[i2].b_exp;
+					end;
+				py.flags.see_infra := race[i2].infra
+				end
+		end;{roll_stats}
+
+
+{ Allows player to select a race }
+	procedure choose_race;
+		var
+		i2,i3,i4,i5 : integer;
+		s : AnsiChar;
+		exit_flag : boolean;
+		cs: AnsiString;
+
+		begin
+//		Result:= False;
+
+		i2 := 1;
+		i3 := 1;
+		i4 := 3;
+		i5 := 22;
+		cs:= STR_CLR_NMHHLT + STR_CLR_NMDLMT + STR_CLR_NORMAL;
+
+		clear(21,1);
+		prt('Choose a Race (? for Help, <Escape> to Quit): ', STR_CLR_NMHHLT, 21, 3);
+		repeat
+//dengland  In Delphi XE2, the compiler does an implicit cast.  Make it explicit
+//		so that the warning goes away (I don't like them).
+			put_buffer(AnsiString(AnsiChar(i3 + 96)+ ') ' + string(race[i2].trace)),
+					cs, i5, i4);
+			i3 := i3 + 1;
+			i4 := i4 + 15;
+			if (i4 > 70) then
+				begin
+				i4 := 3;
+				i5 := i5 + 1
+				end;
+			i2 := i2 + 1
+			until (i2 > max_races);
+		py.misc.race := '';
+		put_buffer('', STR_CLR_NMHHLT, 21, 49);
+
+		exit_flag := false;
+
+		repeat
+			inkey_flush(s);
+			i2 := index('abcdefghijklmnopqrstuvwxyz',s);
+			if ((i2 <= max_races) and (i2 >= 1)) then
+				with py do
+					with race[i2] do
+						begin
+						misc.prace  := i2;
+						misc.race   := trace;
+						roll_stats(i2);
+
+						exit_flag := True;
+//						choose_race := True;
+						Inc(step);
+
+						put_buffer(py.misc.race,STR_CLR_NORMAL, 4,11);
+						end
+			else if (s = '?') then
+				begin
+				moria_help('Character Races');
+				exit_flag := True;
+//				choose_race := false;
+				end
+			else if s = #27 then
+				begin
+				exit_flag:= True;
+				Dec(step);
+				end;
+			until (exit_flag);
+		end;
+
+
+{Will print the history of a character }
+	procedure print_history;
+		var
+		i1 : integer;
+
+		begin
+		clear(14,1);
+		put_buffer('Character Background',STR_CLR_NMHHLT, 14,28);
+		for i1 := 1 to 5 do
+			put_buffer(py.misc.history[i1], STR_CLR_NORMAL, i1+14,5)
+		end;
+
+
+{ Get the racial history, determines social class
+  Assumtions:   Each race has init history beginning at
+				(race-1)*3+1
+				All history parts are in accending order }
+	procedure get_history;
+		var
+		hist_ptr,cur_ptr,test_roll,
+		start_pos,end_pos,cur_len,
+		line_ctr,new_start,social_class : integer;
+//		history_block : varying [400] of char;
+		history_block : AnsiString;
+		flag : boolean;
+
+		begin
+		new_start:= 0;
+
+{ Get a block of history text }
+		hist_ptr := (py.misc.prace-1)*3 + 1;
+		history_block := '';
+		social_class := randint(4);
+		cur_ptr := 0;
+		repeat
+			flag := false;
+			repeat
+				cur_ptr := cur_ptr + 1;
+				if (background[cur_ptr].chart = hist_ptr) then
+					begin
+					test_roll := randint(100);
+					while (test_roll > background[cur_ptr].roll) do
+						cur_ptr := cur_ptr + 1;
+					with background[cur_ptr] do
+						begin
+						history_block := history_block + info;
+						social_class := social_class + bonus;
+						if (hist_ptr > next) then
+							cur_ptr := 0;
+						hist_ptr := next;
+						end;
+					flag := true;
+					end;
+				until(flag);
+			until(hist_ptr < 1);
+{ Process block of history text for pretty output }
+		start_pos := 1;
+		end_pos   := length(history_block);
+		line_ctr  := 1;
+		flag := false;
+		while (history_block[end_pos] = ' ') do
+			end_pos := end_pos - 1;
+		repeat
+			while (history_block[start_pos] = ' ') do
+				start_pos := start_pos + 1;
+			cur_len := end_pos - start_pos + 1;
+			if (cur_len > 70) then
+				begin
+				cur_len := 70;
+				while (history_block[start_pos+cur_len-1] <> ' ') do
+					cur_len := cur_len - 1;
+				new_start := start_pos + cur_len;
+				while (history_block[start_pos+cur_len-1] = ' ') do
+					cur_len := cur_len - 1;
+				end
+			else
+				flag := true;
+			py.misc.history[line_ctr] := Copy(history_block,start_pos,cur_len);
+			line_ctr := line_ctr + 1;
+			start_pos := new_start;
+			until(flag);
+{Compute social class for player}
+		if (social_class > 100) then
+			social_class := 100
+		else if (social_class < 1) then
+			social_class := 1;
+		py.misc.sc := social_class;
+		end;
+
+
+{Gets the character's sex }
+	procedure get_sex;
+		var
+		s : AnsiChar;
+		exit_flag : boolean;
+		cs: AnsiString;
+
+		begin
+		exit_flag:= False;
+//		Result:= False;
+
+		py.misc.sex := '';
+		clear(21,1);
+		prt('Choose a Sex (? for Help, <Escape> to go Back):', STR_CLR_NMHHLT, 21,3);
+
+		cs:= STR_CLR_NMHHLT + STR_CLR_NMDLMT +
+				StringOfChar(COLR_NORMAL, 12) +
+				STR_CLR_NMHHLT + STR_CLR_NMDLMT + STR_CLR_NORMAL;
+
+		prt('m) Male       f) Female', cs, 22,3);
+		prt('', STR_CLR_NMHHLT, 21, 51);
+		repeat
+			inkey_flush(s);
+			case s of
+				'f' :
+					begin
+					py.misc.sex := 'Female';
+					prt(py.misc.sex,5,11);
+					exit_flag := True;
+//					get_sex := true;
+					Inc(step);
+					end;
+				'm' :
+					begin
+					py.misc.sex := 'Male';
+					prt(py.misc.sex,5,11);
+					exit_flag := True;
+//					get_sex := true;
+					Inc(step);
+					end;
+				'?' :
+					begin
+					moria_help('Character Sex');
+					exit_flag := true;
+//					get_sex := false
+					end;
+				#27:
+					begin
+					exit_flag:= True;
+					Dec(step);
+					end
+				else
+				end;
+			until (exit_flag)
+		end;
+
+
+{Computes character's age, height, and weight }
+	procedure get_ahw;
+		var
+		i1 : integer;
+
+		begin
+		i1 := py.misc.prace;
+		py.misc.age := race[i1].b_age + randint(race[i1].m_age);
+		case (index(sex_type,py.misc.sex) + 5) div 6 of
+			1 :
+				begin
+				py.misc.ht := randnor(race[i1].f_b_ht,race[i1].f_m_ht);
+				py.misc.wt := randnor(race[i1].f_b_wt,race[i1].f_m_wt)
+				end;
+			2 :
+				begin
+				py.misc.ht := randnor(race[i1].m_b_ht,race[i1].m_m_ht);
+				py.misc.wt := randnor(race[i1].m_b_wt,race[i1].m_m_wt)
+				end
+			end;
+		py.misc.disarm := race[i1].b_dis + todis_adj;
+		end;
+
+	procedure adj_stats_class;
+		begin
+		with py.misc do
+			begin
+			hitdie := hitdie + class_[pclass].adj_hd;
+			mhp    := con_adj + hitdie;
+			chp    := mhp;
+			bth    := bth     + class_[pclass].mbth;
+			bthb   := bthb    + class_[pclass].mbthb;
+			srh    := srh     + class_[pclass].msrh;
+			disarm := disarm  + class_[pclass].mdis;
+			fos    := fos     + class_[pclass].mfos;
+			stl    := stl     + class_[pclass].mstl;
+			save   := save    + class_[pclass].msav;
+			title  := player_title[pclass,1];
+			expfact:= expfact + class_[pclass].m_exp;
+			end;
+{ Adjust the stats for the class adjustment }
+		with py do
+			begin
+			stat.str  := change_stat(stat.str, class_[misc.pclass].madj_str);
+			stat.int  := change_stat(stat.int, class_[misc.pclass].madj_int);
+			stat.wis  := change_stat(stat.wis, class_[misc.pclass].madj_wis);
+			stat.dex  := change_stat(stat.dex, class_[misc.pclass].madj_dex);
+			stat.con  := change_stat(stat.con, class_[misc.pclass].madj_con);
+			stat.chr  := change_stat(stat.chr, class_[misc.pclass].madj_chr);
+			stat.cstr := stat.str;
+			stat.cint := stat.int;
+			stat.cwis := stat.wis;
+			stat.cdex := stat.dex;
+			stat.ccon := stat.con;
+			stat.cchr := stat.chr;
+{ Real values }
+			misc.ptodam := todam_adj;
+			misc.ptohit := tohit_adj;
+			misc.ptoac  := toac_adj;
+			misc.pac    := 0;
+{ Displayed values }
+			misc.dis_td := misc.ptodam;
+			misc.dis_th := misc.ptohit;
+			misc.dis_tac:= misc.ptoac;
+			misc.dis_ac := misc.pac
+			end
+		end;
+
+
+{Gets a character class }
+	procedure get_class;
+		var
+		i1,i2,i3,i4,i5 : integer;
+		cl : array [0..max_class] of integer;
+		s : AnsiChar;
+		exit_flag : boolean;
+		cs: AnsiString;
+
+		begin
+//		Result:= False;
+
+		for i2 := 1 to max_class do
+			cl[i2] := 0;
+		i1 := py.misc.prace;
+		i2 := 1;
+		i3 := 0;
+		i4 := 3;
+		i5 := 22;
+
+		cs:= STR_CLR_NMHHLT + STR_CLR_NMDLMT + STR_CLR_NORMAL;
+
+		clear(21,1);
+		prt('Choose a Class (? for Help, <Escape> to go Back): ', STR_CLR_NMHHLT, 21,3);
+		repeat
+			if ((race[i1].tclass and bit_array[i2]) <> 0) then
+				begin
+				i3 := i3 + 1;
+//dengland  In Delphi XE2, the compiler does an implicit cast.  Make it explicit
+//		so that the warning goes away (I don't like them).
+				put_buffer(AnsiString(AnsiChar(i3 + 96)+') ' + string(class_[i2].title)),
+						cs, i5, i4);
+				cl[i3] := i2;
+				i4 := i4 + 15;
+				if (i4 > 70) then
+					begin
+					i4 := 3;
+					i5 := i5 + 1
+					end;
+				end;
+			i2 := i2 + 1;
+			until (i2 > max_class);
+		py.misc.pclass := 0;
+		put_buffer('', STR_CLR_NORMAL, 21, 53);
+		exit_flag := false;
+		repeat
+			inkey_flush(s);
+			i2 := index('abcdefghijklmnopqrstuvwxyz',s);
+			if ((i2 <= i3) and (i2 >= 1)) then
+				begin
+				py.misc.tclass := class_[cl[i2]].title;
+				py.misc.pclass := cl[i2];
+				exit_flag := true;
+//				get_class := true;
+				Inc(step);
+
+				clear(21,1);
+				put_buffer(py.misc.tclass, STR_CLR_NORMAL, 6,11);
+				end
+			else if (s = '?') then
+				begin
+				moria_help('Character Classes');
+				exit_flag := true;
+//				get_class := false
+				end
+			else if (s = chr(27)) then
+				begin
+				exit_flag := true;
+//				get_class := false
+				Dec(step);
+				end;
+			until(exit_flag);
+		end;
+
+	procedure get_stats;
+		var
+		s: AnsiChar;
+		cs: AnsiString;
+
+		begin
+		clear(21,1);
+		prt('Roll Stats (? for Help, <Escape> to go Back): ', STR_CLR_NMHHLT, 21, 3);
+
+		cs:= StringOfChar(COLR_NMHHLT, 7) + StringOfChar(COLR_NORMAL, 14) +
+				StringOfChar(COLR_NMHHLT, 7) + COLR_NORMAL;
+		prt('Any Key to Roll      <Enter> to Accept', cs, 22, 3);
+
+		put_buffer('', STR_CLR_NORMAL, 21, 49);
+
+		inkey_flush(s);
+		if s = '?' then
+			moria_help('Character Stats')
+		else if s = #13 then
+			Inc(step)
+		else if s = #27 then
+			Dec(step);
+		end;
+
+
+	procedure get_money;
+		var
+		tmp : integer;
+
+		begin
+		with py.stat do
+			tmp := cstr + cint + cwis + cdex + ccon + cchr;
+		with py.misc do
+			begin
+			au := sc*6 + randint(25) + 325;       { Social Class adj }
+			au := au - tmp;                       { Stat adj }
+			au := au + py.stat.cchr;              { Charisma adj }
+			if (au < 80) then
+				au := 80;           { Minimum }
+			end;
+		end;
+
+	procedure refresh_stats(ADoDisplay, ADoRoll, ADoStats: Boolean);
+		begin
+		if ADoDisplay then
+			begin
+			get_history;
+			get_ahw;
+			print_history;
+			put_misc1;
+			end;
+
+		if ADoRoll then
+			roll_stats(py.misc.prace);
+
+		if ADoStats then
+			put_stats;
+		end;
+
+{begin create procedure}
+	begin
+	step:= mcsChooseRace;
+	repeat
+		case step of
+			mcsChooseRace:
+				repeat
+					put_character;
+					choose_race;
+					until (step <> mcsChooseRace);
+			mcsChooseSex:
+				begin
+				while step = mcsChooseSex do
+					begin
+					get_sex;
+					put_character;
+					end;
+
+				if step = mcsChooseClass then
+//					refresh_stats(False, False)
+				else if step = mcsChooseRace then
+					begin
+					py.misc.race := '';
+					put_character;
+					end;
+				end;
+			mcsChooseClass:
+				while step = mcsChooseClass do
+					begin
+					get_class;
+
+					if step < mcsChooseClass then
+						begin
+						clear(1, 1);
+						py.misc.sex:= '';
+						refresh_stats(False, True, False);
+						put_character;
+						end
+					else
+						begin
+						adj_stats_class;
+						refresh_stats(True, False, True);
+						end;
+					end;
+			mcsRollStats:
+				begin
+				while step = mcsRollStats do
+					begin
+					get_stats;
+
+					if step = mcsRollStats then
+						begin
+						refresh_stats(True, True, False);
+						adj_stats_class;
+						put_stats;
+						end
+					else if step < mcsRollStats then
+						begin
+						py.misc.tclass:= '';
+						refresh_stats(False, True, False);
+						put_character;
+						end;
+					end;
+
+				if step = mcsGetName then
+					begin
+					get_money;
+					put_stats;
+					put_misc2;
+					put_misc3;
+					end;
+				end;
+			mcsGetName:
+				begin
+				get_name;
+				pause_exit(24, player_exit_pause);
+				Inc(step);
+				end;
+			end;
+		until step in [mcsCancel, mcsComplete];
+
+	if step = mcsCancel then
+		begin
+		Clear(1, 1);
+//		Halt(0);
+		raise EMoriaTerminate.Create('Creation Cancelled');
+		end;
+	end;
+
+

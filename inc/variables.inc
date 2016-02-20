@@ -18,8 +18,8 @@ var
 //	dengland  This has to be wrapped since it was used in the RandInt macro.
 //	seed : {[psect(player$data),global]} unsigned; { Contains seed # }
 
-	randes_seed : {[psect(setup$data)]} LongInt; { For encoding colors }
-	town_seed : {[psect(generate$data)]} LongInt; { Seed for town genera}
+	randes_seed : {[psect(setup$data)]} Integer; { For encoding colors }
+	town_seed : {[psect(generate$data)]} Integer; { Seed for town genera}
 
 	cur_height,
 	cur_width : {[psect(player$data)]} integer;  { Cur dungeon size}

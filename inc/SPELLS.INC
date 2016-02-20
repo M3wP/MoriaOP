@@ -1826,7 +1826,7 @@ function dispell_creature(cflag: integer; damage: integer): boolean;
 						monster_death(fy, fx, c_list[mptr].cmove);
 						with c_list[mptr] do
 							with py.misc do
-								exp:= exp + round(mexp * (level / lev));
+								exp:= exp + Round(mexp * (level / lev));
 						delete_monster(i1)
 						end
 					else

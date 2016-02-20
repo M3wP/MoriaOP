@@ -205,7 +205,7 @@ procedure eat;
 					if (flags <> 0) then
 						with py.misc do
 							begin
-							exp:= exp + round(level / lev);
+							exp:= exp + Round(level / lev);
 							prt_experience;
 							end;
 					add_food(p1);

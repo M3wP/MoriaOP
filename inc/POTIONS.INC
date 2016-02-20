@@ -394,7 +394,7 @@ procedure quaff;
 					if (flags <> 0) then
 						begin
 						with py.misc do
-							exp:= exp + round(level / lev);
+							exp:= exp + Round(level / lev);
 						prt_experience;
 						end;
 

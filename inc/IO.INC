@@ -21,7 +21,7 @@ function AddCharR(C: AnsiChar; const S: AnsiString; N: Integer): AnsiString;
 		Result:= Result + StringOfChar(C, N - l);
 	end;
 
-function Hex2Dec(const S: AnsiString): LongInt;
+function Hex2Dec(const S: AnsiString): Integer;
 	var
 	HexStr: AnsiString;
 
@@ -50,7 +50,8 @@ function Sscanf(const S: AnsiString; const fmt: AnsiString;
 	var
 	i, j, N, m: Integer;
 	s1: AnsiString;
-	l: LongInt;
+//dengland Was LongInt but that would cause problems in 64bit land.
+	l: Integer;
 	X: Extended;
 
 	function GetInt: Integer;
@@ -165,10 +166,11 @@ function Sscanf(const S: AnsiString; const fmt: AnsiString;
 		case j of
 			vtInteger:
 				begin
-				if GetInt > 0 then
+				if  GetInt > 0 then
 					begin
 					l:= StrToInt(string(s1));
-					Move(l, Pointers[i]^, SizeOf(LongInt));
+//dengland Was LongInt but that would cause problems in 64bit land.
+					Move(l, Pointers[i]^, SizeOf(Integer));
 					Inc(Result);
 					end
 				else

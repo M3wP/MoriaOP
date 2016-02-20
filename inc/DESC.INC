@@ -80,7 +80,8 @@ procedure rantitle(var title: VType);
 { Initialize all Potions, wands, staves, scrolls, ect..}
 //[psect(setup$code)]
 //dengland Can't use Unsigned, must use LongInt because the seeds are Integer.
-procedure magic_init(random_seed: LongInt);
+//		Err..  Don't use LongInt use Integer because of 64bit land issues.
+procedure magic_init(random_seed: Integer);
 	var
 	i1, tmpv: integer;
 	tmps:     vtype;

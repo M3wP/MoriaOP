@@ -1,18 +1,18 @@
 { Use date and time to produce random seed }
 //[psect(setup$code)]
-function get_seed: LongInt;
+function get_seed: Integer;
 	begin
 	Randomize;
 	get_seed:= System.RandSeed;
 	end;
 
 //dengland  Wrap System.RandSeed
-function  GetSeed: LongInt;
+function  GetSeed: Integer;
 	begin
 	Result:= System.RandSeed;
 	end;
 
-procedure SetSeed(AValue: LongInt);
+procedure SetSeed(AValue: Integer);
 	begin
 	System.RandSeed:= AValue;
 	end;
@@ -62,7 +62,7 @@ function randnor(mean, stand: Integer): Integer;
 { Returns position of first set bit }
 function bit_pos(var test: Unsigned): Integer;
 	var
-	bit: LongWord;
+	bit: Cardinal;
 	f: Byte;
 
 	begin

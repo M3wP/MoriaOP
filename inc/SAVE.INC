@@ -109,7 +109,7 @@ procedure DoSaveChar(fnam: ShortString; var flag: Boolean; ADoDisplay: Boolean);
 	i2,
 	trys: integer;
 	xfloor: unsigned;
-	save_seed: LongInt;
+	save_seed: Integer;
 	saveline: vtype;
 	temp: string[70];
 	out_rec,
@@ -603,7 +603,7 @@ function get_char(fnam: vtype): Boolean;
 	i4: Integer;
 //	dummy: Integer;
 	xfloor,
-	save_seed: LongInt;
+	save_seed: Integer;
 	save_ver_maj,
 	save_ver_min: Byte;
 	in_rec,
@@ -860,7 +860,7 @@ function get_char(fnam: vtype): Boolean;
 	sscanf(in_rec, '%d %d %d %d %d %d %d %d', [@ib1, @ib2, @ib3, @ib4, @ib5,
 			@ib6, @ib7, @ib8]);
 
-//dengland Reaccumulate the value in InvenAdd
+//dengland We'll reaccumulate the value by calling InvenAdd
 //	inven_ctr:= ib1;
 	inven_ctr:= 0;
 
@@ -906,7 +906,10 @@ function get_char(fnam: vtype): Boolean;
 			ac:= ib7;
 			toac:= ib8;
 			p1:= ib9;
-			flags:= ib10;
+//dengland  Whoops.  We're using the highest bit and that's causing negative numbers.
+//		We need to get the bit back.
+//			flags:= ib10;
+			PInteger(@flags)^:= ib10;
 			level:= ib11;
 			cost:= ib12;
 			end;
@@ -946,7 +949,10 @@ function get_char(fnam: vtype): Boolean;
 			ac:= ib7;
 			toac:= ib8;
 			p1:= ib9;
-			flags:= ib10;
+//dengland  Whoops.  We're using the highest bit and that's causing negative numbers.
+//		We need to get the bit back.
+//			flags:= ib10;
+			PInteger(@flags)^:= ib10;
 			level:= ib11;
 			cost:= ib12;
 			end;
@@ -1233,7 +1239,10 @@ function get_char(fnam: vtype): Boolean;
 				ac:= ib7;
 				toac:= ib8;
 				p1:= ib9;
-				flags:= ib10;
+//dengland Whoops.  We're using the highest bit and that's causing negative numbers.
+//		We need to get the bit back.
+//				flags:= ib10;
+				PInteger(@flags)^:= ib10;
 				level:= ib11;
 				cost:= ib12;
 				end;

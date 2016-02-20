@@ -352,7 +352,7 @@ procedure Intro;//(var finam: vtype);
 			end;
 		CloseFile(file1);
 
-		prt('[Press any key to continue, <F10> to confiure or <Control>-Z to exit]',
+		prt('[Press any key to continue, <F10> to configure or <Control>-Z to exit]',
 				STR_CLR_NMHHLT, 24, 5);
 
 		inkey(dummy);

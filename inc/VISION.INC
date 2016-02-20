@@ -28,7 +28,6 @@ function fixx(x: Integer): Integer; inline;
 	end;
 
 procedure fov(y, x, r, r_limited: Byte);
-
    { Return true for tile obscuring sight. }
 		function blocks(x, y, r: Byte): Boolean;
 			const
@@ -36,7 +35,7 @@ procedure fov(y, x, r, r_limited: Byte);
 
 			begin
 			if (r > r_limited) and not(cave[y, x].fval = 2) then
-				exit(true);
+				Exit(true);
 			if (cave[y, x].fval = 2) then
 				cave[y, x].pl:= true;
 			{ Permanently remember seen lit room squares. }
@@ -67,293 +66,300 @@ procedure fov(y, x, r, r_limited: Byte);
   7/66|55\4
   /666|555\
  }
-			var
-			A, B:   SmallInt;
-			Shot:   Boolean;
-			Fr, Lt: SmallInt;
-			dist:   SmallInt;
-
 			const
 			Dst = 1 / 65;
 			No  = 32;
 			Vr1 = No * Dst;
 			Vr2 = (No + 1) * Dst;
 
+			var
+			A, B:   SmallInt;
+			Shot:   Boolean;
+			Fr, Lt: SmallInt;
+			dist:   SmallInt;
+			rm: TRoundingMode;
+
 			begin
-			case Oct of
-				1:
-					begin
-					for A:= y - StDep downto fixy(y - r) do
+			rm:= GetRoundMode;
+			SetRoundMode(rmTruncate);
+			try
+				case Oct of
+					1:
 						begin
-						Shot:= false;
-						Fr  := fixx(x + Round((A - y) * StSlop));
-						Lt  := fixx(x + Round((A - y) * EdSlop));
-						if Lt < Fr then
-							Lt:= Fr;
-						for B := Fr to Lt do
+						for A:= y - StDep downto fixy(y - r) do
 							begin
-							if B - x > y - A then
-								dist:= B - x
-							else
-								dist     := y - A;
-							cave[A, B].tl:= true;
-							if blocks(B, A, dist) and (B = Fr) then
-								Shot:= true;
-							if blocks(B, A, dist) and (Shot = false) then
+							Shot:= false;
+							Fr  := fixx(x + Round((A - y) * StSlop));
+							Lt  := fixx(x + Round((A - y) * EdSlop));
+							if Lt < Fr then
+								Lt:= Fr;
+							for B := Fr to Lt do
 								begin
-								Shot:= true;
-								ShadowCast(Oct, y - A + 1, StSlop,
-									(x - B + Vr2) / (y - A - Vr1))
-								end;
-							if blocks(B, A, dist) and (B = Lt) then
-								exit;
-							if (not blocks(B, A, dist)) and (Shot = true) then
-								begin
-								Shot  := false;
-								StSlop:= (x - B + Vr1) / (y - A + Vr1);
+								if B - x > y - A then
+									dist:= B - x
+								else
+									dist     := y - A;
+								cave[A, B].tl:= true;
+								if blocks(B, A, dist) and (B = Fr) then
+									Shot:= true;
+								if blocks(B, A, dist) and (Shot = false) then
+									begin
+									Shot:= true;
+									ShadowCast(Oct, y - A + 1, StSlop,
+										(x - B + Vr2) / (y - A - Vr1))
+									end;
+								if blocks(B, A, dist) and (B = Lt) then
+									Exit;
+								if (not blocks(B, A, dist)) and (Shot = true) then
+									begin
+									Shot  := false;
+									StSlop:= (x - B + Vr1) / (y - A + Vr1);
+									end
 								end
 							end
-						end
+						end;
+					2:
+						begin
+						for A:= y - StDep downto fixy(y - r) do
+							begin
+							Shot:= false;
+							Fr  := fixx(x - Round((A - y) * StSlop));
+							Lt  := fixx(x - Round((A - y) * EdSlop));
+							if Fr < Lt then
+								Fr:= Lt;
+							for B := Fr downto Lt do
+								begin
+								if x - B > y - A then
+									dist:= x - B
+								else
+									dist     := y - A;
+								cave[A, B].tl:= true;
+								if blocks(B, A, dist) and (B = Fr) then
+									Shot:= true;
+								if blocks(B, A, dist) and (Shot = false) then
+									begin
+									Shot:= true;
+									ShadowCast(Oct, y - A + 1, StSlop,
+										(B - x + Vr2) / (y - A - Vr1))
+									end;
+								if blocks(B, A, dist) and (B = Lt) then
+									Exit;
+								if (not blocks(B, A, dist)) and (Shot = true) then
+									begin
+									Shot  := false;
+									StSlop:= (B - x + Vr1) / (y - A + Vr1)
+									end
+								end
+							end
+						end;
+					3:
+						begin
+						for A:= x + StDep to fixx(x + r) do
+							begin
+							Shot:= false;
+							Fr  := fixy(y - Round((A - x) * StSlop));
+							Lt  := fixy(y - Round((A - x) * EdSlop));
+							if Lt < Fr then
+								Lt:= Fr;
+							for B := Fr to Lt do
+								begin
+								if y - B > A - x then
+									dist:= y - B
+								else
+									dist     := A - x;
+								cave[B, A].tl:= true;
+								if blocks(A, B, dist) and (B = Fr) then
+									Shot:= true;
+								if blocks(A, B, dist) and (Shot = false) then
+									begin
+									Shot:= true;
+									ShadowCast(Oct, A - x + 1, StSlop,
+										(y - B + Vr2) / (A - x - Vr1))
+									end;
+								if blocks(A, B, dist) and (B = Lt) then
+									Exit;
+								if (not blocks(A, B, dist)) and (Shot = true) then
+									begin
+									Shot  := false;
+									StSlop:= (y - B + Vr1) / (A - x + Vr1)
+									end
+								end
+							end
+						end;
+					4:
+						begin
+						for A:= x + StDep to fixx(x + r) do
+							begin
+							Shot:= false;
+							Fr  := fixy(y + Round((A - x) * StSlop));
+							Lt  := fixy(y + Round((A - x) * EdSlop));
+							if Fr < Lt then
+								Fr:= Lt;
+							for B := Fr downto Lt do
+								begin
+								if B - y > A - x then
+									dist:= B - y
+								else
+									dist     := A - x;
+								cave[B, A].tl:= true;
+								if blocks(A, B, dist) and (B = Fr) then
+									Shot:= true;
+								if blocks(A, B, dist) and (Shot = false) then
+									begin
+									Shot:= true;
+									ShadowCast(Oct, A - x + 1, StSlop,
+										(B - y + Vr2) / (A - x - Vr1))
+									end;
+								if blocks(A, B, dist) and (B = Lt) then
+									Exit;
+								if (not blocks(A, B, dist)) and (Shot = true) then
+									begin
+									Shot  := false;
+									StSlop:= (B - y + Vr1) / (A - x + Vr1)
+									end
+								end
+							end
+						end;
+					5:
+						begin
+						for A:= y + StDep to fixy(y + r) do
+							begin
+							Shot:= false;
+							Fr  := fixx(x + Round((A - y) * StSlop));
+							Lt  := fixx(x + Round((A - y) * EdSlop));
+							if Fr < Lt then
+								Fr:= Lt;
+							for B := Fr downto Lt do
+								begin
+								if B - x > A - y then
+									dist:= B - x
+								else
+									dist     := A - y;
+								cave[A, B].tl:= true;
+								if blocks(B, A, dist) and (B = Fr) then
+									Shot:= true;
+								if blocks(B, A, dist) and (Shot = false) then
+									begin
+									Shot:= true;
+									ShadowCast(Oct, A - y + 1, StSlop,
+										(B - x + Vr2) / (A - y - Vr1))
+									end;
+								if blocks(B, A, dist) and (B = Lt) then
+									Exit;
+								if (not blocks(B, A, dist)) and (Shot = true) then
+									begin
+									Shot  := false;
+									StSlop:= (B - x + Vr1) / (A - y + Vr1)
+									end
+								end
+							end
+						end;
+					6:
+						begin
+						for A:= y + StDep to fixy(y + r) do
+							begin
+							Shot:= false;
+							Fr  := fixx(x - Round((A - y) * StSlop));
+							Lt  := fixx(x - Round((A - y) * EdSlop));
+							if Lt < Fr then
+								Lt:= Fr;
+							for B := Fr to Lt do
+								begin
+								if x - B > A - y then
+									dist:= x - B
+								else
+									dist     := A - y;
+								cave[A, B].tl:= true;
+								if blocks(B, A, dist) and (B = Fr) then
+									Shot:= true;
+								if blocks(B, A, dist) and (Shot = false) then
+									begin
+									Shot:= true;
+									ShadowCast(Oct, A - y + 1, StSlop,
+										(x - B + Vr2) / (A - y - Vr1))
+									end;
+								if blocks(B, A, dist) and (B = Lt) then
+									Exit;
+								if (not blocks(B, A, dist)) and (Shot = true) then
+									begin
+									Shot  := false;
+									StSlop:= (x - B + Vr1) / (A - y + Vr1)
+									end
+								end
+							end
+						end;
+					7:
+						begin
+						for A:= x - StDep downto fixx(x - r) do
+							begin
+							Shot:= false;
+							Fr  := fixy(y - Round((A - x) * StSlop));
+							Lt  := fixy(y - Round((A - x) * EdSlop));
+							if Fr < Lt then
+								Fr:= Lt;
+							for B := Fr downto Lt do
+								begin
+								if B - y > x - A then
+									dist:= B - y
+								else
+									dist     := x - A;
+								cave[B, A].tl:= true;
+								if blocks(A, B, dist) and (B = Fr) then
+									Shot:= true;
+								if blocks(A, B, dist) and (Shot = false) then
+									begin
+									Shot:= true;
+									ShadowCast(Oct, x - A + 1, StSlop,
+										(B - y + Vr2) / (x - A - Vr1))
+									end;
+								if blocks(A, B, dist) and (B = Lt) then
+									Exit;
+								if (not blocks(A, B, dist)) and (Shot = true) then
+									begin
+									Shot  := false;
+									StSlop:= (B - y + Vr1) / (x - A + Vr1)
+									end
+								end
+							end
+						end;
+					8:
+						begin
+						for A:= x - StDep downto fixx(x - r) do
+							begin
+							Shot:= false;
+							Fr  := fixy(y + Round((A - x) * StSlop));
+							Lt  := fixy(y + Round((A - x) * EdSlop));
+							if Lt < Fr then
+								Lt:= Fr;
+							for B := Fr to Lt do
+								begin
+								if B - y > x - A then
+									dist:= B - y
+								else
+									dist     := x - A;
+								cave[B, A].tl:= true;
+								if blocks(A, B, dist) and (B = Fr) then
+									Shot:= true;
+								if blocks(A, B, dist) and (Shot = false) then
+									begin
+									Shot:= true;
+									ShadowCast(Oct, x - A + 1, StSlop,
+										(y - B + Vr2) / (x - A - Vr1))
+									end;
+								if blocks(A, B, dist) and (B = Lt) then
+									Exit;
+								if (not blocks(A, B, dist)) and (Shot = true) then
+									begin
+									Shot  := false;
+									StSlop:= (y - B + Vr1) / (x - A + Vr1)
+									end
+								end;
+							end;
+						end;
 					end;
-				2:
-					begin
-					for A:= y - StDep downto fixy(y - r) do
-						begin
-						Shot:= false;
-						Fr  := fixx(x - Round((A - y) * StSlop));
-						Lt  := fixx(x - Round((A - y) * EdSlop));
-						if Fr < Lt then
-							Fr:= Lt;
-						for B := Fr downto Lt do
-							begin
-							if x - B > y - A then
-								dist:= x - B
-							else
-								dist     := y - A;
-							cave[A, B].tl:= true;
-							if blocks(B, A, dist) and (B = Fr) then
-								Shot:= true;
-							if blocks(B, A, dist) and (Shot = false) then
-								begin
-								Shot:= true;
-								ShadowCast(Oct, y - A + 1, StSlop,
-									(B - x + Vr2) / (y - A - Vr1))
-								end;
-							if blocks(B, A, dist) and (B = Lt) then
-								exit;
-							if (not blocks(B, A, dist)) and (Shot = true) then
-								begin
-								Shot  := false;
-								StSlop:= (B - x + Vr1) / (y - A + Vr1)
-								end
-							end
-						end
-					end;
-				3:
-					begin
-					for A:= x + StDep to fixx(x + r) do
-						begin
-						Shot:= false;
-						Fr  := fixy(y - Round((A - x) * StSlop));
-						Lt  := fixy(y - Round((A - x) * EdSlop));
-						if Lt < Fr then
-							Lt:= Fr;
-						for B := Fr to Lt do
-							begin
-							if y - B > A - x then
-								dist:= y - B
-							else
-								dist     := A - x;
-							cave[B, A].tl:= true;
-							if blocks(A, B, dist) and (B = Fr) then
-								Shot:= true;
-							if blocks(A, B, dist) and (Shot = false) then
-								begin
-								Shot:= true;
-								ShadowCast(Oct, A - x + 1, StSlop,
-									(y - B + Vr2) / (A - x - Vr1))
-								end;
-							if blocks(A, B, dist) and (B = Lt) then
-								exit;
-							if (not blocks(A, B, dist)) and (Shot = true) then
-								begin
-								Shot  := false;
-								StSlop:= (y - B + Vr1) / (A - x + Vr1)
-								end
-							end
-						end
-					end;
-				4:
-					begin
-					for A:= x + StDep to fixx(x + r) do
-						begin
-						Shot:= false;
-						Fr  := fixy(y + Round((A - x) * StSlop));
-						Lt  := fixy(y + Round((A - x) * EdSlop));
-						if Fr < Lt then
-							Fr:= Lt;
-						for B := Fr downto Lt do
-							begin
-							if B - y > A - x then
-								dist:= B - y
-							else
-								dist     := A - x;
-							cave[B, A].tl:= true;
-							if blocks(A, B, dist) and (B = Fr) then
-								Shot:= true;
-							if blocks(A, B, dist) and (Shot = false) then
-								begin
-								Shot:= true;
-								ShadowCast(Oct, A - x + 1, StSlop,
-									(B - y + Vr2) / (A - x - Vr1))
-								end;
-							if blocks(A, B, dist) and (B = Lt) then
-								exit;
-							if (not blocks(A, B, dist)) and (Shot = true) then
-								begin
-								Shot  := false;
-								StSlop:= (B - y + Vr1) / (A - x + Vr1)
-								end
-							end
-						end
-					end;
-				5:
-					begin
-					for A:= y + StDep to fixy(y + r) do
-						begin
-						Shot:= false;
-						Fr  := fixx(x + Round((A - y) * StSlop));
-						Lt  := fixx(x + Round((A - y) * EdSlop));
-						if Fr < Lt then
-							Fr:= Lt;
-						for B := Fr downto Lt do
-							begin
-							if B - x > A - y then
-								dist:= B - x
-							else
-								dist     := A - y;
-							cave[A, B].tl:= true;
-							if blocks(B, A, dist) and (B = Fr) then
-								Shot:= true;
-							if blocks(B, A, dist) and (Shot = false) then
-								begin
-								Shot:= true;
-								ShadowCast(Oct, A - y + 1, StSlop,
-									(B - x + Vr2) / (A - y - Vr1))
-								end;
-							if blocks(B, A, dist) and (B = Lt) then
-								exit;
-							if (not blocks(B, A, dist)) and (Shot = true) then
-								begin
-								Shot  := false;
-								StSlop:= (B - x + Vr1) / (A - y + Vr1)
-								end
-							end
-						end
-					end;
-				6:
-					begin
-					for A:= y + StDep to fixy(y + r) do
-						begin
-						Shot:= false;
-						Fr  := fixx(x - Round((A - y) * StSlop));
-						Lt  := fixx(x - Round((A - y) * EdSlop));
-						if Lt < Fr then
-							Lt:= Fr;
-						for B := Fr to Lt do
-							begin
-							if x - B > A - y then
-								dist:= x - B
-							else
-								dist     := A - y;
-							cave[A, B].tl:= true;
-							if blocks(B, A, dist) and (B = Fr) then
-								Shot:= true;
-							if blocks(B, A, dist) and (Shot = false) then
-								begin
-								Shot:= true;
-								ShadowCast(Oct, A - y + 1, StSlop,
-									(x - B + Vr2) / (A - y - Vr1))
-								end;
-							if blocks(B, A, dist) and (B = Lt) then
-								exit;
-							if (not blocks(B, A, dist)) and (Shot = true) then
-								begin
-								Shot  := false;
-								StSlop:= (x - B + Vr1) / (A - y + Vr1)
-								end
-							end
-						end
-					end;
-				7:
-					begin
-					for A:= x - StDep downto fixx(x - r) do
-						begin
-						Shot:= false;
-						Fr  := fixy(y - Round((A - x) * StSlop));
-						Lt  := fixy(y - Round((A - x) * EdSlop));
-						if Fr < Lt then
-							Fr:= Lt;
-						for B := Fr downto Lt do
-							begin
-							if B - y > x - A then
-								dist:= B - y
-							else
-								dist     := x - A;
-							cave[B, A].tl:= true;
-							if blocks(A, B, dist) and (B = Fr) then
-								Shot:= true;
-							if blocks(A, B, dist) and (Shot = false) then
-								begin
-								Shot:= true;
-								ShadowCast(Oct, x - A + 1, StSlop,
-									(B - y + Vr2) / (x - A - Vr1))
-								end;
-							if blocks(A, B, dist) and (B = Lt) then
-								exit;
-							if (not blocks(A, B, dist)) and (Shot = true) then
-								begin
-								Shot  := false;
-								StSlop:= (B - y + Vr1) / (x - A + Vr1)
-								end
-							end
-						end
-					end;
-				8:
-					begin
-					for A:= x - StDep downto fixx(x - r) do
-						begin
-						Shot:= false;
-						Fr  := fixy(y + Round((A - x) * StSlop));
-						Lt  := fixy(y + Round((A - x) * EdSlop));
-						if Lt < Fr then
-							Lt:= Fr;
-						for B := Fr to Lt do
-							begin
-							if B - y > x - A then
-								dist:= B - y
-							else
-								dist     := x - A;
-							cave[B, A].tl:= true;
-							if blocks(A, B, dist) and (B = Fr) then
-								Shot:= true;
-							if blocks(A, B, dist) and (Shot = false) then
-								begin
-								Shot:= true;
-								ShadowCast(Oct, x - A + 1, StSlop,
-									(y - B + Vr2) / (x - A - Vr1))
-								end;
-							if blocks(A, B, dist) and (B = Lt) then
-								exit;
-							if (not blocks(A, B, dist)) and (Shot = true) then
-								begin
-								Shot  := false;
-								StSlop:= (y - B + Vr1) / (x - A + Vr1)
-								end
-							end
-						end
-					end
-				end
+				finally
+				SetRoundMode(rm);
+				end;
 			end;
 
 	var

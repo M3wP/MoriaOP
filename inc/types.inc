@@ -4,16 +4,21 @@ type
 	WordInt         = Word;
 	WorlInt         = SmallInt;
 
-	Unsigned        = LongWord;
+//dengland Was defined as LongWord but that would be a problem in 64bit land.
+	Unsigned        = Cardinal;
+
 //dengland  In BOSS, this is SmallInt but that doesn't work for the experience
-//	table in MORIA (needs a 32 bit number).
-	Integer         = LongInt;
+//		table in MORIA (needs a 32 bit number).  Was defined as LongInt but that
+//		would be a problem in 64bit land.  Its simply unnecessary.
+//	Integer         = LongInt;
+
 	Real            = Single;
 
-	Quad_Type       = record
-		l0: Unsigned;
-		l1: Unsigned;
-		end;
+//dengland This isn't required anymore.
+//	Quad_Type       = record
+//		l0: Unsigned;
+//		l1: Unsigned;
+//		end;
 
 	AType           = string[16];
 	BType           = string[14];
@@ -34,7 +39,7 @@ type
 
 	Key_Type        = record                { For char saver        }
 		file_id : {[key(0)]} packed array [1..70] of AnsiChar;
-		seed    : LongInt;
+		seed    : Integer;
 		end;
 
 	Creature_Type = record
@@ -117,6 +122,39 @@ type
 		tval    : ByteInt;      { Catagory number       }
 		tchar   : AnsiChar;     { Character representation}
 		flags   : Unsigned;     { Special flags         }
+								{ $00000001 - +strength 		}
+								{ $00000002 - +dexterity		}
+								{ $00000004 - +constitution		}
+								{ $00000008 - +intelligence		}
+								{ $00000010 - +wisdom	 		}
+								{ $00000020 - +charisma 		}
+								{ $00000020 - +charisma 		}
+								{ $00000040 - +search chance&freq}
+								{ $00000080 - +slow digestion 	}
+								{ $00000100 - +stealth	 		}
+								{ $00000200 - aggravating 		}
+								{ $00000400 - teleporting 		}
+								{ $00000800 - +regeneration		}
+								{ $00001000 - +speed		 	}
+								{ $00002000 - dragon slaying	}
+								{ $00004000 - monster slaying	}
+								{ $00008000 - evil slaying		}
+								{ $00010000 - undead slaying	}
+								{ $00020000 - +frost dmg		}
+								{ $00040000 - +fire dmg			}
+								{ $00080000 - +fire resist		}
+								{ $00100000 - +acid resist		}
+								{ $00200000 - +cold resist		}
+								{ $00400000 - sustain all stats }
+								{ $00800000 - free acting		}
+								{ $01000000 - see invisible		}
+								{ $02000000 - +light resist		}
+								{ $04000000 - feather fall		}
+								{ $08000000 - blinding	 		}
+								{ $10000000 - feared			}
+								{ $20000000 - +to digging		}
+								{ $40000000 - grant infravision }
+								{ $80000000 - cursed			}
 		p1      : Integer;      { Misc. use variable    }
 		cost    : Integer;      { Cost of item          }
 		subval  : Integer;      { Sub-catagory number   }

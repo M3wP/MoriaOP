@@ -491,7 +491,7 @@ procedure creatures(attack: boolean);
 									begin
 									dam:= damroll(damstr);
 									with py.misc do
-										dam:= dam - round(((pac + ptoac) / 200.0) * dam);
+										dam:= dam - Round(((pac + ptoac) / 200.0) * dam);
 									take_hit(dam, ddesc);
 									prt_chp
 									end;

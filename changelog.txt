@@ -1,36 +1,46 @@
 ﻿----------------------------------------------------------------------------
-                          M O R I A   5 . 0 2
+						  M O R I A   5 . 0 2
 
-                  COPYRIGHT (c) Robert Alan Koeneke
-            Ported to Delphi/Free Pascal by Daniel England
+				  COPYRIGHT (c) Robert Alan Koeneke
+			Ported to Delphi/Free Pascal by Daniel England
 ----------------------------------------------------------------------------
 
 Known Issues
 ------------
 
-    - The lighting in lit rooms sometimes doesn't work correctly, producing a
-      banding like effect.  I'm investigating this issue.
+	- The lighting in lit rooms sometimes doesn't work correctly, producing a
+	  banding like effect.  This may be fixed.
 
-    - If the range on your light only partially intersects a lit room (from
-      outside), the room doesn't light completely when you enter it.
+	- If the range on your light only partially intersects a lit room (from
+	  outside), the room may not light completely when you enter it.  This may be
+	  fixed.
 
-    - There may be problems with displaying the map or placing the player on a
-      level due to incorrect max_panel_rows calculation.
+	- There may be problems with displaying the map or placing the player on a
+	  level due to incorrect max_panel_rows calculation.
 
-      *Update*  This issue should now be resolved.  If it does occur, the
-      code should be able to trap it, correct it and report the condition in
-      the error log.  This problem may have existed in the 5.01 original.
+	  *Update*  This issue should now be resolved.  If it does occur, the
+	  code should be able to trap it, correct it and report the condition in
+	  the error log.  This problem may have existed in the 5.01 original.
 
 
 Change Log
 ----------
 
+27 JAN 2016 - 5.02.00.0100
+	- Attempt to fix long standing light banding issue.  It is most likely caused by
+	  the "Banker's Rounding" default behaviour of Round.  I have changed the
+	  Round Mode in VISION.INC to use "Truncate" instead.
+	- Fixed a loading bug handling cursed items causing a range error.
+	- Changed a number of types from LongInt/LongWord to Integer/Cardinal for
+	  consistency if trying to compile to 64bit.  Seems to work now (on windows,
+	  there may be issues with the crt unit on unix/linux/mac).
+
 29 MAR 2015 - 5.02.00.0099
-    - Uploading to Git.  As a note, I have attempted to contact Robert Koeneke
-      about publishing to GitHub but it seems he is either extraordinarily
-      difficult to reach or simply unreachable.  He was involved with an
-      Angband group but the address for him there seems to no longer work and
-      the group itself seems to have gone dormant.
+	- Uploading to Git.  As a note, I have attempted to contact Robert Koeneke
+	  about publishing to GitHub but it seems he is either extraordinarily
+	  difficult to reach or simply unreachable.  He was involved with an
+	  Angband group but the address for him there seems to no longer work and
+	  the group itself seems to have gone dormant.
 
 06 JAN 2014 - 5.02.00.0099
     - This is not a release version.  Bug testing is still underway.  This

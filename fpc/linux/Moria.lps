@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="9"/>
+    <BuildModes Active="Default"/>
+    <Units Count="46">
+      <Unit0>
+        <Filename Value="Moria.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="77"/>
+        <CursorPos Y="77"/>
+        <UsageCount Value="88"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="src\win\Console.pas"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="39"/>
+        <CursorPos X="28" Y="50"/>
+        <UsageCount Value="88"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="src\SimpleScreen.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="38"/>
+        <TopLine Value="14"/>
+        <CursorPos X="14" Y="20"/>
+        <UsageCount Value="88"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="src\CRTScreen.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UsageCount Value="88"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="src\ScrListView.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="34"/>
+        <TopLine Value="184"/>
+        <CursorPos Y="197"/>
+        <UsageCount Value="88"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="inc\types.inc"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="371"/>
+        <CursorPos X="38" Y="393"/>
+        <UsageCount Value="45"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="inc\userid.inc"/>
+        <EditorIndex Value="37"/>
+        <CursorPos X="10" Y="3"/>
+        <UsageCount Value="45"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <EditorIndex Value="15"/>
+        <TopLine Value="1242"/>
+        <CursorPos X="35" Y="1257"/>
+        <UsageCount Value="45"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="inc\MORIA.INC"/>
+        <EditorIndex Value="19"/>
+        <TopLine Value="299"/>
+        <CursorPos Y="302"/>
+        <UsageCount Value="45"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="inc\CONSTANTS.INC"/>
+        <EditorIndex Value="10"/>
+        <TopLine Value="205"/>
+        <CursorPos X="5" Y="216"/>
+        <UsageCount Value="45"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="inc\TABLES.INC"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="1251"/>
+        <CursorPos X="5" Y="1258"/>
+        <UsageCount Value="45"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="inc\DESC.INC"/>
+        <EditorIndex Value="36"/>
+        <TopLine Value="223"/>
+        <CursorPos Y="245"/>
+        <UsageCount Value="44"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="src\unix\crt.pas"/>
+        <UnitName Value="Crt"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="1422"/>
+        <CursorPos X="33" Y="1431"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\..\..\lazarus\fpc\2.6.2\source\rtl\win32\windows.pp"/>
+        <TopLine Value="19"/>
+        <UsageCount Value="4"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\..\..\lazarus\fpc\2.6.2\source\rtl\win\wininc\struct.inc"/>
+        <TopLine Value="1000"/>
+        <CursorPos X="16" Y="1015"/>
+        <UsageCount Value="4"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="src\win\textrec.inc"/>
+        <TopLine Value="3"/>
+        <UsageCount Value="4"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="inc\variables.inc"/>
+        <EditorIndex Value="12"/>
+        <TopLine Value="2859"/>
+        <CursorPos X="27" Y="2868"/>
+        <UsageCount Value="43"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="inc\MISC.INC"/>
+        <EditorIndex Value="14"/>
+        <TopLine Value="4576"/>
+        <CursorPos Y="4606"/>
+        <UsageCount Value="40"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="inc\black_market.inc"/>
+        <EditorIndex Value="35"/>
+        <TopLine Value="735"/>
+        <CursorPos X="20" Y="754"/>
+        <UsageCount Value="33"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="inc\MAIN.INC"/>
+        <EditorIndex Value="18"/>
+        <TopLine Value="95"/>
+        <CursorPos Y="116"/>
+        <UsageCount Value="30"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="inc\SPELLS.INC"/>
+        <EditorIndex Value="32"/>
+        <TopLine Value="221"/>
+        <CursorPos Y="348"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="inc\WIZARD.INC"/>
+        <EditorIndex Value="33"/>
+        <TopLine Value="461"/>
+        <CursorPos X="18" Y="460"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="inc\CREATURE.INC"/>
+        <EditorIndex Value="17"/>
+        <TopLine Value="255"/>
+        <CursorPos X="3" Y="267"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="inc\SCROLLS.INC"/>
+        <EditorIndex Value="20"/>
+        <TopLine Value="23"/>
+        <CursorPos Y="162"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="inc\EAT.INC"/>
+        <EditorIndex Value="23"/>
+        <CursorPos X="3" Y="7"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="inc\EXTRA.INC"/>
+        <EditorIndex Value="24"/>
+        <CursorPos X="31" Y="23"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="inc\IO.INC"/>
+        <EditorIndex Value="16"/>
+        <TopLine Value="277"/>
+        <CursorPos X="11" Y="290"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="inc\MAGIC.INC"/>
+        <EditorIndex Value="25"/>
+        <CursorPos X="15" Y="3"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="inc\POTIONS.INC"/>
+        <EditorIndex Value="30"/>
+        <CursorPos X="3" Y="7"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="inc\PRAYER.INC"/>
+        <EditorIndex Value="31"/>
+        <CursorPos X="3" Y="6"/>
+        <UsageCount Value="23"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="inc\STAVES.INC"/>
+        <EditorIndex Value="21"/>
+        <CursorPos Y="15"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="inc\WANDS.INC"/>
+        <EditorIndex Value="22"/>
+        <TopLine Value="23"/>
+        <CursorPos X="62" Y="37"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="inc\STORE2.INC"/>
+        <EditorIndex Value="26"/>
+        <TopLine Value="1190"/>
+        <CursorPos X="61" Y="1190"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="inc\STORE1.INC"/>
+        <EditorIndex Value="27"/>
+        <TopLine Value="439"/>
+        <CursorPos X="30" Y="440"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="inc\FILES.INC"/>
+        <EditorIndex Value="13"/>
+        <TopLine Value="759"/>
+        <CursorPos X="48" Y="772"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="inc\SAVE.INC"/>
+        <EditorIndex Value="28"/>
+        <TopLine Value="1005"/>
+        <CursorPos X="44" Y="1031"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="inc\CREATE.INC"/>
+        <EditorIndex Value="29"/>
+        <TopLine Value="5"/>
+        <CursorPos Y="20"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="inc\HELP.INC"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="805"/>
+        <CursorPos X="35" Y="939"/>
+        <UsageCount Value="16"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="inc\DEATH.INC"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="456"/>
+        <CursorPos X="21" Y="472"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="src\unix\textrec.inc"/>
+        <EditorIndex Value="8"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="..\..\..\usr\share\fpcsrc\3.0.0\rtl\linux\system.pp"/>
+        <UnitName Value="System"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="15"/>
+        <CursorPos Y="22"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="..\..\..\usr\share\fpcsrc\3.0.0\packages\rtl-console\src\unix\crt.pp"/>
+        <UnitName Value="Crt"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="1364"/>
+        <CursorPos X="20" Y="1373"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="src\unix\textrec.inc"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="32"/>
+        <CursorPos X="35" Y="41"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="inc\VISION.INC"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="349"/>
+        <CursorPos X="9" Y="367"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="..\..\..\usr\share\fpcsrc\3.0.0\rtl\objpas\math.pp"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="606"/>
+        <CursorPos X="40" Y="616"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="..\..\..\usr\share\fpcsrc\3.0.0\rtl\inc\mathh.inc"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="20"/>
+        <CursorPos X="50" Y="36"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit45>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="inc\MORIA.INC"/>
+        <Caret Line="2524" Column="8" TopLine="2511"/>
+      </Position1>
+      <Position2>
+        <Filename Value="inc\MORIA.INC"/>
+      </Position2>
+      <Position3>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1369" Column="60" TopLine="1347"/>
+      </Position3>
+      <Position4>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="895" TopLine="870"/>
+      </Position4>
+      <Position5>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1392" Column="70" TopLine="1378"/>
+      </Position5>
+      <Position6>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="886" Column="10" TopLine="872"/>
+      </Position6>
+      <Position7>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1392" Column="68" TopLine="1372"/>
+      </Position7>
+      <Position8>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="886" Column="10" TopLine="872"/>
+      </Position8>
+      <Position9>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="1392" Column="70" TopLine="1378"/>
+      </Position9>
+      <Position10>
+        <Filename Value="inc\INVENTORY.INC"/>
+        <Caret Line="886" Column="54" TopLine="874"/>
+      </Position10>
+      <Position11>
+        <Filename Value="inc\MAIN.INC"/>
+        <Caret Line="430" Column="11" TopLine="395"/>
+      </Position11>
+      <Position12>
+        <Filename Value="inc\MAIN.INC"/>
+      </Position12>
+      <Position13>
+        <Filename Value="inc\MAIN.INC"/>
+        <Caret Line="116" Column="20" TopLine="93"/>
+      </Position13>
+      <Position14>
+        <Filename Value="inc\MAIN.INC"/>
+        <Caret Line="210" Column="24" TopLine="189"/>
+      </Position14>
+      <Position15>
+        <Filename Value="inc\MISC.INC"/>
+        <Caret Line="3599" TopLine="3579"/>
+      </Position15>
+      <Position16>
+        <Filename Value="src\unix\crt.pas"/>
+        <Caret TopLine="19"/>
+      </Position16>
+      <Position17>
+        <Filename Value="src\unix\crt.pas"/>
+        <Caret Line="1475" Column="9" TopLine="1458"/>
+      </Position17>
+      <Position18>
+        <Filename Value="..\..\..\usr\share\fpcsrc\3.0.0\rtl\linux\system.pp"/>
+      </Position18>
+      <Position19>
+        <Filename Value="src\unix\crt.pas"/>
+        <Caret Line="1469" Column="30" TopLine="1464"/>
+      </Position19>
+      <Position20>
+        <Filename Value="src\unix\crt.pas"/>
+        <Caret Line="1475" Column="3" TopLine="93"/>
+      </Position20>
+      <Position21>
+        <Filename Value="..\..\..\usr\share\fpcsrc\3.0.0\packages\rtl-console\src\unix\crt.pp"/>
+        <Caret Line="1556" Column="20" TopLine="1543"/>
+      </Position21>
+      <Position22>
+        <Filename Value="..\..\..\usr\share\fpcsrc\3.0.0\packages\rtl-console\src\unix\crt.pp"/>
+      </Position22>
+      <Position23>
+        <Filename Value="..\..\..\usr\share\fpcsrc\3.0.0\packages\rtl-console\src\unix\crt.pp"/>
+        <Caret Line="1373" Column="20" TopLine="1364"/>
+      </Position23>
+      <Position24>
+        <Filename Value="inc\VISION.INC"/>
+      </Position24>
+      <Position25>
+        <Filename Value="inc\VISION.INC"/>
+        <Caret Line="83" Column="13" TopLine="71"/>
+      </Position25>
+      <Position26>
+        <Filename Value="inc\CONSTANTS.INC"/>
+        <Caret Line="15"/>
+      </Position26>
+      <Position27>
+        <Filename Value="inc\CONSTANTS.INC"/>
+        <Caret Line="216" Column="2" TopLine="205"/>
+      </Position27>
+      <Position28>
+        <Filename Value="src\unix\crt.pas"/>
+        <Caret Line="1469" Column="20" TopLine="1464"/>
+      </Position28>
+      <Position29>
+        <Filename Value="src\unix\crt.pas"/>
+        <Caret Line="676" Column="8" TopLine="665"/>
+      </Position29>
+      <Position30>
+        <Filename Value="src\unix\crt.pas"/>
+        <Caret Line="1214" Column="5" TopLine="1204"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="2">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="inc\HELP.INC"/>
+        <Line Value="862"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="inc\STAVES.INC"/>
+        <Line Value="14"/>
+      </Item2>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

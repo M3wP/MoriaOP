@@ -77,11 +77,15 @@ procedure fov(y, x, r, r_limited: Byte);
 			Shot:   Boolean;
 			Fr, Lt: SmallInt;
 			dist:   SmallInt;
-			rm: TRoundingMode;
+{$IFNDEF FPC}
+            rm: TRoundingMode;
+{$ENDIF}
 
 			begin
+{$IFNDEF FPC}
 			rm:= GetRoundMode;
 			SetRoundMode(rmTruncate);
+{$ENDIF}
 			try
 				case Oct of
 					1:
@@ -358,8 +362,10 @@ procedure fov(y, x, r, r_limited: Byte);
 						end;
 					end;
 				finally
+{$IFNDEF FPC}
 				SetRoundMode(rm);
-				end;
+{$ENDIF}
+                end;
 			end;
 
 	var
